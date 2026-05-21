@@ -1,47 +1,201 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    color-scheme: light dark;
-  }
-}
-
+/* -------------------------------------------------------------------------- */
+/* 1. Theme Tokens (Mapped to the cohesive design system)                     */
+/* -------------------------------------------------------------------------- */
 @theme {
-  /* ── Color palette ── */
-  --color-brand-primary: #1D4ED8;        /* Solid royal blue */
-  --color-brand-accent: #84CC16;         /* Vibrant energetic green (alias for success) */
-  --color-brand-success: var(--color-brand-accent);
+  /* Colors */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-fg);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-red: var(--red);
 
-  /* Adaptive surface colors (light / dark) */
-  --color-brand-background: light-dark(#F8FAFC, #0B1120);
-  --color-brand-surface: light-dark(#FFFFFF, #1E293B);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
 
-  /* Adaptive text colors */
-  --color-text-main: light-dark(#0F172A, #F1F5F9);
-  --color-text-muted: light-dark(#64748B, #94A3B8);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
 
-  /* ── Custom radii ── */
-  --radius-premium: 16px;
+  /* Radii */
+  --radius-card: var(--radius-card);
+  --radius-button: var(--radius-button);
 
-  /* ── Deep adaptive shadow ── */
-  --shadow-deep: light-dark(
-    0 10px 25px -3px rgb(0 0 0 / 0.08),
-    0 10px 25px -3px rgb(0 0 0 / 0.5)
-  );
+  /* Shadows */
+  --shadow-soft: var(--shadow-soft);
+  --shadow-elevated: var(--shadow-elevated);
+
+  /* Transitions */
+  --transition-base: var(--transition-base);
+  --transition-fast: var(--transition-fast);
 }
 
-/* ── Reusable Glassmorphism utility ── */
-@utility glass {
-  background: light-dark(
-    rgb(255 255 255 / 0.7),
-    rgb(255 255 255 / 0.05)
-  );
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid light-dark(
-    rgb(255 255 255 / 0.3),
-    rgb(255 255 255 / 0.08)
-  );
-  box-shadow: var(--shadow-deep);
-  border-radius: var(--radius-premium);
+/* -------------------------------------------------------------------------- */
+/* 2. Base Variables (Light Mode - Sophisticated & Cohesive)                  */
+/* -------------------------------------------------------------------------- */
+:root {
+  /* ========== Brand Palette ========== */
+  --brand-blue: #1e3a8a;       /* أزرق ملكي عميق */
+  --brand-sky: #0ea5e9;        /* أزرق سماوي مشرق */
+  --brand-orange: #f59e0b;     /* ذهبي دافئ */
+  --brand-green: #10b981;      /* أخضر متناغم */
+  --brand-red: #ef4444;        /* أحمر للتأكيد */
+
+  /* ========== Primary Scale (Blue Tints & Shades) ========== */
+  --primary: #1e3a8a;          /* الأساسي */
+  --primary-dark: #152c69;     /* أغمق قليلاً */
+  --primary-darker: #0d1f4a;
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+
+  /* ========== Accent / Signal (Gold/Orange Scale) ========== */
+  --accent: #f59e0b;           /* الذهبي */
+  --accent-dark: #d97706;      /* برتقالي غامق */
+  --accent-light: #fde68a;     /* أصفر فاتح */
+  --accent-soft: #fffbeb;      /* خلفية دافئة */
+  --signal: #f59e0b;
+  --signal-dark: #b45309;      /* بني محروق */
+
+  /* ========== Red Scale (for contrast) ========== */
+  --red: #ef4444;
+  --red-dark: #b91c1c;
+  --red-soft: #fee2e2;
+
+  /* ========== Ink & Text ========== */
+  --ink: #0f172a;              /* أسود داكن */
+  --ink-soft: #334155;         /* رمادي غامق */
+  --muted: #64748b;            /* رمادي متوسط */
+
+  /* ========== Surfaces ========== */
+  --paper: #f8fafc;
+  --paper-warm: #fffbeb;
+  --white: #ffffff;
+  --line: #e2e8f0;
+  --line-soft: #f1f5f9;
+
+  /* ========== Semantic Mappings (Light) ========== */
+  --primary-fg: #ffffff;
+  --secondary: var(--brand-sky);   /* أزرق سماوي */
+
+  --background: var(--paper);
+  --surface: var(--white);
+  --surface-muted: var(--primary-50);
+  --border: var(--line);
+
+  --text-main: var(--ink);
+  --text-muted: var(--muted);
+
+  /* ========== Gradient Definitions ========== */
+  --gradient-nav: linear-gradient(to right, var(--accent), var(--red), var(--primary));
+  --gradient-hero: linear-gradient(135deg, var(--primary), var(--primary-dark));
+
+  /* ========== Typography ========== */
+  --font-ar: "Tajawal", "Cairo", "Helvetica Neue", system-ui, sans-serif;
+  --font-en: "Inter", "Helvetica Neue", system-ui, sans-serif;
+  --font-display-ar: "Noto Kufi Arabic", "Tajawal", sans-serif;
+  --font-display-en: "Space Grotesk", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", "Menlo", monospace;
+
+  /* ========== Spacing System ========== */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  /* ========== Radii ========== */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --radius-card: var(--radius-lg);
+  --radius-button: var(--radius-md);
+
+  /* ========== Shadows ========== */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+  --shadow-soft: var(--shadow-sm);
+  --shadow-elevated: var(--shadow-md);
+
+  /* ========== Motion ========== */
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 150ms ease;
+
+  /* ========== Focus Ring ========== */
+  --focus-ring: 0 0 0 3px rgba(30, 58, 138, 0.4);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 3. Dark Mode (Elegant & Immersive)                                         */
+/* -------------------------------------------------------------------------- */
+.dark {
+  --primary: #3b82f6;                /* أزرق ساطع */
+  --primary-fg: #ffffff;
+  --secondary: #38bdf8;              /* أزرق فاتح */
+  --accent: #fbbf24;                 /* ذهبي لامع */
+  --red: #f87171;
+
+  --background: #0b1120;             /* أزرق داكن جداً */
+  --surface: #1e293b;
+  --surface-muted: #0f172a;
+  --border: rgba(255, 255, 255, 0.08);
+
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+
+  --gradient-nav: linear-gradient(to right, var(--accent), var(--red), var(--primary));
+  --gradient-hero: linear-gradient(135deg, #1e293b, var(--primary));
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+
+  --focus-ring: 0 0 0 3px rgba(251, 191, 36, 0.4);
+}
+
+/* -------------------------------------------------------------------------- */
+/* 4. Global Refinements                                                      */
+/* -------------------------------------------------------------------------- */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  body {
+    @apply bg-background text-text-main antialiased;
+    transition: background-color var(--transition-base), color var(--transition-base);
+  }
+
+  button {
+    @apply cursor-pointer transition-all duration-200 active:scale-95;
+  }
+
+  :focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-text-muted/30 rounded-full hover:bg-text-muted/50 transition-colors;
+  }
 }

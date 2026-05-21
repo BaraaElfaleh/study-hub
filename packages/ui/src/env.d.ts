@@ -1,4 +1,4 @@
 declare module "*.css" {
-  const content: Record<string, string>;
+  const content: { [className: string]: string };
   export default content;
 }
