@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+}
+
+@theme {
+  /* ── Color palette ── */
+  --color-brand-primary: #1D4ED8;        /* Solid royal blue */
+  --color-brand-accent: #84CC16;         /* Vibrant energetic green (alias for success) */
+  --color-brand-success: var(--color-brand-accent);
+
+  /* Adaptive surface colors (light / dark) */
+  --color-brand-background: light-dark(#F8FAFC, #0B1120);
+  --color-brand-surface: light-dark(#FFFFFF, #1E293B);
+
+  /* Adaptive text colors */
+  --color-text-main: light-dark(#0F172A, #F1F5F9);
+  --color-text-muted: light-dark(#64748B, #94A3B8);
+
+  /* ── Custom radii ── */
+  --radius-premium: 16px;
+
+  /* ── Deep adaptive shadow ── */
+  --shadow-deep: light-dark(
+    0 10px 25px -3px rgb(0 0 0 / 0.08),
+    0 10px 25px -3px rgb(0 0 0 / 0.5)
+  );
+}
+
+/* ── Reusable Glassmorphism utility ── */
+@utility glass {
+  background: light-dark(
+    rgb(255 255 255 / 0.7),
+    rgb(255 255 255 / 0.05)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid light-dark(
+    rgb(255 255 255 / 0.3),
+    rgb(255 255 255 / 0.08)
+  );
+  box-shadow: var(--shadow-deep);
+  border-radius: var(--radius-premium);
+}
