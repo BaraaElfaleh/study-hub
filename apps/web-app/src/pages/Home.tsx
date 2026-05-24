@@ -1,5 +1,4 @@
 // pages/Home.jsx
-import {Navbar} from "../components/Navbar"; 
 import HeroSection from "../components/HeroSection";
 import CardsSection from "../components/CardsSection";
 import StatsSection from "../components/StatsSection";
@@ -10,7 +9,6 @@ import Footer from "../components/Footer";
 const HomePage = () => {
   return (
     <div className="min-h-screen bg-[#050530]">
-      <Navbar />
       <HeroSection />
       <CardsSection />
       <StatsSection />
