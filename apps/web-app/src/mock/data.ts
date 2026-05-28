@@ -1,34 +1,36 @@
 // src/mock/data.ts
-import type { User } from '@/shared/types/auth';
-import type { Course } from '@/shared/types/course';
+import type { User } from '../shared/types/auth';
+import type { Course } from '../shared/types/course';
 import type {
   LectureDTO,
   TaskDTO,
   AnnouncementDTO,
   ChatMessageDTO,
-} from '@/modules/classroom/dtos/classroomDto';
+} from '../modules/classroom/dtos/classroomDto';
+import type { NotificationDTO } from '../modules/notifications/dtos/notificationDto';
 
-// مستخدم تجريبي
+
+
+
 export const mockUser: User = {
   id: 'user-001',
   name: 'أحمد محمد',
   email: 'ahmed@alnoon.com',
   role: 'student',
-  avatar: undefined,
+  avatar: 'https://i.pravatar.cc/150?u=khaled@alnoon.com',
   createdAt: new Date().toISOString(),
 };
 
-// مستخدم آخر (للدردشة)
 export const mockInstructor: User = {
   id: 'user-002',
   name: 'الأستاذ خالد',
   email: 'khaled@alnoon.com',
   role: 'teacher',
-  avatar: undefined,
+  avatar: 'https://i.pravatar.cc/150?u=sara@alnoon.com',
   createdAt: new Date().toISOString(),
 };
 
-// قائمة الدورات
+// ======================== الكورسات ========================
 export const mockCourses: Course[] = [
   {
     id: 'course-001',
@@ -70,7 +72,7 @@ export const mockCourses: Course[] = [
   },
 ];
 
-// محاضرات لفصل تجريبي
+// ======================== المحاضرات ========================
 export const mockLectures: LectureDTO[] = [
   {
     id: 'lec-001',
@@ -96,7 +98,7 @@ export const mockLectures: LectureDTO[] = [
   },
 ];
 
-// مهام
+// ======================== المهام ========================
 export const mockTasks: TaskDTO[] = [
   {
     id: 'task-001',
@@ -120,7 +122,7 @@ export const mockTasks: TaskDTO[] = [
   },
 ];
 
-// إعلانات
+// ======================== الإعلانات ========================
 export const mockAnnouncements: AnnouncementDTO[] = [
   {
     id: 'ann-001',
@@ -140,7 +142,7 @@ export const mockAnnouncements: AnnouncementDTO[] = [
   },
 ];
 
-// رسائل الدردشة
+// ======================== الدردشة ========================
 export const mockChatMessages: ChatMessageDTO[] = [
   {
     id: 'msg-001',
@@ -157,5 +159,49 @@ export const mockChatMessages: ChatMessageDTO[] = [
     sender_name: 'الأستاذ خالد',
     text: 'بالتأكيد، سأخصص بداية المحاضرة القادمة لشرح useEffect بالتفصيل.',
     timestamp: '2026-05-24T09:05:00Z',
+  },
+];
+
+// ======================== الإشعارات ========================
+export const mockNotifications: NotificationDTO[] = [
+  {
+    id: 'notif-001',
+    user_id: 'user-001',
+    type: 'announcement',
+    title: 'إعلان هام',
+    message: 'تم تأجيل موعد الاختبار النهائي إلى يوم الأحد القادم.',
+    read: false,
+    created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+    link: '/classroom/course-001/announcements',
+  },
+  {
+    id: 'notif-002',
+    user_id: 'user-001',
+    type: 'task_due',
+    title: 'موعد تسليم مهمة',
+    message: 'باقي ساعتين على موعد تسليم مهمة "بناء واجهة React".',
+    read: false,
+    created_at: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
+    link: '/classroom/course-001/tasks',
+  },
+  {
+    id: 'notif-003',
+    user_id: 'user-001',
+    type: 'new_chat',
+    title: 'رسالة جديدة من الأستاذ خالد',
+    message: 'أحسنت في المشروع الأخير، استمر.',
+    read: true,
+    created_at: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(),
+    link: '/classroom/course-001/chat',
+  },
+  {
+    id: 'notif-004',
+    user_id: 'user-001',
+    type: 'enrollment',
+    title: 'تم التسجيل بنجاح',
+    message: 'مرحباً بك في كورس "تصميم تجربة المستخدم".',
+    read: true,
+    created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+    link: '/classroom/course-002',
   },
 ];

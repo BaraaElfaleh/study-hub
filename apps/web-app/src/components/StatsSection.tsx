@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 // مكون عدّاد بسيط
-const AnimatedNumber = ({ target }) => {
+const AnimatedNumber = ({ target }: { target: string }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {

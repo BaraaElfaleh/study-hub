@@ -1,10 +1,10 @@
 import { useParams } from '@tanstack/react-router';
 import { useLectures } from '../hooks/useLectures';
 import { useClassroomStore } from '../store/classroomStore';
-import {Loader} from '../../shared/components/ui/Loader';
+import {Loader} from '../../../shared/components/ui/Loader';
 
 const LectureView = () => {
-  const { classroomId } = useParams({ from: '/_protected/classroom/$classroomId' });
+  const { classroomId } = useParams({ from: '/_protected/tsx/classroom/$classroomId/' });
   const { data: lectures, isLoading, error } = useLectures(classroomId);
   const { currentLectureId, setCurrentLectureId } = useClassroomStore();
 

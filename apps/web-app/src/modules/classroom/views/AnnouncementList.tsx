@@ -1,9 +1,9 @@
 import { useParams } from '@tanstack/react-router';
 import { useAnnouncements } from '../hooks/useAnnouncements';
-import {Loader} from '../../shared/components/ui/Loader';
+import {Loader} from '../../../shared/components/ui/Loader';
 
 const AnnouncementList = () => {
-  const { classroomId } = useParams({ from: '/_protected/classroom/$classroomId' });
+  const { classroomId } = useParams({ from: '/_protected/tsx/classroom/$classroomId/' });
   const { data: announcements, isLoading, error } = useAnnouncements(classroomId);
 
   if (isLoading) return <Loader />;

@@ -1,4 +1,3 @@
-// features/courses/store/courseStore.ts
 import { create } from 'zustand';
 
 interface CourseFilters {

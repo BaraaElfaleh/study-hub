@@ -1,6 +1,6 @@
 // src/modules/auth/store/authStore.ts
 import { create } from 'zustand';
-import type { User } from '../../shared/types/auth';
+import type { User } from '../../../shared/types/auth';
 import { mockUser } from '../../../mock/data'; // استيراد المستخدم الوهمي
 
 interface AuthState {

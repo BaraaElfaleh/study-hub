@@ -1,6 +1,6 @@
 // shared/api/httpClient.ts
 import axios from 'axios';
-import { useAuthStore } from '../../auth/store/authStore';
+import { useAuthStore } from '../../modules/auth/store/authStore';
 
 const httpClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,

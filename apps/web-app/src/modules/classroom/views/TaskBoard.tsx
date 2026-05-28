@@ -2,7 +2,7 @@ import { useParams } from '@tanstack/react-router';
 import { useTasks } from '../hooks/useTasks';
 
 const TaskBoard = () => {
-  const { classroomId } = useParams({ from: '/_protected/classroom/$classroomId' });
+const { classroomId } = useParams({ from: '/tsx/classroom/$classroomId' }as any) ;
   const { tasks, isLoading, error, updateTaskStatus, isUpdating } = useTasks(classroomId);
 
   if (isLoading) return <p className="text-white/60">تحميل المهام...</p>;

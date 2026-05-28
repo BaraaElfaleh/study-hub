@@ -1,9 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { NotificationListPage } from '../../modules/notifications';
 
 export const Route = createFileRoute('/_protected/tsx/notifications')({
-  component: RouteComponent,
+  component: NotificationListPage,
 })
 
-function RouteComponent() {
-  return <div>Hello "/_protected/tsx/notifications"!</div>
-}
