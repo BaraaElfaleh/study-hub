@@ -1,26 +1,32 @@
-// src/modules/shared/api/axiosInstance.ts
-import axios, { type AxiosError } from 'axios';
+import axios, { type AxiosError, type AxiosInstance } from 'axios';
+import { useAuthStore } from '../../modules/auth/store/authStore';
 
-const api = axios.create({
-  baseURL: 'https://api.your-lms-domain.com/api',
+// إنشاء instance واحد للـ HTTP Client
+const client: AxiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 // ==================== Request Interceptor ====================
-// إرفاق التوكن تلقائياً
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+// إضافة Token إلى كل طلب تلقائياً
+client.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
 // ==================== Response Interceptor ====================
 // معالجة الأخطاء العامة بشكل موحد (401, 403, 500+)
-api.interceptors.response.use(
+client.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     const status = error.response?.status;
@@ -30,11 +36,14 @@ api.interceptors.response.use(
     // معالجة 401 - غير مصرح
     if (status === 401) {
       console.error('❌ [401] غير مصرح - يرجى تسجيل الدخول:', errorMessage);
-      // يمكن إضافة منطق التحويل هنا
+      const authStore = useAuthStore.getState();
+      authStore.clearSession();
+      window.location.href = '/login';
     }
     // معالجة 403 - ممنوع
     else if (status === 403) {
       console.error('❌ [403] ممنوع - ليس لديك صلاحيات:', errorMessage);
+      // يمكن إضافة toast هنا في المستقبل
     }
     // معالجة 5xx - خطأ في الخادم
     else if (status && status >= 500) {
@@ -42,6 +51,7 @@ api.interceptors.response.use(
         `❌ [${status}] خطأ في الخادم - الرجاء المحاولة لاحقاً:`,
         errorMessage
       );
+      // يمكن إضافة toast هنا في المستقبل
     }
     // معالجة أخطاء أخرى
     else if (error.message) {
@@ -52,4 +62,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export default client;
