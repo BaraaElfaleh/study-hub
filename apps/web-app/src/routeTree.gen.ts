@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProtectedTsxNotificationsRouteImport } from './routes/_protected.tsx/notifications'
 import { Route as ProtectedTsxDashboardRouteImport } from './routes/_protected.tsx/dashboard'
@@ -19,8 +21,8 @@ import { Route as ProtectedTsxProtectedRouteImport } from './routes/_protected.t
 import { Route as ProtectedTsxCoursesIndexRouteImport } from './routes/_protected.tsx/courses/index'
 import { Route as ProtectedTsxProfileSettingsRouteImport } from './routes/_protected.tsx/profile/settings'
 import { Route as ProtectedTsxProfileUserIdRouteImport } from './routes/_protected.tsx/profile/$userId'
-import { Route as ProtectedTsxCoursesMyCoursesRouteImport } from './routes/_protected.tsx/courses/my-courses'
 import { Route as ProtectedTsxCoursesCourseIdRouteImport } from './routes/_protected.tsx/courses/$courseId'
+import { Route as ProtectedTsxClassroomMyCoursesRouteImport } from './routes/_protected.tsx/classroom/my-courses'
 import { Route as ProtectedTsxClassroomLayoutRouteImport } from './routes/_protected.tsx/classroom/_layout'
 import { Route as ProtectedTsxClassroomClassroomIdIndexRouteImport } from './routes/_protected.tsx/classroom/$classroomId/index'
 import { Route as ProtectedTsxClassroomClassroomIdTasksRouteImport } from './routes/_protected.tsx/classroom/$classroomId/tasks'
@@ -41,6 +43,16 @@ const LoginRoute = LoginRouteImport.update({
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -82,16 +94,16 @@ const ProtectedTsxProfileUserIdRoute =
     path: '/tsx/profile/$userId',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ProtectedTsxCoursesMyCoursesRoute =
-  ProtectedTsxCoursesMyCoursesRouteImport.update({
-    id: '/_protected/tsx/courses/my-courses',
-    path: '/tsx/courses/my-courses',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const ProtectedTsxCoursesCourseIdRoute =
   ProtectedTsxCoursesCourseIdRouteImport.update({
     id: '/_protected/tsx/courses/$courseId',
     path: '/tsx/courses/$courseId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxClassroomMyCoursesRoute =
+  ProtectedTsxClassroomMyCoursesRouteImport.update({
+    id: '/_protected/tsx/classroom/my-courses',
+    path: '/tsx/classroom/my-courses',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ProtectedTsxClassroomLayoutRoute =
@@ -133,6 +145,8 @@ const ProtectedTsxClassroomClassroomIdAnnouncementsRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -140,8 +154,8 @@ export interface FileRoutesByFullPath {
   '/tsx/dashboard': typeof ProtectedTsxDashboardRoute
   '/tsx/notifications': typeof ProtectedTsxNotificationsRoute
   '/tsx/classroom': typeof ProtectedTsxClassroomLayoutRoute
+  '/tsx/classroom/my-courses': typeof ProtectedTsxClassroomMyCoursesRoute
   '/tsx/courses/$courseId': typeof ProtectedTsxCoursesCourseIdRoute
-  '/tsx/courses/my-courses': typeof ProtectedTsxCoursesMyCoursesRoute
   '/tsx/profile/$userId': typeof ProtectedTsxProfileUserIdRoute
   '/tsx/profile/settings': typeof ProtectedTsxProfileSettingsRoute
   '/tsx/courses/': typeof ProtectedTsxCoursesIndexRoute
@@ -153,6 +167,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -160,8 +176,8 @@ export interface FileRoutesByTo {
   '/tsx/dashboard': typeof ProtectedTsxDashboardRoute
   '/tsx/notifications': typeof ProtectedTsxNotificationsRoute
   '/tsx/classroom': typeof ProtectedTsxClassroomLayoutRoute
+  '/tsx/classroom/my-courses': typeof ProtectedTsxClassroomMyCoursesRoute
   '/tsx/courses/$courseId': typeof ProtectedTsxCoursesCourseIdRoute
-  '/tsx/courses/my-courses': typeof ProtectedTsxCoursesMyCoursesRoute
   '/tsx/profile/$userId': typeof ProtectedTsxProfileUserIdRoute
   '/tsx/profile/settings': typeof ProtectedTsxProfileSettingsRoute
   '/tsx/courses': typeof ProtectedTsxCoursesIndexRoute
@@ -174,6 +190,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
@@ -181,8 +199,8 @@ export interface FileRoutesById {
   '/_protected/tsx/dashboard': typeof ProtectedTsxDashboardRoute
   '/_protected/tsx/notifications': typeof ProtectedTsxNotificationsRoute
   '/_protected/tsx/classroom/_layout': typeof ProtectedTsxClassroomLayoutRoute
+  '/_protected/tsx/classroom/my-courses': typeof ProtectedTsxClassroomMyCoursesRoute
   '/_protected/tsx/courses/$courseId': typeof ProtectedTsxCoursesCourseIdRoute
-  '/_protected/tsx/courses/my-courses': typeof ProtectedTsxCoursesMyCoursesRoute
   '/_protected/tsx/profile/$userId': typeof ProtectedTsxProfileUserIdRoute
   '/_protected/tsx/profile/settings': typeof ProtectedTsxProfileSettingsRoute
   '/_protected/tsx/courses/': typeof ProtectedTsxCoursesIndexRoute
@@ -196,6 +214,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
+    | '/contact'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -203,8 +223,8 @@ export interface FileRouteTypes {
     | '/tsx/dashboard'
     | '/tsx/notifications'
     | '/tsx/classroom'
+    | '/tsx/classroom/my-courses'
     | '/tsx/courses/$courseId'
-    | '/tsx/courses/my-courses'
     | '/tsx/profile/$userId'
     | '/tsx/profile/settings'
     | '/tsx/courses/'
@@ -216,6 +236,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
+    | '/contact'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -223,8 +245,8 @@ export interface FileRouteTypes {
     | '/tsx/dashboard'
     | '/tsx/notifications'
     | '/tsx/classroom'
+    | '/tsx/classroom/my-courses'
     | '/tsx/courses/$courseId'
-    | '/tsx/courses/my-courses'
     | '/tsx/profile/$userId'
     | '/tsx/profile/settings'
     | '/tsx/courses'
@@ -236,6 +258,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
+    | '/contact'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -243,8 +267,8 @@ export interface FileRouteTypes {
     | '/_protected/tsx/dashboard'
     | '/_protected/tsx/notifications'
     | '/_protected/tsx/classroom/_layout'
+    | '/_protected/tsx/classroom/my-courses'
     | '/_protected/tsx/courses/$courseId'
-    | '/_protected/tsx/courses/my-courses'
     | '/_protected/tsx/profile/$userId'
     | '/_protected/tsx/profile/settings'
     | '/_protected/tsx/courses/'
@@ -257,6 +281,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
@@ -264,8 +290,8 @@ export interface RootRouteChildren {
   ProtectedTsxDashboardRoute: typeof ProtectedTsxDashboardRoute
   ProtectedTsxNotificationsRoute: typeof ProtectedTsxNotificationsRoute
   ProtectedTsxClassroomLayoutRoute: typeof ProtectedTsxClassroomLayoutRoute
+  ProtectedTsxClassroomMyCoursesRoute: typeof ProtectedTsxClassroomMyCoursesRoute
   ProtectedTsxCoursesCourseIdRoute: typeof ProtectedTsxCoursesCourseIdRoute
-  ProtectedTsxCoursesMyCoursesRoute: typeof ProtectedTsxCoursesMyCoursesRoute
   ProtectedTsxProfileUserIdRoute: typeof ProtectedTsxProfileUserIdRoute
   ProtectedTsxProfileSettingsRoute: typeof ProtectedTsxProfileSettingsRoute
   ProtectedTsxCoursesIndexRoute: typeof ProtectedTsxCoursesIndexRoute
@@ -297,6 +323,20 @@ declare module '@tanstack/react-router' {
       path: '/forgot-password'
       fullPath: '/forgot-password'
       preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -348,18 +388,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedTsxProfileUserIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_protected/tsx/courses/my-courses': {
-      id: '/_protected/tsx/courses/my-courses'
-      path: '/tsx/courses/my-courses'
-      fullPath: '/tsx/courses/my-courses'
-      preLoaderRoute: typeof ProtectedTsxCoursesMyCoursesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_protected/tsx/courses/$courseId': {
       id: '/_protected/tsx/courses/$courseId'
       path: '/tsx/courses/$courseId'
       fullPath: '/tsx/courses/$courseId'
       preLoaderRoute: typeof ProtectedTsxCoursesCourseIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/classroom/my-courses': {
+      id: '/_protected/tsx/classroom/my-courses'
+      path: '/tsx/classroom/my-courses'
+      fullPath: '/tsx/classroom/my-courses'
+      preLoaderRoute: typeof ProtectedTsxClassroomMyCoursesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_protected/tsx/classroom/_layout': {
@@ -409,6 +449,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
@@ -416,8 +458,8 @@ const rootRouteChildren: RootRouteChildren = {
   ProtectedTsxDashboardRoute: ProtectedTsxDashboardRoute,
   ProtectedTsxNotificationsRoute: ProtectedTsxNotificationsRoute,
   ProtectedTsxClassroomLayoutRoute: ProtectedTsxClassroomLayoutRoute,
+  ProtectedTsxClassroomMyCoursesRoute: ProtectedTsxClassroomMyCoursesRoute,
   ProtectedTsxCoursesCourseIdRoute: ProtectedTsxCoursesCourseIdRoute,
-  ProtectedTsxCoursesMyCoursesRoute: ProtectedTsxCoursesMyCoursesRoute,
   ProtectedTsxProfileUserIdRoute: ProtectedTsxProfileUserIdRoute,
   ProtectedTsxProfileSettingsRoute: ProtectedTsxProfileSettingsRoute,
   ProtectedTsxCoursesIndexRoute: ProtectedTsxCoursesIndexRoute,

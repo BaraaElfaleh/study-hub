@@ -11,7 +11,7 @@ import type {
   Task,
   Announcement,
   ChatMessage,
-} from '../../shared/types/classroom';
+} from '../../../shared/types/classroom';
 
 // تحويل النماذج من صيغة API إلى صيغة UI
 export const adaptLecture = (dto: LectureDTO): Lecture => ({

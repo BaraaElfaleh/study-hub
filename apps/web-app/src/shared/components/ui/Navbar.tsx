@@ -1,16 +1,9 @@
 import { useState } from "react";
-import {
-  Search,
-  Bell,
-  Globe,
-  User,
-  LogIn,
-  Menu,
-  X,
-} from "lucide-react";
-import { cn } from "../../../../../../../packages/ui/src";
+import { Search, Bell, Globe, User, LogIn, Menu, X } from "lucide-react";
+import { cn } from "../../../../../../packages/ui"; // تأكد من المسار الصحيح لدالة cn
 import { Link, useLocation } from "@tanstack/react-router";
-import { useAuthStore } from "../../../../modules/auth/store/authStore";
+import { useAuthStore } from "../../../modules/auth/store/authStore";
+import { useNotificationStore } from "../../../modules/notifications/store/notificationStore";
 
 export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -19,29 +12,34 @@ export const Navbar = () => {
   const currentPath = location.pathname;
 
   const { user, isAuthenticated } = useAuthStore();
+  const { unreadCount } = useNotificationStore();
 
   const navLinks = [
+    { label: "لوحة التحكم", to: "/tsx/dashboard" },
     { label: "الرئيسية", to: "/" },
-    { label: "الكورسات", to: "/courses" },          // ✅ موجود
-    { label: "كورساتي", to: "/my-courses" },         // سيتم إنشاؤه
-    { label: "تواصل معنا", to: "/contact" },         // سيتم إنشاؤه
-    { label: "من نحن", to: "/about" },               // سيتم إنشاؤه
+    { label: "الكورسات", to: "/tsx/courses" },
+    { label: "كورساتي", to: "/tsx/classroom/my-courses" },
+    { label: "تواصل معنا", to: "/contact" },
+    { label: "من نحن", to: "/about" },
   ];
 
+  // دالة دقيقة لتحديد الرابط النشط
   const isActive = (path: string) => {
-    // تفعيل الرابط النشط مع دعم المسارات الفرعية
     if (path === "/") return currentPath === "/";
-    return currentPath.startsWith(path);
+    return currentPath === path || currentPath.startsWith(path + "/");
   };
 
+  // كلاس مشترك للأيقونات مع relative إجباري للشارات
   const iconButtonClass =
-    "flex items-center justify-center rounded-full w-10 h-10 md:w-12 md:h-12 text-white/70 hover:text-amber-400 hover:bg-white/10 transition-all duration-300 active:scale-95";
+    "relative flex items-center justify-center rounded-full w-10 h-10 md:w-12 md:h-12 text-white/70 hover:text-amber-400 hover:bg-white/10 transition-all duration-300 active:scale-95";
 
   return (
-    <nav dir="rtl" className="bg-gradient-to-r from-[#050252] via-[#070270] to-[#050252] backdrop-blur-md border-b border-white/10 sticky top-0 z-50 transition-all duration-500 shadow-lg shadow-black/20">
+    <nav
+      dir="rtl"
+      className="bg-linear-to-r from-[#050252] via-[#070270] to-[#050252] backdrop-blur-md border-b border-white/10 sticky top-0 z-50 transition-all duration-500 shadow-lg shadow-black/20"
+    >
       <div className="px-[4%] md:px-[6%]">
         <div className="flex items-center justify-between h-20 md:h-24">
-          
           {/* اليمين: البراند */}
           <Link
             to="/"
@@ -66,7 +64,7 @@ export const Navbar = () => {
                 {link.label}
                 <span
                   className={cn(
-                    "absolute -bottom-3 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-amber-400 to-blue-500 transition-all duration-300 ease-in-out rounded-full",
+                    "absolute -bottom-3 left-1/2 -translate-x-1/2 h-0.5 bg-linear-to-r from-amber-400 to-blue-500 transition-all duration-300 ease-in-out rounded-full",
                     isActive(link.to)
                       ? "w-full opacity-100"
                       : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
@@ -102,10 +100,15 @@ export const Navbar = () => {
               )}
             </div>
 
-            {/* الجرس */}
-            <button className={iconButtonClass}>
+            {/* الجرس مع شارة الإشعارات */}
+            <Link to="/tsx/notifications" className={iconButtonClass}>
               <Bell size={22} strokeWidth={1.5} />
-            </button>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-[#050252]">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </Link>
 
             {/* تغيير اللغة */}
             <button className={iconButtonClass}>
@@ -114,7 +117,11 @@ export const Navbar = () => {
 
             {/* تسجيل الدخول / الملف الشخصي */}
             {isAuthenticated && user ? (
-              <Link to="/profile" className={iconButtonClass}>
+              <Link
+                to="/tsx/profile/$userId"
+                className={iconButtonClass}
+                params={{ userId: user.id }}
+              >
                 {user.avatar ? (
                   <img
                     src={user.avatar}
@@ -150,7 +157,7 @@ export const Navbar = () => {
 
       {/* القائمة المنسدلة للجوال */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-white/10 bg-gradient-to-b from-[#070270] to-[#050252] backdrop-blur-xl absolute w-full px-8 py-10 space-y-8 shadow-2xl animate-in fade-in slide-in-from-top-4 z-60">
+        <div className="lg:hidden border-t border-white/10 bg-linear-to-b from-[#070270] to-[#050252] backdrop-blur-xl absolute w-full px-8 py-10 space-y-8 shadow-2xl animate-in fade-in slide-in-from-top-4 z-60">
           <div className="space-y-4">
             {navLinks.map((item) => (
               <Link
@@ -173,13 +180,14 @@ export const Navbar = () => {
               <span>بحث</span>
               <Search size={18} />
             </div>
-            <button
+            <Link
+              to="/tsx/notifications"
               className="flex items-center justify-end gap-4 p-4 bg-white/5 rounded-2xl font-semibold text-white/90 text-sm hover:bg-white/10"
               onClick={() => setMobileOpen(false)}
             >
               <span>الإشعارات</span>
               <Bell size={18} />
-            </button>
+            </Link>
             <button
               className="flex items-center justify-end gap-4 p-4 bg-white/5 rounded-2xl font-semibold text-white/90 text-sm hover:bg-white/10"
               onClick={() => setMobileOpen(false)}
@@ -189,9 +197,10 @@ export const Navbar = () => {
             </button>
             {isAuthenticated ? (
               <Link
-                to="/profile"
+                to="/tsx/profile/$userId"
                 className="flex items-center justify-end gap-4 p-4 bg-white/5 rounded-2xl font-semibold text-white/90 text-sm hover:bg-white/10"
                 onClick={() => setMobileOpen(false)}
+                params={{ userId: user?.id  ?? "" }}
               >
                 <span>الملف الشخصي</span>
                 <User size={18} />

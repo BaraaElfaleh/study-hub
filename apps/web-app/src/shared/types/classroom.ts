@@ -1,14 +1,15 @@
+// src/shared/types/classroom.ts
 export interface Lecture {
   id: string;
   courseId: string;
   title: string;
-  videoUrl?: string;
-  driveLink?: string;
+  videoUrl?: string | null;
+  driveLink?: string | null;
   order: number;
-  completedBy?: string[]; // user ids
+  completedBy: string[];
+  createdAt: string;
+  updatedAt: string;
 }
-
-export type TaskStatus = 'pending' | 'in-progress' | 'done';
 
 export interface Task {
   id: string;
@@ -16,8 +17,9 @@ export interface Task {
   title: string;
   description: string;
   dueDate: string;
-  status: TaskStatus;
-  assignedTo?: string[]; // user ids (if specific)
+  status: 'pending' | 'in-progress' | 'done';
+  assignedTo: string[];
+  createdAt: string; // ← أضف هذا
 }
 
 export interface Announcement {
@@ -26,6 +28,10 @@ export interface Announcement {
   title: string;
   body: string;
   createdAt: string;
+  author: { // ← أضف هذا
+    id: string;
+    name: string;
+  };
 }
 
 export interface ChatMessage {

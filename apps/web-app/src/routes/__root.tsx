@@ -1,6 +1,6 @@
 // src/routes/__root.tsx
 import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { Navbar } from '..//modules/shared/components/ui/Navbar'; // مثال
+import { Navbar } from '../shared/components/ui/Navbar'; // مثال
 
 export const Route = createRootRoute({
   component: () => (

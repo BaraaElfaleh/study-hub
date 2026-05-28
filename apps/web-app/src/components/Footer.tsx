@@ -1,10 +1,6 @@
 // components/Footer.jsx
 import {
-//   Facebook,
-//   Twitter,
-//   Instagram,
-//   Youtube,
-//   Linkedin,
+
   Mail,
   Phone,
   MapPin,
@@ -12,6 +8,7 @@ import {
 import { Link } from "@tanstack/react-router";
 
 const Footer = () => {
+ 
   return (
     <footer className="bg-[#020038] border-t border-white/5 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -31,21 +28,6 @@ const Footer = () => {
             </p>
             {/* أيقونات التواصل */}
             <div className="flex gap-3 mt-6">
-              {[
-                // { icon: Facebook, color: "hover:text-blue-500" },
-                // { icon: Twitter, color: "hover:text-sky-400" },
-                // { icon: Instagram, color: "hover:text-pink-400" },
-                // { icon: Youtube, color: "hover:text-red-500" },
-                // { icon: Linkedin, color: "hover:text-blue-400" },
-              ].map((social, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className={`w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/60 ${social.color} hover:border-white/20 transition-all duration-300`}
-                >
-                  <social.icon size={18} />
-                </a>
-              ))}
             </div>
           </div>
 

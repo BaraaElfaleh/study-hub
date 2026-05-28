@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCourses } from '../hooks/useCourses';
 import { useCourseStore } from '../store/courseStore';
-import { Button } from '../../shared/components/ui/Button';
-import { Loader } from '../../shared/components/ui/Loader';
+import { Button } from '../../../shared/components/ui/Button';
+import { Loader } from '../../../shared/components/ui/Loader';
 import { Link } from '@tanstack/react-router';
 import { Search, Filter } from 'lucide-react';
 
@@ -10,10 +11,10 @@ const CourseListPage = () => {
   const { filters, setSearch, setLevel } = useCourseStore();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#050530] via-[#040646] to-[#020038] px-4 py-8 md:py-16" dir="rtl">
+    <div className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] px-4 py-8 md:py-16" dir="rtl">
       {/* تأثير توهج خلفي خفيف */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-amber-400/5 to-blue-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-linear-to-r from-amber-400/5 to-blue-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
@@ -84,7 +85,8 @@ const CourseListPage = () => {
                 <div className="flex items-center justify-between mt-auto">
                   <span className="text-amber-400 font-bold text-lg">{course.price} $</span>
                   <Link
-                    to="/courses/$courseId"
+                    to="/tsx/courses/$courseId"
+                     
                     params={{ courseId: course.id } as any}
                     className="inline-block"
                   >

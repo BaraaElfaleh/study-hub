@@ -44,7 +44,7 @@ const HeroSection = () => {
         {/* أزرار الإجراء */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
-            to="/courses"
+            to="/tsx/courses"
             className="group bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold px-8 py-4 rounded-full text-lg transition-all duration-300 shadow-lg shadow-amber-400/30 hover:shadow-xl hover:shadow-amber-400/40 hover:-translate-y-1"
           >
             ابدأ رحلتك الآن

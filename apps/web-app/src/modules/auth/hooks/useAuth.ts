@@ -41,7 +41,7 @@ export const useAuth = () => {
     onSuccess: (data) => {
       setSession(data.user, data.accessToken);
       queryClient.invalidateQueries(); // تحديث أي استعلامات معلقة
-      navigate({ to: '/dashboard' }); // إعادة توجيه إلى لوحة التحكم
+      navigate({ to: '/tsx/dashboard' }); // إعادة توجيه إلى لوحة التحكم
     },
   });
 
@@ -50,7 +50,7 @@ export const useAuth = () => {
     mutationFn: authService.signUp,
     onSuccess: (data) => {
       setSession(data.user, data.accessToken);
-      navigate({ to: '/dashboard' });
+      navigate({ to: '/tsx/dashboard' });
     },
   });
 

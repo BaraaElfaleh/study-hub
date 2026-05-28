@@ -4,7 +4,7 @@ import { useChat } from '../hooks/useChat';
 import { useAuthStore } from '../../auth/store/authStore';
 
 const ChatPanel = () => {
-  const { classroomId } = useParams({ from: '/_protected/classroom/$classroomId' });
+  const { classroomId } = useParams({ from: '/_protected/tsx/classroom/$classroomId/' });
   const { messages, isLoading, error, sendMessage, isSending } = useChat(classroomId);
   const [newMessage, setNewMessage] = useState('');
   const user = useAuthStore((s) => s.user);
@@ -20,7 +20,7 @@ const ChatPanel = () => {
   if (error) return <p className="text-red-400">فشل تحميل الدردشة</p>;
 
   return (
-    <div className="flex flex-col h-[500px]">
+    <div className="flex flex-col h-125">
       <div className="flex-1 overflow-y-auto space-y-4 mb-4">
         {messages.map((msg) => (
           <div

@@ -1,5 +1,6 @@
-// features/auth/index.ts
+// src/modules/auth/index.ts
 export { useAuth } from './hooks/useAuth';
 export { useAuthStore } from './store/authStore';
 export { default as LoginPage } from './views/LoginPage';
 export { default as RegisterPage } from './views/RegisterPage';
+export { default as ForgotPasswordPage } from './views/ForgotPasswordPage';
