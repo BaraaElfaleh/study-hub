@@ -2,9 +2,9 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { Navbar } from '../shared/components/ui/Navbar';
 import { useAuthStore } from '../modules/auth/store/authStore';
+import NotFoundPage from '../pages/NotFoundPage';
 
 export const Route = createRootRoute({
-  // إعداد context الذي سيكون متاحًا لجميع المسارات الفرعية
   beforeLoad: () => {
     return {
       auth: {
@@ -22,4 +22,7 @@ export const Route = createRootRoute({
       </main>
     </div>
   ),
+  
+  // ✅ تمت إضافة notFoundComponent
+  notFoundComponent: () => <NotFoundPage />,
 });

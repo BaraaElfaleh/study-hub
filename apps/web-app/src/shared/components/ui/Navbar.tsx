@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Bell, Globe, User, LogIn, Menu, X } from "lucide-react";
+import {  Bell, Globe, User, LogIn, Menu, X } from "lucide-react";
 import { cn } from "../../../../../../packages/ui"; // تأكد من المسار الصحيح لدالة cn
 import { Link, useLocation } from "@tanstack/react-router";
 import { useAuthStore } from "../../../modules/auth/store/authStore";
@@ -7,7 +7,7 @@ import { useNotificationStore } from "../../../modules/notifications/store/notif
 
 export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
+  
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -15,12 +15,13 @@ export const Navbar = () => {
   const { unreadCount } = useNotificationStore();
 
   const navLinks = [
-    { label: "لوحة التحكم", to: "/tsx/dashboard" },
+   
     { label: "الرئيسية", to: "/" },
     { label: "الكورسات", to: "/tsx/courses" },
     { label: "كورساتي", to: "/tsx/classroom/my-courses" },
     { label: "تواصل معنا", to: "/contact" },
-    { label: "من نحن", to: "/about" },
+    { label: "من نحن", to: "/about" }, 
+    { label: "لوحة التحكم", to: "/tsx/dashboard" },
   ];
 
   // دالة دقيقة لتحديد الرابط النشط
@@ -77,28 +78,7 @@ export const Navbar = () => {
           {/* اليسار: السيرشبار + الأيقونات */}
           <div className="flex items-center gap-1 md:gap-2">
             {/* السيرشبار */}
-            <div
-              className={cn(
-                "relative flex items-center bg-white/10 rounded-full transition-all duration-500",
-                searchOpen
-                  ? "w-40 sm:w-64 px-3 h-10 md:h-12"
-                  : "w-10 md:w-12 h-10 md:h-12 justify-center"
-              )}
-            >
-              <Search
-                size={20}
-                strokeWidth={1.5}
-                className="text-white/70 cursor-pointer hover:text-amber-400 shrink-0"
-                onClick={() => setSearchOpen(!searchOpen)}
-              />
-              {searchOpen && (
-                <input
-                  autoFocus
-                  placeholder="ابحث..."
-                  className="w-full bg-transparent text-sm outline-none border-none ring-0 placeholder:text-white/40 font-medium mr-2 text-right text-white"
-                />
-              )}
-            </div>
+           
 
             {/* الجرس مع شارة الإشعارات */}
             <Link to="/tsx/notifications" className={iconButtonClass}>
@@ -178,7 +158,7 @@ export const Navbar = () => {
           <div className="pt-8 border-t border-white/10 grid grid-cols-1 gap-3">
             <div className="flex items-center justify-end gap-4 p-4 bg-white/5 rounded-2xl text-white/90 text-sm">
               <span>بحث</span>
-              <Search size={18} />
+             
             </div>
             <Link
               to="/tsx/notifications"

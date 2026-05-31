@@ -5,6 +5,7 @@
 
 import type { LectureDTO, TaskDTO, AnnouncementDTO, ChatMessageDTO } from '../dtos/classroomDto';
 
+
 export const mockLecturesData: LectureDTO[] = [
   {
     id: 'lec-001',

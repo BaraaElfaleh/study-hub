@@ -3,15 +3,21 @@ import { classroomApi } from '../api/classroomApi';
 import { adaptTask } from '../adapters/classroomAdapter';
 import type { Task, TaskStatusEnum } from '../dtos/classroomDto';
 
-interface UseTaksReturn {
+interface UseTasksReturn {
   tasks: Task[] | undefined;
   isLoading: boolean;
   error: Error | null;
   updateTaskStatus: (params: { taskId: string; status: TaskStatusEnum }) => void;
-  isUpdating: boolean;
+  isUpdatingStatus: boolean;
+  addTask: (data: { title: string; description: string; due_date: string }) => void;
+  isAdding: boolean;
+  deleteTask: (taskId: string) => void;
+  isDeleting: boolean;
+  updateTask: (params: { taskId: string; updates: Partial<Pick<Task, 'title' | 'description' | 'dueDate' | 'status'>> }) => void;
+  isUpdatingTask: boolean;
 }
 
-export const useTasks = (courseId: string): UseTaksReturn => {
+export const useTasks = (courseId: string): UseTasksReturn => {
   const queryClient = useQueryClient();
   const queryKey = ['classroom', courseId, 'tasks'];
 
@@ -25,16 +31,27 @@ export const useTasks = (courseId: string): UseTaksReturn => {
   });
 
   const updateStatusMutation = useMutation({
-    mutationFn: ({
-      taskId,
-      status,
-    }: {
-      taskId: string;
-      status: TaskStatusEnum;
-    }) => classroomApi.updateTaskStatus(taskId, { status }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
-    },
+    mutationFn: ({ taskId, status }: { taskId: string; status: TaskStatusEnum }) =>
+      classroomApi.updateTaskStatus(taskId, { status }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+  });
+
+  const addTaskMutation = useMutation({
+    mutationFn: (data: { title: string; description: string; due_date: string }) =>
+      classroomApi.addTask(courseId, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+  });
+
+  const deleteTaskMutation = useMutation({
+    mutationFn: (taskId: string) => classroomApi.deleteTask(taskId),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
+  });
+
+  // ✅ طفرة التعديل الكامل للمهمة
+  const updateTaskMutation = useMutation({
+    mutationFn: ({ taskId, updates }: { taskId: string; updates: Partial<Pick<Task, 'title' | 'description' | 'dueDate' | 'status'>> }) =>
+      classroomApi.updateTask(taskId, updates),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   });
 
   return {
@@ -42,6 +59,12 @@ export const useTasks = (courseId: string): UseTaksReturn => {
     isLoading: tasksQuery.isLoading,
     error: tasksQuery.error,
     updateTaskStatus: updateStatusMutation.mutate,
-    isUpdating: updateStatusMutation.isPending,
+    isUpdatingStatus: updateStatusMutation.isPending,
+    addTask: addTaskMutation.mutate,
+    isAdding: addTaskMutation.isPending,
+    deleteTask: deleteTaskMutation.mutate,
+    isDeleting: deleteTaskMutation.isPending,
+    updateTask: updateTaskMutation.mutate,
+    isUpdatingTask: updateTaskMutation.isPending,
   };
 };

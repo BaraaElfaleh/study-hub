@@ -16,7 +16,7 @@ export const mockUser: User = {
   id: 'user-001',
   name: 'أحمد محمد',
   email: 'ahmed@alnoon.com',
-  role: 'student',
+  role: 'teacher',
   avatar: 'https://i.pravatar.cc/150?u=khaled@alnoon.com',
   createdAt: new Date().toISOString(),
 };

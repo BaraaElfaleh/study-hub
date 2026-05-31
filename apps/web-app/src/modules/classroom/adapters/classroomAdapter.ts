@@ -51,5 +51,5 @@ export const adaptChatMessage = (dto: ChatMessageDTO): ChatMessage => ({
   senderName: dto.sender_name,
   text: dto.text,
   timestamp: format(parseISO(dto.timestamp), 'p', { locale: ar }),
-  status: ''
+  status: dto.status ?? 'sent', 
 });

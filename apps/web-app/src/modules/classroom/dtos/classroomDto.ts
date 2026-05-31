@@ -6,12 +6,13 @@
 // ==================== Enum Replacement (النمط الحديث الآمن) ====================
 
 export const TaskStatusEnum = {
-  PENDING: 'pending',
-  IN_PROGRESS: 'in_progress',
-  DONE: 'done',
+  PENDING: "pending",
+  IN_PROGRESS: "in_progress",
+  DONE: "done",
 } as const;
 
-export type TaskStatusEnum = typeof TaskStatusEnum[keyof typeof TaskStatusEnum];
+export type TaskStatusEnum =
+  (typeof TaskStatusEnum)[keyof typeof TaskStatusEnum];
 
 // ==================== DTO Types (Server responses) ====================
 
@@ -57,7 +58,7 @@ export interface ChatMessageDTO {
   sender_name: string;
   text: string;
   timestamp: string;
-  status?: 'sending' | 'sent' | 'failed';
+  status?: string;
 }
 
 // ==================== Domain Model Types (Frontend) ====================
@@ -175,20 +176,20 @@ export interface UseClassroomReturn {
   tasks: Task[] | undefined;
   announcements: Announcement[] | undefined;
   chatMessages: ChatMessage[] | undefined;
-  
+
   isLoadingLectures: boolean;
   isLoadingTasks: boolean;
   isLoadingAnnouncements: boolean;
   isLoadingChat: boolean;
-  
+
   lecturesError: Error | null;
   tasksError: Error | null;
   announcementsError: Error | null;
   chatError: Error | null;
-  
+
   updateTaskStatus: (taskId: string, status: TaskStatusEnum) => void;
   sendChatMessage: (text: string) => void;
-  
+
   updateTaskState: MutationState;
   sendMessageState: MutationState;
 }
@@ -197,11 +198,11 @@ export interface UseClassroomDetailsReturn {
   lectures: Lecture[] | undefined;
   tasks: Task[] | undefined;
   announcements: Announcement[] | undefined;
-  
+
   isLoadingLectures: boolean;
   isLoadingTasks: boolean;
   isLoadingAnnouncements: boolean;
-  
+
   lecturesError: Error | null;
   tasksError: Error | null;
   announcementsError: Error | null;

@@ -1,17 +1,86 @@
+import { useState } from 'react';
 import { useParams } from '@tanstack/react-router';
 import { useLectures } from '../hooks/useLectures';
 import { useClassroomStore } from '../store/classroomStore';
 import { Loader } from '../../../shared/components/ui/Loader';
-import { BookOpen, Play, CheckCircle } from 'lucide-react';
+import { BookOpen, Plus, Video, Edit3, Trash2, Save } from 'lucide-react';
+import { useAuthStore } from '../../auth/store/authStore';
 
 const LectureView = () => {
-  const { classroomId } = useParams({ from: '/_protected/tsx/classroom/_layout/$classroomId/lectures' }) as { classroomId: string };
-  const { data: lectures, isLoading, error } = useLectures(classroomId);
-  const { currentLectureId, setCurrentLectureId } = useClassroomStore();
+  const { classroomId } = useParams({
+    from: '/_protected/tsx/classroom/_layout/$classroomId/lectures',
+  }) as { classroomId: string };
+
+  const {
+    data: lectures,
+    isLoading,
+    error,
+    addLecture,
+    isAdding,
+    updateLecture,
+    isUpdating,
+    deleteLecture,
+    isDeleting,
+  } = useLectures(classroomId);
+
+  const { currentLectureId} = useClassroomStore();
+  const user = useAuthStore((s) => s.user);
+  const isTeacher = user?.role === 'teacher';
+
+  // حالة الإضافة
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newTitle, setNewTitle] = useState('');
+  const [newVideoUrl, setNewVideoUrl] = useState('');
+  const [newOrder, setNewOrder] = useState(1);
+
+  // حالة التعديل
+  const [editingLectureId, setEditingLectureId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editVideoUrl, setEditVideoUrl] = useState('');
+  const [editOrder, setEditOrder] = useState(1);
+
+  const handleAddSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newTitle.trim()) {
+      addLecture({
+        title: newTitle.trim(),
+        video_url: newVideoUrl.trim() || undefined,
+        order: newOrder,
+      });
+      setNewTitle('');
+      setNewVideoUrl('');
+      setNewOrder(1);
+      setShowAddForm(false);
+    }
+  };
+
+  const handleEditStart = (lecture: any) => {
+    setEditingLectureId(lecture.id);
+    setEditTitle(lecture.title);
+    setEditVideoUrl(lecture.videoUrl || '');
+    setEditOrder(lecture.order);
+  };
+
+  const handleEditCancel = () => {
+    setEditingLectureId(null);
+  };
+
+  const handleEditSave = () => {
+    if (editingLectureId && editTitle.trim()) {
+      updateLecture(editingLectureId, {
+        title: editTitle.trim(),
+        videoUrl: editVideoUrl.trim() || undefined,
+        order: editOrder,
+      });
+      setEditingLectureId(null);
+    }
+  };
+
+  if (isLoading) return <Loader />;
+  if (error) return <p className="text-red-400">فشل تحميل المحاضرات</p>;
 
   return (
-    <div className="min-h-full bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] p-6 md:p-10 rounded-2xl relative overflow-hidden" dir="rtl">
-      {/* تأثيرات خلفية (نقاط مضيئة وتوهج) */}
+    <div className="min-h-full bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] p-6 rounded-2xl relative overflow-hidden" dir="rtl">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-10 right-10 w-1 h-1 bg-amber-400 rounded-full animate-pulse" />
         <div className="absolute top-20 left-10 w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-100" />
@@ -19,89 +88,90 @@ const LectureView = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-400/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10">
-        {/* عنوان القسم */}
-        <div className="flex items-center gap-2 mb-8">
-          <BookOpen size={28} className="text-amber-400" />
-          <h2 className="text-3xl font-bold text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]">
+      <div className="relative z-10 space-y-6">
+        <div className="flex items-center justify-between">
+          <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+            <BookOpen size={24} className="text-amber-400" />
             المحاضرات
-          </h2>
+          </h3>
+          {isTeacher && !showAddForm && (
+            <button
+              onClick={() => setShowAddForm(true)}
+              className="flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-[#050530] font-medium px-4 py-2 rounded-xl transition-all"
+            >
+              <Plus size={18} />
+              إضافة محاضرة
+            </button>
+          )}
         </div>
 
-        {/* حالات التحميل والخطأ والفراغ */}
-        {isLoading && (
-          <div className="flex justify-center py-10">
-            <Loader />
-          </div>
-        )}
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-center">
-            <p className="text-red-400">فشل تحميل المحاضرات</p>
-          </div>
-        )}
-        {!isLoading && !error && lectures?.length === 0 && (
-          <div className="text-center py-16">
-            <BookOpen size={48} className="text-white/20 mx-auto mb-4" />
-            <p className="text-white/60 text-lg">لا توجد محاضرات بعد</p>
+        {/* نموذج إضافة محاضرة */}
+        {showAddForm && (
+          <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 space-y-4">
+            <input type="text" placeholder="عنوان المحاضرة" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-amber-400/50 transition-all" required />
+            <input type="url" placeholder="رابط الفيديو (اختياري)" value={newVideoUrl} onChange={(e) => setNewVideoUrl(e.target.value)} className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-amber-400/50 transition-all" />
+            <input type="number" placeholder="الترتيب" value={newOrder} onChange={(e) => setNewOrder(Number(e.target.value))} className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-amber-400/50 transition-all" min={1} />
+            <div className="flex justify-end gap-3">
+              <button onClick={() => setShowAddForm(false)} className="px-4 py-2 rounded-xl text-white/60 hover:bg-white/10 transition-all">إلغاء</button>
+              <button onClick={handleAddSubmit} disabled={isAdding || !newTitle.trim()} className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-medium px-6 py-2 rounded-xl transition-all disabled:opacity-50">
+                {isAdding ? 'جاري الإضافة...' : 'إضافة'}
+              </button>
+            </div>
           </div>
         )}
 
         {/* قائمة المحاضرات */}
-        {!isLoading && !error && lectures && lectures.length > 0 && (
-          <div className="space-y-4">
-            {lectures.map((lecture) => (
-              <div
-                key={lecture.id}
-                onClick={() => setCurrentLectureId(lecture.id)}
-                className={`group p-5 rounded-2xl border cursor-pointer transition-all duration-300 ${
-                  currentLectureId === lecture.id
-                    ? 'bg-amber-400/10 border-amber-400/40 shadow-lg shadow-amber-400/5'
-                    : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-amber-400/20'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                      currentLectureId === lecture.id
-                        ? 'bg-amber-400/20 text-amber-400'
-                        : 'bg-white/10 text-white/60 group-hover:bg-amber-400/10 group-hover:text-amber-400'
-                    } transition-colors`}>
-                      {lecture.completedBy?.includes("user-001") ? (
-                        <CheckCircle size={20} className="text-green-400" />
-                      ) : (
-                        <Play size={20} />
-                      )}
-                    </div>
-                    <div>
-                      <h3 className={`font-semibold text-lg transition-colors ${
-                        currentLectureId === lecture.id
-                          ? 'text-amber-400'
-                          : 'text-white group-hover:text-white'
-                      }`}>
-                        {lecture.title}
-                      </h3>
-                      <div className="flex items-center gap-3 mt-1">
-                        <span className="text-white/40 text-sm">
-                          المحاضرة {lecture.order}
-                        </span>
-                        {lecture.videoUrl && (
-                          <span className="text-amber-400/80 text-sm flex items-center gap-1">
-                            <Play size={12} />
-                            فيديو تعليمي
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  {lecture.completedBy?.includes("user-001") && (
-                    <span className="text-green-400 text-sm bg-green-400/10 px-3 py-1 rounded-full">
-                      مكتملة
-                    </span>
-                  )}
+        {lectures?.map((lecture) => (
+          <div
+            key={lecture.id}
+            className={`p-4 rounded-xl border transition-all ${
+              currentLectureId === lecture.id
+                ? 'bg-amber-400/10 border-amber-400/40 text-amber-400'
+                : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+            }`}
+          >
+            {editingLectureId === lecture.id ? (
+              // وضع التعديل
+              <div className="space-y-4">
+                <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-amber-400/50" />
+                <input type="url" value={editVideoUrl} onChange={(e) => setEditVideoUrl(e.target.value)} className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-amber-400/50" />
+                <input type="number" value={editOrder} onChange={(e) => setEditOrder(Number(e.target.value))} className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-amber-400/50" min={1} />
+                <div className="flex justify-end gap-3">
+                  <button onClick={handleEditCancel} className="px-4 py-2 rounded-xl text-white/60 hover:bg-white/10 transition-all">إلغاء</button>
+                  <button onClick={handleEditSave} disabled={isUpdating} className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-medium px-6 py-2 rounded-xl transition-all disabled:opacity-50 flex items-center gap-2">
+                    <Save size={16} />
+                    {isUpdating ? 'جاري الحفظ...' : 'حفظ'}
+                  </button>
                 </div>
               </div>
-            ))}
+            ) : (
+              // عرض عادي
+              <>
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold">{lecture.title}</h3>
+                  {isTeacher && (
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => handleEditStart(lecture)} className="text-amber-400 hover:text-amber-300 transition-colors" title="تعديل">
+                        <Edit3 size={18} />
+                      </button>
+                      <button onClick={() => deleteLecture(lecture.id)} disabled={isDeleting} className="text-red-400 hover:text-red-300 transition-colors" title="حذف">
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+                {lecture.videoUrl && (
+                  <p className="text-sm opacity-70 mt-1 flex items-center gap-1">
+                    <Video size={14} /> فيديو تعليمي
+                  </p>
+                )}
+                <p className="text-xs text-white/40 mt-2">الترتيب: {lecture.order}</p>
+              </>
+            )}
           </div>
+        ))}
+        {!lectures?.length && !showAddForm && (
+          <p className="text-white/60 text-center py-10">لا توجد محاضرات بعد</p>
         )}
       </div>
     </div>
