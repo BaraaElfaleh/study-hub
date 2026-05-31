@@ -1,18 +1,27 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import classroomApi from '../api/classroomApi';
+import { classroomApi } from '../api/classroomApi';
 import { adaptTask } from '../adapters/classroomAdapter';
+import type { Task, TaskStatusEnum } from '../dtos/classroomDto';
 
-export const useTasks = (classroomId: string) => {
+interface UseTaksReturn {
+  tasks: Task[] | undefined;
+  isLoading: boolean;
+  error: Error | null;
+  updateTaskStatus: (params: { taskId: string; status: TaskStatusEnum }) => void;
+  isUpdating: boolean;
+}
+
+export const useTasks = (courseId: string): UseTaksReturn => {
   const queryClient = useQueryClient();
-  const queryKey = ['classroom', classroomId, 'tasks'];
+  const queryKey = ['classroom', courseId, 'tasks'];
 
   const tasksQuery = useQuery({
     queryKey,
     queryFn: async () => {
-      const dtos = await classroomApi.getTasks(classroomId);
+      const dtos = await classroomApi.getTasks(courseId);
       return dtos.map(adaptTask);
     },
-    enabled: !!classroomId,
+    enabled: !!courseId,
   });
 
   const updateStatusMutation = useMutation({
@@ -21,8 +30,8 @@ export const useTasks = (classroomId: string) => {
       status,
     }: {
       taskId: string;
-      status: 'pending' | 'in_progress' | 'done';
-    }) => classroomApi.updateTaskStatus(taskId, status),
+      status: TaskStatusEnum;
+    }) => classroomApi.updateTaskStatus(taskId, { status }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
     },

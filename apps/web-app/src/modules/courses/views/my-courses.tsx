@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/modules/courses/views/MyCoursesPage.tsx
 import { Link } from '@tanstack/react-router';
 import {
@@ -37,14 +38,14 @@ const MyCoursesPage = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-b from-[#050530] via-[#040646] to-[#020038]"
+      className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038]"
       dir="rtl"
     >
       {/* تأثيرات خلفية */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-1 h-1 bg-amber-400 rounded-full animate-pulse" />
         <div className="absolute top-40 left-20 w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-100" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-amber-400/5 to-blue-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-linear-to-r from-amber-400/5 to-blue-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24">
@@ -97,7 +98,7 @@ const MyCoursesPage = () => {
                 className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-white/10 hover:border-amber-400/20 hover:-translate-y-1"
               >
                 {/* أيقونة الدورة */}
-                <div className="w-full h-40 bg-gradient-to-br from-blue-500/20 to-amber-400/20 rounded-xl mb-4 flex items-center justify-center">
+                <div className="w-full h-40 bg-linear-to-br from-blue-500/20 to-amber-400/20 rounded-xl mb-4 flex items-center justify-center">
                   <BookOpen size={48} className="text-amber-400/60" />
                 </div>
 
@@ -115,7 +116,7 @@ const MyCoursesPage = () => {
                       className={`h-full rounded-full transition-all duration-500 ${
                         course.progress === 100
                           ? 'bg-green-400'
-                          : 'bg-gradient-to-r from-amber-400 to-amber-500'
+                          : 'bg-linear-to-r from-amber-400 to-amber-500'
                       }`}
                       style={{ width: `${course.progress}%` }}
                     />

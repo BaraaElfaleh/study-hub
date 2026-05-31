@@ -1,67 +1,85 @@
-// src/modules/classroom/api/classroomApi.ts
+/**
+ * Classroom API Service
+ * تمت معالجة أخطاء الـ Import وتوحيد المسارات
+ */
+
+// تأكد أن اسم الملف هو baseApiService.ts (بحرف s صغيرة) كما في مسارك
+import { BaseApiService, addDelay } from '../../../shared/api/baseApiService'; 
 import type {
   LectureDTO,
   TaskDTO,
   AnnouncementDTO,
   ChatMessageDTO,
+  UpdateTaskStatusPayload,
 } from '../dtos/classroomDto';
 import {
-  mockLectures,
-  mockTasks,
-  mockAnnouncements,
-  mockChatMessages,
-} from '../../../mock/data';
+  mockLecturesData,
+  mockTasksData,
+  mockAnnouncementsData,
+  mockChatMessagesData,
+} from './mock';
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+class ClassroomApiService extends BaseApiService {
+  
+  async getLectures(courseId: string): Promise<LectureDTO[]> {
+    await addDelay(500);
+    return mockLecturesData.filter((l) => l.course_id === courseId);
+  }
 
-const classroomApi = {
-  getLectures: async (_classroomId: string): Promise<LectureDTO[]> => {
-    await delay(500);
-    return mockLectures;
-  },
+  async getTasks(courseId: string): Promise<TaskDTO[]> {
+    await addDelay(500);
+    return mockTasksData.filter((t) => t.course_id === courseId);
+  }
 
-  getTasks: async (_classroomId: string): Promise<TaskDTO[]> => {
-    await delay(500);
-    return mockTasks;
-  },
-
-  updateTaskStatus: async (
+  async updateTaskStatus(
     taskId: string,
-    status: 'pending' | 'in_progress' | 'done'
-  ): Promise<TaskDTO> => {
-    await delay(300);
-    const task = mockTasks.find((t) => t.id === taskId);
-    if (!task) throw new Error('المهمة غير موجودة');
-    task.status = status;
-    return task;
-  },
+    payload: UpdateTaskStatusPayload
+  ): Promise<TaskDTO> {
+    await addDelay(300);
+    
+    // استخدام findIndex للوصول للمهمة وتعديلها بأمان
+    const taskIndex = mockTasksData.findIndex((t) => t.id === taskId);
 
-  getAnnouncements: async (_classroomId: string): Promise<AnnouncementDTO[]> => {
-    await delay(400);
-    return mockAnnouncements;
-  },
+    if (taskIndex === -1) {
+      throw new Error('المهمة غير موجودة');
+    }
 
-  getChatMessages: async (_classroomId: string): Promise<ChatMessageDTO[]> => {
-    await delay(300);
-    return mockChatMessages;
-  },
+    // تحديث الحالة مع التأكد من النوع
+    mockTasksData[taskIndex] = {
+      ...mockTasksData[taskIndex],
+      status: payload.status,
+    };
 
-  sendChatMessage: async (
-    _classroomId: string,
-    text: string
-  ): Promise<ChatMessageDTO> => {
-    await delay(200);
+    return mockTasksData[taskIndex];
+  }
+
+  async getAnnouncements(courseId: string): Promise<AnnouncementDTO[]> {
+    await addDelay(400);
+    return mockAnnouncementsData.filter((a) => a.course_id === courseId);
+  }
+
+  async getChatMessages(courseId: string): Promise<ChatMessageDTO[]> {
+    await addDelay(300);
+    // تأكد من وجود المصفوفة لتجنب undefined
+    return (mockChatMessagesData || []).filter((m) => m.course_id === courseId);
+  }
+
+  async sendChatMessage(courseId: string, text: string): Promise<ChatMessageDTO> {
+    await addDelay(200);
+    
     const newMsg: ChatMessageDTO = {
       id: `msg-${Date.now()}`,
-      course_id: _classroomId,
+      course_id: courseId,
       sender_id: 'user-001',
       sender_name: 'أحمد محمد',
       text,
       timestamp: new Date().toISOString(),
     };
-    mockChatMessages.push(newMsg);
-    return newMsg;
-  },
-};
 
-export default classroomApi;
+    mockChatMessagesData.push(newMsg);
+    return newMsg;
+  }
+}
+
+// تصدير singleton instance
+export const classroomApi = new ClassroomApiService();

@@ -1,15 +1,28 @@
 import { useQuery } from '@tanstack/react-query';
-import classroomApi from '../api/classroomApi';
+import { classroomApi } from '../api/classroomApi';
 import { adaptAnnouncement } from '../adapters/classroomAdapter';
+import type { Announcement } from '../dtos/classroomDto';
 
-export const useAnnouncements = (classroomId: string) => {
-  return useQuery({
-    queryKey: ['classroom', classroomId, 'announcements'],
+interface UseAnnouncementsReturn {
+  data: Announcement[] | undefined;
+  isLoading: boolean;
+  error: Error | null;
+}
+
+export const useAnnouncements = (courseId: string): UseAnnouncementsReturn => {
+  const query = useQuery({
+    queryKey: ['classroom', courseId, 'announcements'],
     queryFn: async () => {
-      const dtos = await classroomApi.getAnnouncements(classroomId);
+      const dtos = await classroomApi.getAnnouncements(courseId);
       return dtos.map(adaptAnnouncement);
     },
-    enabled: !!classroomId,
-    refetchInterval: 60 * 1000, // تحديث كل دقيقة
+    enabled: !!courseId,
+    refetchInterval: 60 * 1000, // refetch every minute
   });
+
+  return {
+    data: query.data,
+    isLoading: query.isLoading,
+    error: query.error,
+  };
 };

@@ -5,13 +5,11 @@ import type {
   TaskDTO,
   AnnouncementDTO,
   ChatMessageDTO,
-} from '../dtos/classroomDto';
-import type {
   Lecture,
   Task,
   Announcement,
   ChatMessage,
-} from '../../../shared/types/classroom';
+} from "../dtos/classroomDto";
 
 // تحويل النماذج من صيغة API إلى صيغة UI
 export const adaptLecture = (dto: LectureDTO): Lecture => ({
@@ -32,7 +30,7 @@ export const adaptTask = (dto: TaskDTO): Task => ({
   title: dto.title,
   description: dto.description,
   dueDate: format(parseISO(dto.due_date), 'PPP', { locale: ar }),
-  status: dto.status === 'in_progress' ? 'in-progress' : dto.status,
+  status: dto.status,
   assignedTo: dto.assigned_to ?? [],
   createdAt: format(parseISO(dto.created_at), 'PPpp', { locale: ar }),
 });
@@ -53,4 +51,5 @@ export const adaptChatMessage = (dto: ChatMessageDTO): ChatMessage => ({
   senderName: dto.sender_name,
   text: dto.text,
   timestamp: format(parseISO(dto.timestamp), 'p', { locale: ar }),
+  status: ''
 });

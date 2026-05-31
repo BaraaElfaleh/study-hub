@@ -1,70 +1,105 @@
-import type { CourseDTO, EnrollmentDTO } from '../dtos/courseDto';
-import { mockCourses } from '../../../mock/data';
+/**
+ * Courses API Service
+ * تمت معالجة أخطاء الـ Import وتوحيد المسارات
+ */
 
-// دالة لتحويل Course (الموجود في mock) إلى CourseDTO
-const mapToDTO = (course: any): CourseDTO => ({
-  ...course,
-  instructor_id: course.instructorId,
-  instructor_name: course.instructorName, // تأكد من مطابقة الاسم في ملف البيانات
-  created_at: course.createdAt,
-  updated_at: course.updatedAt,
-});
+// تأكد أن اسم الملف هو baseApiService.ts (حرف s صغيرة)
+import { BaseApiService, addDelay } from '../../../shared/api/baseApiService';
+import type {
+  CourseDTO,
+  EnrollmentDTO,
+  FetchCoursesParams,
+  CreateCoursePayload,
+  UpdateCoursePayload,
+  EnrollmentStatusEnum, // استيراد النوع الجديد
+} from '../dtos/courseDto';
+import { mockCoursesData } from './mock';
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+class CoursesApiService extends BaseApiService {
+  
+  async fetchCourses(params?: FetchCoursesParams): Promise<CourseDTO[]> {
+    await addDelay(500);
+    let filtered = [...mockCoursesData];
 
-export const coursesApi = {
-  fetchCourses: async (params?: { search?: string; level?: string }): Promise<CourseDTO[]> => {
-    await delay(500);
-    let filtered = [...mockCourses];
     if (params?.search) {
-      const s = params.search.toLowerCase();
-      filtered = filtered.filter((c) => c.title.toLowerCase().includes(s));
+      const searchLower = params.search.toLowerCase();
+      filtered = filtered.filter((course) =>
+        course.title.toLowerCase().includes(searchLower)
+      );
     }
+
     if (params?.level) {
-      filtered = filtered.filter((c) => c.level === params.level);
+      // التأكد من تطابق النوع
+      filtered = filtered.filter((course) => course.level === params.level);
     }
-    // نقوم بتحويل النتائج قبل الإرجاع
-    return filtered.map(mapToDTO);
-  },
 
-  fetchCourseById: async (courseId: string): Promise<CourseDTO> => {
-    await delay(400);
-    const course = mockCourses.find((c) => c.id === courseId);
-    if (!course) throw new Error('الدورة غير موجودة');
-    return mapToDTO(course);
-  },
+    return filtered;
+  }
 
-  enrollInCourse: async (courseId: string): Promise<EnrollmentDTO> => {
-    await delay(800);
+  async fetchCourseById(courseId: string): Promise<CourseDTO> {
+    await addDelay(400);
+    const course = mockCoursesData.find((c) => c.id === courseId);
+
+    if (!course) {
+      throw new Error(`الدورة ${courseId} غير موجودة`);
+    }
+
+    return course;
+  }
+
+  async enrollInCourse(courseId: string): Promise<EnrollmentDTO> {
+    await addDelay(800);
     return {
       id: `enroll-${Date.now()}`,
       user_id: 'user-001',
       course_id: courseId,
       enrolled_at: new Date().toISOString(),
-      status: 'active',
+      // استخدام النوع المعتمد بدلاً من 'active' كـ String
+      status: 'active' as EnrollmentStatusEnum, 
     };
-  },
+  }
 
-  createCourse: async (payload: Omit<CourseDTO, 'id'>): Promise<CourseDTO> => {
-    await delay(600);
-    // عند الإنشاء، نقوم بالتحويل العكسي أو الاحتفاظ بالـ DTO
-    const newCourse: CourseDTO = { id: `course-${Date.now()}`, ...payload };
-    mockCourses.push(newCourse as any); // استخدام as any لتجاوز التعارض مع النوع الأصلي لـ mockCourses
+  async createCourse(payload: CreateCoursePayload): Promise<CourseDTO> {
+    await addDelay(600);
+    const newCourse: CourseDTO = {
+      id: `course-${Date.now()}`,
+      ...payload,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    mockCoursesData.push(newCourse);
     return newCourse;
-  },
+  }
 
-  updateCourse: async (courseId: string, updates: Partial<CourseDTO>): Promise<CourseDTO> => {
-    await delay(400);
-    const index = mockCourses.findIndex((c) => c.id === courseId);
-    if (index === -1) throw new Error('الدورة غير موجودة');
-    
-    mockCourses[index] = { ...mockCourses[index], ...updates } as any;
-    return mapToDTO(mockCourses[index]);
-  },
+  async updateCourse(
+    courseId: string,
+    updates: UpdateCoursePayload
+  ): Promise<CourseDTO> {
+    await addDelay(400);
+    const index = mockCoursesData.findIndex((c) => c.id === courseId);
 
-  deleteCourse: async (courseId: string): Promise<void> => {
-    await delay(400);
-    const index = mockCourses.findIndex((c) => c.id === courseId);
-    if (index !== -1) mockCourses.splice(index, 1);
-  },
-};
+    if (index === -1) {
+      throw new Error(`الدورة ${courseId} غير موجودة`);
+    }
+
+    mockCoursesData[index] = {
+      ...mockCoursesData[index],
+      ...updates,
+      updated_at: new Date().toISOString(),
+    };
+
+    return mockCoursesData[index];
+  }
+
+  async deleteCourse(courseId: string): Promise<void> {
+    await addDelay(400);
+    const index = mockCoursesData.findIndex((c) => c.id === courseId);
+
+    if (index !== -1) {
+      mockCoursesData.splice(index, 1);
+    }
+  }
+}
+
+export const coursesApi = new CoursesApiService();

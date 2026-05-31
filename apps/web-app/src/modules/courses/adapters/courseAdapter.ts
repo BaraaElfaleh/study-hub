@@ -12,7 +12,8 @@ export const adaptCourse = (dto: CourseDTO): Course => ({
   level: dto.level,
   price: dto.price,
   instructorId: dto.instructor_id,
-  instructorName: dto.instructor_name,
+  // نضمن أن القيمة نصية دائماً لتتوافق مع النوع في shared/types
+  instructorName: dto.instructor_name || '', 
   createdAt: format(parseISO(dto.created_at), 'PPP', { locale: ar }),
   updatedAt: format(parseISO(dto.updated_at), 'PPP', { locale: ar }),
 });
