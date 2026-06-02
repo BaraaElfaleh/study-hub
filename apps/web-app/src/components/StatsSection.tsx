@@ -1,9 +1,7 @@
 // components/StatsSection.jsx
-import { Users, Clock, Award, Globe } from "lucide-react";
-import { motion } from "framer-motion";
+import { Users, CalendarCheck, BookOpen, Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 
-// مكون عدّاد بسيط
 const AnimatedNumber = ({ target }: { target: string }) => {
   const [count, setCount] = useState(0);
 
@@ -25,43 +23,48 @@ const AnimatedNumber = ({ target }: { target: string }) => {
     return () => clearInterval(timer);
   }, [target]);
 
-  return <span>{count.toLocaleString()}{target.includes("+") ? "+" : target.includes("%") ? "%" : ""}</span>;
+  return (
+    <span>
+      {count.toLocaleString()}
+      {target.includes("+") ? "+" : target.includes("%") ? "%" : ""}
+    </span>
+  );
 };
 
 const stats = [
-  { icon: Users, value: "11,000+", label: "طالب مسجل" },
-  { icon: Clock, value: "730", label: "يوم بلا توقف" },
-  { icon: Award, value: "195", label: "كورس متخصص" },
-  { icon: Globe, value: "22", label: "دولة عربية" },
+  { icon: Users, value: "11,000+", label: "طالب وفريلانسر خدمناهم منذ أكتوبر 2023" },
+  { icon: CalendarCheck, value: "195", label: "عضو مدفوع في سبيس نون (أبريل 2026)" },
+  { icon: BookOpen, value: "3", label: "مسارات تدريب نشطة" },
+  { icon: Heart, value: "100%", label: "من تمويل الممولين يصل لأنشطة الطلاب" },
 ];
 
 const StatsSection = () => {
   return (
     <section className="bg-[#050530] py-16 md:py-20 relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-amber-400/30 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
       <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="text-center mb-12">
+          <span className="text-amber-400 text-sm font-semibold uppercase tracking-wider">
+            بالأرقام، لا بالكلام
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mt-4">
+            سنتان لم نُغلق فيهما يوماً واحداً
+          </h2>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {stats.map((stat, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              whileHover={{ scale: 1.05 }}
-              className="text-center"
+              className="text-center group"
             >
-              <motion.div
-                className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-amber-400/10 flex items-center justify-center"
-                whileHover={{ backgroundColor: "rgba(251,191,36,0.2)" }}
-              >
+              <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-amber-400/10 flex items-center justify-center group-hover:bg-amber-400/20 transition-all duration-300">
                 <stat.icon size={28} className="text-amber-400" />
-              </motion.div>
+              </div>
               <div className="text-3xl md:text-4xl font-bold text-amber-400 mb-2">
                 <AnimatedNumber target={stat.value} />
               </div>
               <div className="text-white/60 text-sm md:text-base">{stat.label}</div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
