@@ -2,7 +2,7 @@
 import { useState, type FormEvent } from "react";
 import valid from "card-validator";
 import { useCheckout } from "../hooks/useCheckout";
-import type { CheckoutRequest } from "../dtos/checkoutDto";
+import type { CheckoutRequest } from '../../../shared/types/checkout';
 
 interface CheckoutFormProps {
   courseId: string;
@@ -71,7 +71,9 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
     try {
       const result = await submitCheckout(checkoutData);
       if (result.success) onSuccess?.(result.transactionId);
-    } catch {}
+    } catch (error) {
+      console.error("Checkout failed:", error);
+    }
   };
 
   const inputClass =
@@ -91,7 +93,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       <div className="bg-[#050530]/80 p-8 rounded-3xl border border-white/10 backdrop-blur-md shadow-2xl">
         <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          💳 بيانات البطاقة
+          💳 بيانات الدفع - {courseName}
         </h2>
 
         <div className="space-y-4">

@@ -1,10 +1,6 @@
-/**
- * Mock data for classroom module
- * This file should be replaced with actual API calls when backend is ready
- */
-
+// src/modules/classroom/api/mock.ts
+// يحتوي فقط على بيانات المحاضرات والمهام والإعلانات والدردشة
 import type { LectureDTO, TaskDTO, AnnouncementDTO, ChatMessageDTO } from '../dtos/classroomDto';
-
 
 export const mockLecturesData: LectureDTO[] = [
   {

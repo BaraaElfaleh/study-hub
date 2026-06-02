@@ -1,4 +1,3 @@
-// src/modules/notifications/adapters/notificationAdapter.ts
 import { format, parseISO } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import type { NotificationDTO } from '../dtos/notificationDto';

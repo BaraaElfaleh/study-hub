@@ -4,7 +4,7 @@ import { useTasks } from '../../../modules/classroom/hooks/useTasks';
 import { Loader } from '../../../shared/components/ui/Loader';
 import { ListChecks, Plus, Trash2, Edit3, Save } from 'lucide-react';
 import { useAuthStore } from '../../../modules/auth/store/authStore';
-import type { Task, TaskStatusEnum } from '../../../modules/classroom/dtos/classroomDto';
+import type { Task, TaskStatus } from '../../../shared/types/classroom';
 
 const TaskBoard = () => {
   const { classroomId } = useParams({
@@ -40,8 +40,8 @@ const TaskBoard = () => {
   const [editDescription, setEditDescription] = useState('');
   const [editDueDate, setEditDueDate] = useState('');
 
-  const handleStatusChange = (taskId: string, status: string) => {
-    updateTaskStatus({ taskId, status: status as TaskStatusEnum });
+  const handleStatusChange = (taskId: string, status: TaskStatus) => {
+    updateTaskStatus({ taskId, status });
   };
 
   const handleAddSubmit = (e: React.FormEvent) => {
@@ -59,7 +59,7 @@ const TaskBoard = () => {
     setEditingTaskId(task.id);
     setEditTitle(task.title);
     setEditDescription(task.description);
-    setEditDueDate(task.dueDate); // افترض أن dueDate بتنسيق مناسب، يمكن تحويله
+    setEditDueDate(task.dueDate);
   };
 
   const handleEditCancel = () => {
@@ -74,7 +74,6 @@ const TaskBoard = () => {
           title: editTitle.trim(),
           description: editDescription.trim(),
           dueDate: editDueDate,
-          // يمكن أيضاً تعديل الحالة ولكن نتركها كما هي
         },
       });
       setEditingTaskId(null);
@@ -152,25 +151,10 @@ const TaskBoard = () => {
             className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-5 transition-all duration-300 hover:bg-white/10 hover:border-amber-400/20"
           >
             {editingTaskId === task.id ? (
-              // وضع التعديل
               <div className="space-y-4">
-                <input
-                  type="text"
-                  value={editTitle}
-                  onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-amber-400/50"
-                />
-                <textarea
-                  value={editDescription}
-                  onChange={(e) => setEditDescription(e.target.value)}
-                  className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-amber-400/50 min-h-20"
-                />
-                <input
-                  type="datetime-local"
-                  value={editDueDate}
-                  onChange={(e) => setEditDueDate(e.target.value)}
-                  className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-amber-400/50"
-                />
+                <input type="text" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-amber-400/50" />
+                <textarea value={editDescription} onChange={(e) => setEditDescription(e.target.value)} className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-amber-400/50 min-h-20" />
+                <input type="datetime-local" value={editDueDate} onChange={(e) => setEditDueDate(e.target.value)} className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-amber-400/50" />
                 <div className="flex justify-end gap-3">
                   <button onClick={handleEditCancel} className="px-4 py-2 rounded-xl text-white/60 hover:bg-white/10 transition-all">إلغاء</button>
                   <button onClick={handleEditSave} disabled={isUpdatingTask} className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-medium px-6 py-2 rounded-xl transition-all disabled:opacity-50 flex items-center gap-2">
@@ -180,29 +164,17 @@ const TaskBoard = () => {
                 </div>
               </div>
             ) : (
-              // عرض المهمة العادي
               <>
                 <div className="flex items-center justify-between">
                   <h3 className="text-white font-semibold text-lg">{task.title}</h3>
                   <div className="flex items-center gap-2">
-                    {/* أيقونة تعديل للمعلم فقط */}
                     {isTeacher && (
-                      <button
-                        onClick={() => handleEditStart(task)}
-                        className="text-amber-400 hover:text-amber-300 transition-colors"
-                        title="تعديل المهمة"
-                      >
+                      <button onClick={() => handleEditStart(task)} className="text-amber-400 hover:text-amber-300 transition-colors" title="تعديل المهمة">
                         <Edit3 size={18} />
                       </button>
                     )}
-                    {/* أيقونة حذف للمعلم فقط */}
                     {isTeacher && (
-                      <button
-                        onClick={() => deleteTask(task.id)}
-                        disabled={isDeleting}
-                        className="text-red-400 hover:text-red-300 transition-colors"
-                        title="حذف المهمة"
-                      >
+                      <button onClick={() => deleteTask(task.id)} disabled={isDeleting} className="text-red-400 hover:text-red-300 transition-colors" title="حذف المهمة">
                         <Trash2 size={18} />
                       </button>
                     )}
@@ -211,42 +183,10 @@ const TaskBoard = () => {
                 <p className="text-white/60 mt-2 text-sm">{task.description}</p>
                 <div className="flex items-center justify-between mt-4">
                   <div className="flex items-center gap-2">
-                    {/* أزرار تغيير الحالة (بدلاً من select) */}
-                    <button
-                      onClick={() => handleStatusChange(task.id, 'pending')}
-                      disabled={isUpdatingStatus}
-                      className={`text-xs px-3 py-1 rounded-full transition-all ${
-                        task.status === 'pending'
-                          ? 'bg-white/10 text-white'
-                          : 'bg-transparent text-white/40 hover:text-white'
-                      }`}
-                    >
-                      معلق
-                    </button>
-                    <button
-                      onClick={() => handleStatusChange(task.id, 'in_progress')}
-                      disabled={isUpdatingStatus}
-                      className={`text-xs px-3 py-1 rounded-full transition-all ${
-                        task.status === 'in_progress'
-                          ? 'bg-amber-400/10 text-amber-400'
-                          : 'bg-transparent text-white/40 hover:text-white'
-                      }`}
-                    >
-                      قيد التنفيذ
-                    </button>
-                    <button
-                      onClick={() => handleStatusChange(task.id, 'done')}
-                      disabled={isUpdatingStatus}
-                      className={`text-xs px-3 py-1 rounded-full transition-all ${
-                        task.status === 'done'
-                          ? 'bg-green-400/20 text-green-400'
-                          : 'bg-transparent text-white/40 hover:text-white'
-                      }`}
-                    >
-                      مكتمل
-                    </button>
+                    <button onClick={() => handleStatusChange(task.id, 'pending')} disabled={isUpdatingStatus} className={`text-xs px-3 py-1 rounded-full transition-all ${task.status === 'pending' ? 'bg-white/10 text-white' : 'bg-transparent text-white/40 hover:text-white'}`}>معلق</button>
+                    <button onClick={() => handleStatusChange(task.id, 'in_progress')} disabled={isUpdatingStatus} className={`text-xs px-3 py-1 rounded-full transition-all ${task.status === 'in_progress' ? 'bg-amber-400/10 text-amber-400' : 'bg-transparent text-white/40 hover:text-white'}`}>قيد التنفيذ</button>
+                    <button onClick={() => handleStatusChange(task.id, 'done')} disabled={isUpdatingStatus} className={`text-xs px-3 py-1 rounded-full transition-all ${task.status === 'done' ? 'bg-green-400/20 text-green-400' : 'bg-transparent text-white/40 hover:text-white'}`}>مكتمل</button>
                   </div>
-                  {/* تاريخ الاستحقاق */}
                   <span className="text-white/40 text-xs">{task.dueDate}</span>
                 </div>
               </>

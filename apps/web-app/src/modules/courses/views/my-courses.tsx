@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/modules/courses/views/MyCoursesPage.tsx
 import { Link } from '@tanstack/react-router';
 import {
@@ -8,7 +7,6 @@ import {
   CheckCircle,
   TrendingUp,
 } from 'lucide-react';
-// import { useAuthStore } from '../../auth/store/authStore';
 import { mockCourses } from '../../../mock/data';
 
 // بيانات وهمية لالتحاق المستخدم الحالي بكورسات مع تقدم معين
@@ -19,13 +17,13 @@ const enrolledCoursesData = [
 ];
 
 const MyCoursesPage = () => {
-  // const { user } = useAuthStore();
-
-  // فلترة الكورسات التي سجل فيها المستخدم (عبر mock enrollments)
-  const enrolledCourses = enrolledCoursesData.map((enrollment) => {
-    const course = mockCourses.find((c) => c.id === enrollment.courseId);
-    return { ...course, ...enrollment };
-  }).filter(Boolean);
+  // فلترة الكورسات المسجل فيها المستخدم
+  const enrolledCourses = enrolledCoursesData
+    .map((enrollment) => {
+      const course = mockCourses.find((c) => c.id === enrollment.courseId);
+      return course ? { ...course, ...enrollment } : null;
+    })
+    .filter(Boolean) as (typeof mockCourses[number] & { progress: number; lastAccessed: string })[];
 
   // إحصائيات عامة
   const totalEnrolled = enrolledCourses.length;
@@ -130,7 +128,7 @@ const MyCoursesPage = () => {
                 {/* زر المتابعة */}
                 <Link
                   to="/tsx/classroom/$classroomId/lectures"
-                  params={{ classroomId: course.id } as any}
+                  params={{ classroomId: course.id }}
                   className="inline-flex items-center gap-2 bg-amber-400/10 text-amber-400 border border-amber-400/30 hover:bg-amber-400 hover:text-[#050530] font-medium py-2 px-4 rounded-xl transition-all duration-300 w-full justify-center"
                 >
                   {course.progress === 100 ? (

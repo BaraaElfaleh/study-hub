@@ -1,6 +1,6 @@
 // src/modules/checkout/hooks/useCheckout.ts
-import { useState } from "react";
-import type { CheckoutRequest, CheckoutResponse } from "../dtos/checkoutDto";
+import { useState, useCallback } from "react";
+import type { CheckoutRequest, CheckoutResponse } from "../../../shared/types/checkout";
 
 // محاكاة قاعدة بيانات كوبونات
 const validCoupons: Record<string, number> = {
@@ -9,6 +9,10 @@ const validCoupons: Record<string, number> = {
   BOHO2026: 10,
 };
 
+/**
+ * هوك مخصص لإدارة عملية الدفع وتطبيق الكوبونات.
+ * @param coursePrice - سعر الدورة المطلوب دفعها.
+ */
 export const useCheckout = (coursePrice: number) => {
   const [coupon, setCoupon] = useState<{ valid: boolean; code: string; discountPercent: number } | null>(null);
   const [couponError, setCouponError] = useState("");
@@ -22,49 +26,52 @@ export const useCheckout = (coursePrice: number) => {
     ? coursePrice - (coursePrice * discountPercent) / 100
     : coursePrice;
 
-  const applyCoupon = async (code: string) => {
+  const applyCoupon = useCallback(async (code: string) => {
     setIsApplyingCoupon(true);
     setCouponError("");
-    await new Promise((r) => setTimeout(r, 600));
-    const percent = validCoupons[code.toUpperCase()];
-    if (percent) {
-      setCoupon({ valid: true, code: code.toUpperCase(), discountPercent: percent });
-      setDiscountPercent(percent);
-    } else {
-      setCoupon(null);
-      setDiscountPercent(0);
-      setCouponError("الكوبون غير صالح أو منتهي الصلاحية");
+    try {
+      // محاكاة استدعاء API للتحقق من الكوبون
+      await new Promise((r) => setTimeout(r, 600));
+      const percent = validCoupons[code.toUpperCase()];
+      if (percent) {
+        setCoupon({ valid: true, code: code.toUpperCase(), discountPercent: percent });
+        setDiscountPercent(percent);
+      } else {
+        setCoupon(null);
+        setDiscountPercent(0);
+        setCouponError("الكوبون غير صالح أو منتهي الصلاحية");
+      }
+    } finally {
+      setIsApplyingCoupon(false);
     }
-    setIsApplyingCoupon(false);
-  };
+  }, []);
 
-  const clearCoupon = () => {
+  const clearCoupon = useCallback(() => {
     setCoupon(null);
     setDiscountPercent(0);
-  };
+  }, []);
 
-  const submitCheckout = async (data: CheckoutRequest): Promise<CheckoutResponse> => {
-    setIsSubmitting(true);
-    setSubmitError("");
-    try {
-      // محاكاة طلب API
-      await new Promise((r) => setTimeout(r, 1500));
-      // في الواقع: أرسل فقط token أو معرف الدفع، وليس بيانات البطاقة
-      const response: CheckoutResponse = {
-        success: true,
-        transactionId: `TXN-${Date.now().toString(36).toUpperCase()}`,
-        message: "تم الدفع بنجاح",
-      };
-      setTransactionId(response.transactionId);
-      return response;
-    } catch (err) {
-      setSubmitError("حدث خطأ أثناء الدفع. حاول مرة أخرى.");
-      throw err;
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
+ const submitCheckout = useCallback(async (data: CheckoutRequest): Promise<CheckoutResponse> => {
+  setIsSubmitting(true);
+  setSubmitError("");
+  try {
+    console.log("Sending checkout data:", data); // أو إرسالها لاحقاً
+    // await api.processCheckout(data);
+    await new Promise((r) => setTimeout(r, 1500));
+    const response: CheckoutResponse = {
+      success: true,
+      transactionId: `TXN-${Date.now().toString(36).toUpperCase()}`,
+      message: "تم الدفع بنجاح",
+    };
+    setTransactionId(response.transactionId);
+    return response;
+  } catch (err) {
+    setSubmitError("حدث خطأ أثناء الدفع. حاول مرة أخرى.");
+    throw err;
+  } finally {
+    setIsSubmitting(false);
+  }
+}, []);
   return {
     coupon,
     couponError,

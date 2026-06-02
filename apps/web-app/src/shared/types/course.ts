@@ -7,8 +7,8 @@ export interface Course {
   thumbnail: string;
   level: CourseLevel;
   price: number;
-  instructorId: string; // Foreign key -> User (teacher)
-  instructorName?: string; // Denormalized for display
+  instructorId: string;
+  instructorName?: string;
   createdAt: string;
   updatedAt: string;
 }

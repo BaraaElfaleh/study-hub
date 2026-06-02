@@ -9,11 +9,11 @@ import {
   ChevronLeft,
   Settings,
 } from 'lucide-react';
-import { useAuthStore } from '../../auth/store/authStore'; // ✅ استيراد auth store
+import { useAuthStore } from '../../auth/store/authStore';
 
 export const ClassroomLayout = () => {
   const { classroomId } = useParams({ strict: false }) as { classroomId?: string };
-  const user = useAuthStore((s) => s.user); // ✅ جلب المستخدم الحالي
+  const user = useAuthStore((s) => s.user);
 
   const sidebarItems = [
     { key: 'overview', label: 'نظرة عامة', icon: LayoutDashboard, to: '/tsx/classroom/$classroomId' },
@@ -51,10 +51,9 @@ export const ClassroomLayout = () => {
             </Link>
           ))}
 
-          {/* ✅ قسم المعلم: يظهر فقط إذا كان المستخدم معلمًا */}
           {user?.role === 'teacher' && (
             <Link
-              to="/tsx/classroom/$classroomId/manage"  // أو أي مسار تفضله لإدارة الفصل
+              to="/tsx/classroom/$classroomId/manage"
               params={{ classroomId: classroomId! }}
               className="group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:bg-white/5 hover:text-white mt-4 border-t border-white/10 pt-4"
               activeProps={{

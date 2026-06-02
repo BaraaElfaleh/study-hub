@@ -1,3 +1,4 @@
+// src/shared/api/client.ts
 import axios, { type AxiosError, type AxiosInstance } from 'axios';
 import { useAuthStore } from '../../modules/auth/store/authStore';
 

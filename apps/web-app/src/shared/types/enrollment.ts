@@ -1,3 +1,4 @@
+//shared/types/enrollment.ts
 export type EnrollmentStatus = 'active' | 'completed' | 'cancelled';
 
 export interface Enrollment {

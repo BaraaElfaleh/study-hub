@@ -1,5 +1,5 @@
 // src/shared/utils/permissions.ts
-import type { UserRole } from '../types/user';
+import type { UserRole } from '../types/auth';
 
 export const checkPermission = (role: UserRole, action: string): boolean => {
   const permissions: Record<UserRole, string[]> = {

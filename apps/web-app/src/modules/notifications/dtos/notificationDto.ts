@@ -1,5 +1,4 @@
-// src/modules/notifications/dtos/notificationDto.ts
-export type NotificationType = 'announcement' | 'task_due' | 'new_chat' | 'enrollment';
+import type { NotificationType } from "../../../shared/types/notification"; // نستورد النوع المشترك
 
 export interface NotificationDTO {
   id: string;

@@ -1,13 +1,14 @@
+// src/modules/classroom/hooks/useTasks.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { classroomApi } from '../api/classroomApi';
 import { adaptTask } from '../adapters/classroomAdapter';
-import type { Task, TaskStatusEnum } from '../dtos/classroomDto';
+import type { Task, TaskStatus } from '../../../shared/types/classroom';
 
 interface UseTasksReturn {
   tasks: Task[] | undefined;
   isLoading: boolean;
   error: Error | null;
-  updateTaskStatus: (params: { taskId: string; status: TaskStatusEnum }) => void;
+  updateTaskStatus: (params: { taskId: string; status: TaskStatus }) => void;
   isUpdatingStatus: boolean;
   addTask: (data: { title: string; description: string; due_date: string }) => void;
   isAdding: boolean;
@@ -31,7 +32,7 @@ export const useTasks = (courseId: string): UseTasksReturn => {
   });
 
   const updateStatusMutation = useMutation({
-    mutationFn: ({ taskId, status }: { taskId: string; status: TaskStatusEnum }) =>
+    mutationFn: ({ taskId, status }: { taskId: string; status: TaskStatus }) =>
       classroomApi.updateTaskStatus(taskId, { status }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   });
@@ -47,10 +48,15 @@ export const useTasks = (courseId: string): UseTasksReturn => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   });
 
-  // ✅ طفرة التعديل الكامل للمهمة
   const updateTaskMutation = useMutation({
-    mutationFn: ({ taskId, updates }: { taskId: string; updates: Partial<Pick<Task, 'title' | 'description' | 'dueDate' | 'status'>> }) =>
-      classroomApi.updateTask(taskId, updates),
+    mutationFn: ({ taskId, updates }: { taskId: string; updates: Partial<Pick<Task, 'title' | 'description' | 'dueDate' | 'status'>> }) => {
+      const dtoUpdates: Record<string, unknown> = {};
+      if (updates.title !== undefined) dtoUpdates.title = updates.title;
+      if (updates.description !== undefined) dtoUpdates.description = updates.description;
+      if (updates.dueDate !== undefined) dtoUpdates.due_date = updates.dueDate;
+      if (updates.status !== undefined) dtoUpdates.status = updates.status;
+      return classroomApi.updateTask(taskId, dtoUpdates);
+    },
     onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   });
 

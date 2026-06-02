@@ -1,7 +1,8 @@
+// src/modules/classroom/hooks/useLectures.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { classroomApi } from '../api/classroomApi';
 import { adaptLecture } from '../adapters/classroomAdapter';
-import type { Lecture } from "../dtos/classroomDto";
+import type { Lecture } from '../../../shared/types/classroom';
 
 interface UseLecturesReturn {
   data: Lecture[] | undefined;
@@ -36,8 +37,14 @@ export const useLectures = (courseId: string): UseLecturesReturn => {
   });
 
   const updateLectureMutation = useMutation({
-    mutationFn: ({ lectureId, updates }: { lectureId: string; updates: Partial<Pick<Lecture, 'title' | 'videoUrl' | 'order'>> }) =>
-      classroomApi.updateLecture(lectureId, updates),
+    mutationFn: ({ lectureId, updates }: { lectureId: string; updates: Partial<Pick<Lecture, 'title' | 'videoUrl' | 'order'>> }) => {
+      // تحويل camelCase → snake_case
+      const dtoUpdates: Record<string, unknown> = {};
+      if (updates.title !== undefined) dtoUpdates.title = updates.title;
+      if (updates.videoUrl !== undefined) dtoUpdates.video_url = updates.videoUrl;
+      if (updates.order !== undefined) dtoUpdates.order = updates.order;
+      return classroomApi.updateLecture(lectureId, dtoUpdates);
+    },
     onSuccess: () => queryClient.invalidateQueries({ queryKey }),
   });
 

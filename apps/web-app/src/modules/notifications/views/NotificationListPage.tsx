@@ -2,16 +2,24 @@
 import { useNotifications } from '../hooks/useNotifications';
 import { useNotificationStore } from '../store/notificationStore';
 import { Link } from '@tanstack/react-router';
-import { Bell, Megaphone, ClipboardList, MessageCircle, GraduationCap, CheckCircle, Loader2 } from 'lucide-react';
+import {
+  Bell,
+  Megaphone,
+  ClipboardList,
+  MessageCircle,
+  GraduationCap,
+  CheckCircle,
+  Loader2,
+} from 'lucide-react';
 
-const iconMap = {
+const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
   announcement: Megaphone,
   task_due: ClipboardList,
   new_chat: MessageCircle,
   enrollment: GraduationCap,
 };
 
-const colorMap = {
+const colorMap: Record<string, string> = {
   announcement: 'text-blue-400 bg-blue-400/10',
   task_due: 'text-amber-400 bg-amber-400/10',
   new_chat: 'text-green-400 bg-green-400/10',
@@ -19,12 +27,13 @@ const colorMap = {
 };
 
 const NotificationListPage = () => {
-  const { notifications, isLoading, error, markAsRead, markAllAsRead, isMarkingAll } = useNotifications();
+  const { notifications, isLoading, error, markAsRead, markAllAsRead, isMarkingAll } =
+    useNotifications();
   const { unreadCount } = useNotificationStore();
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="min-h-screen bg-linear-to-b from-[#050530] to-[#040646] flex justify-center items-center">
         <Loader2 className="animate-spin text-amber-400" size={32} />
       </div>
     );
@@ -32,14 +41,18 @@ const NotificationListPage = () => {
 
   if (error) {
     return (
-      <div className="text-center py-20">
+      <div className="min-h-screen bg-linear-to-b from-[#050530] to-[#040646] flex justify-center items-center">
         <p className="text-red-400">فشل تحميل الإشعارات</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038]" dir="rtl">
+    <div
+      className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038]"
+      dir="rtl"
+    >
+      {/* تأثيرات خلفية */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-1 h-1 bg-amber-400 rounded-full animate-pulse" />
         <div className="absolute top-40 left-20 w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-100" />
@@ -48,12 +61,14 @@ const NotificationListPage = () => {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-8 py-16 md:py-24">
         <div className="flex items-center justify-between mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-white">الإشعارات</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]">
+            الإشعارات
+          </h1>
           {unreadCount > 0 && (
             <button
               onClick={() => markAllAsRead()}
               disabled={isMarkingAll}
-              className="text-amber-400 hover:text-amber-300 text-sm font-medium flex items-center gap-1 disabled:opacity-50"
+              className="text-amber-400 hover:text-amber-300 text-sm font-medium flex items-center gap-1 disabled:opacity-50 transition-colors"
             >
               <CheckCircle size={16} />
               {isMarkingAll ? 'جاري التحديد...' : 'تحديد الكل كمقروء'}
@@ -74,26 +89,26 @@ const NotificationListPage = () => {
               return (
                 <div
                   key={notif.id}
-                  className={`relative backdrop-blur-lg border rounded-2xl p-5 transition-all ${
+                  className={`relative backdrop-blur-lg border rounded-2xl p-5 transition-all hover:bg-white/5 ${
                     !notif.read
                       ? 'bg-amber-400/5 border-amber-400/20 shadow-md shadow-amber-400/5'
-                      : 'bg-white/5 border-white/10 hover:bg-white/10'
+                      : 'bg-white/5 border-white/10'
                   }`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${colorClass}`}>
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${colorClass}`}>
                       <Icon size={20} />
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-white font-semibold">{notif.title}</h3>
-                        <span className="text-white/40 text-xs">{notif.createdAt}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-white font-semibold truncate">{notif.title}</h3>
+                        <span className="text-white/40 text-xs shrink-0">{notif.createdAt}</span>
                       </div>
-                      <p className="text-white/60 text-sm mt-2">{notif.message}</p>
+                      <p className="text-white/60 text-sm mt-2 line-clamp-2">{notif.message}</p>
                       {notif.link && (
                         <Link
                           to={notif.link}
-                          className="inline-block mt-3 text-amber-400 hover:text-amber-300 text-sm font-medium"
+                          className="inline-block mt-3 text-amber-400 hover:text-amber-300 text-sm font-medium transition-colors"
                           onClick={() => {
                             if (!notif.read) markAsRead(notif.id);
                           }}
@@ -103,18 +118,9 @@ const NotificationListPage = () => {
                       )}
                     </div>
                     {!notif.read && (
-                      <button
-                        onClick={() => markAsRead(notif.id)}
-                        className="absolute top-4 right-4 text-amber-400 hover:text-amber-300"
-                        title="تحديد كمقروء"
-                      >
-                        <CheckCircle size={18} />
-                      </button>
+                      <div className="w-2 h-2 rounded-full bg-amber-400 shrink-0 self-center" />
                     )}
                   </div>
-                  {!notif.read && (
-                    <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-amber-400" />
-                  )}
                 </div>
               );
             })}

@@ -1,23 +1,48 @@
 // src/modules/checkout/views/CheckoutPage.tsx
-import { useParams, useNavigate } from "@tanstack/react-router";
+import { useParams, useNavigate, Link } from "@tanstack/react-router";
 import CheckoutForm from "./CheckoutForm";
 import { useCourses } from "../../courses/hooks/useCourses";
+import { Loader } from "../../../shared/components/ui/Loader";
 
 const CheckoutPage = () => {
-  const { courseId } = useParams({ from: "/_protected/tsx/checkout/$course" }) as { courseId: string };
+  const { courseId } = useParams({
+    from: "/_protected/tsx/checkout/$course",
+  }) as { courseId: string };
+
   const navigate = useNavigate();
   const { useCourseDetail } = useCourses();
   const { data: course, isLoading, error } = useCourseDetail(courseId);
 
-  if (isLoading) return <div className="text-white text-center py-20">تحميل...</div>;
-  if (error || !course) return <div className="text-red-400 text-center py-20">الدورة غير موجودة</div>;
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-linear-to-b from-[#050530] to-[#040646] flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  if (error || !course) {
+    return (
+      <div className="min-h-screen bg-linear-to-b from-[#050530] to-[#040646] flex flex-col items-center justify-center gap-4">
+        <p className="text-red-400 text-lg">الدورة غير موجودة أو حدث خطأ</p>
+        <Link to="/tsx/courses" className="text-amber-400 hover:text-amber-300">
+          العودة للدورات
+        </Link>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] py-12 px-4 md:px-8" dir="rtl">
+    <div
+      className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] py-12 px-4 md:px-8"
+      dir="rtl"
+    >
       <div className="max-w-5xl mx-auto">
         <div className="mb-10 text-center">
           <h1 className="text-3xl font-bold text-white mb-2">إتمام الطلب</h1>
-          <p className="text-white/50">أنت على بعد خطوة واحدة من بدء رحلتك التعليمية</p>
+          <p className="text-white/50">
+            أنت على بعد خطوة واحدة من بدء رحلتك التعليمية
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -26,7 +51,8 @@ const CheckoutPage = () => {
               courseId={course.id}
               courseName={course.title}
               coursePrice={course.price}
-              onSuccess={(id) => {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              onSuccess={(_id) => {
                 setTimeout(() => {
                   navigate({ to: "/tsx/dashboard" });
                 }, 2000);

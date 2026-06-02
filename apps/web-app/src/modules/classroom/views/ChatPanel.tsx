@@ -3,16 +3,10 @@ import { useParams } from '@tanstack/react-router';
 import { useChat } from '../hooks/useChat';
 import { useAuthStore } from '../../auth/store/authStore';
 import { MessageCircle, Send, Clock, AlertTriangle, Trash2, ShieldCheck } from 'lucide-react';
+import type { ChatMessage } from '../../../shared/types/classroom';
 
 interface MessageBubbleProps {
-  msg: {
-    id: string;
-    senderId: string;
-    senderName: string;
-    text: string;
-    timestamp: string;
-    status?: 'sending' | 'sent' | 'failed';
-  };
+  msg: ChatMessage;
   currentUserId?: string;
   isTeacher?: boolean;
   onDelete?: (id: string) => void;
@@ -20,7 +14,7 @@ interface MessageBubbleProps {
 
 const MessageBubble = ({ msg, currentUserId, isTeacher, onDelete }: MessageBubbleProps) => {
   const isMine = msg.senderId === currentUserId;
-  const senderIsTeacher = msg.senderId === 'user-002'; // أو يمكن استخدام isTeacher بشكل عام
+  const senderIsTeacher = msg.senderId === 'user-002';
 
   return (
     <div className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
@@ -33,7 +27,6 @@ const MessageBubble = ({ msg, currentUserId, isTeacher, onDelete }: MessageBubbl
             : 'bg-white/5 backdrop-blur-lg border border-white/10 text-white'
         } ${senderIsTeacher && !isMine ? 'ring-1 ring-amber-400/50' : ''}`}
       >
-        {/* اسم المرسل + وسم المعلم */}
         <div className="flex items-center gap-2 mb-1">
           {!isMine && <p className="text-xs text-amber-400">{msg.senderName}</p>}
           {senderIsTeacher && (
@@ -44,7 +37,7 @@ const MessageBubble = ({ msg, currentUserId, isTeacher, onDelete }: MessageBubbl
           )}
         </div>
 
-        <p className="text-sm break-words">{msg.text}</p>
+        <p className="text-sm wrap-break-word">{msg.text}</p>
 
         <div className="flex items-center justify-between gap-2 mt-2">
           <div className="flex items-center gap-2">
@@ -61,7 +54,6 @@ const MessageBubble = ({ msg, currentUserId, isTeacher, onDelete }: MessageBubbl
             )}
           </div>
 
-          {/* زر الحذف للمعلم فقط (بجانب أي رسالة) */}
           {isTeacher && onDelete && (
             <button
               onClick={() => onDelete(msg.id)}
@@ -158,14 +150,14 @@ const ChatPanel = () => {
         </h3>
       </div>
 
-      {/* منطقة الرسائل مع التمرير التلقائي */}
+      {/* منطقة الرسائل */}
       <div className="relative z-10 flex flex-col h-125">
         <div className="flex-1 overflow-y-auto space-y-4 mb-4 px-2">
           {messages?.length ? (
             messages.map((msg) => (
               <MessageBubble
                 key={msg.id}
-                msg={msg as any}
+                msg={msg}
                 currentUserId={user?.id}
                 isTeacher={isTeacher}
                 onDelete={isTeacher ? handleDelete : undefined}
@@ -179,7 +171,6 @@ const ChatPanel = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* حقل الإرسال */}
         <form onSubmit={handleSend} className="flex gap-2 mt-auto">
           <input
             ref={inputRef}

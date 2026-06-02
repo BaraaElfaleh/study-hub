@@ -1,4 +1,4 @@
-import type { UserRole } from "../../../shared/types/user";
+import type { UserRole } from "../../../shared/types/auth"; // نستورد النوع المشترك
 
 export interface ProfileDTO {
   id: string;

@@ -1,23 +1,24 @@
-import { format, parseISO } from 'date-fns'; // افتراض وجود date-fns
-import { ar } from 'date-fns/locale'; // للتعريب
+import { format, parseISO } from 'date-fns';
+import { ar } from 'date-fns/locale';
 import type {
   LectureDTO,
   TaskDTO,
   AnnouncementDTO,
   ChatMessageDTO,
+} from '../dtos/classroomDto';
+import type {
   Lecture,
   Task,
   Announcement,
   ChatMessage,
-} from "../dtos/classroomDto";
+} from '../../../shared/types/classroom';
 
-// تحويل النماذج من صيغة API إلى صيغة UI
 export const adaptLecture = (dto: LectureDTO): Lecture => ({
   id: dto.id,
   courseId: dto.course_id,
   title: dto.title,
-  videoUrl: dto.video_url,
-  driveLink: dto.drive_link,
+  videoUrl: dto.video_url ?? undefined,
+  driveLink: dto.drive_link ?? undefined,
   order: dto.order,
   completedBy: dto.completed_by,
   createdAt: format(parseISO(dto.created_at), 'PPpp', { locale: ar }),
@@ -51,5 +52,4 @@ export const adaptChatMessage = (dto: ChatMessageDTO): ChatMessage => ({
   senderName: dto.sender_name,
   text: dto.text,
   timestamp: format(parseISO(dto.timestamp), 'p', { locale: ar }),
-  status: dto.status ?? 'sent', 
 });

@@ -25,10 +25,7 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div
-      className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] flex items-center justify-center px-4 py-12"
-      dir="rtl"
-    >
+    <div className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] flex items-center justify-center px-4 py-12" dir="rtl">
       {/* تأثيرات خلفية */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-1 h-1 bg-amber-400 rounded-full animate-pulse" />
@@ -66,10 +63,7 @@ const ForgotPasswordPage = () => {
                     البريد الإلكتروني
                   </label>
                   <div className="relative">
-                    <Mail
-                      size={18}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40"
-                    />
+                    <Mail size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40" />
                     <input
                       type="email"
                       value={email}
@@ -96,25 +90,9 @@ const ForgotPasswordPage = () => {
                 >
                   {isSubmitting ? (
                     <>
-                      <svg
-                        className="animate-spin h-5 w-5 text-[#050530]"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        />
+                      <svg className="animate-spin h-5 w-5 text-[#050530]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
                       جاري الإرسال...
                     </>
@@ -151,10 +129,7 @@ const ForgotPasswordPage = () => {
 
         {/* العودة لتسجيل الدخول */}
         <div className="text-center mt-6">
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-2 text-white/50 hover:text-amber-400 transition-colors duration-300 text-sm"
-          >
+          <Link to="/login" className="inline-flex items-center gap-2 text-white/50 hover:text-amber-400 transition-colors duration-300 text-sm">
             <ArrowLeft size={16} />
             العودة لتسجيل الدخول
           </Link>

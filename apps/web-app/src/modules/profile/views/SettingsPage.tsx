@@ -52,13 +52,13 @@ const SettingsPage = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-b from-[#050530] via-[#040646] to-[#020038]"
+      className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038]"
       dir="rtl"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-1 h-1 bg-amber-400 rounded-full animate-pulse" />
         <div className="absolute top-40 left-20 w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-100" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-amber-400/5 to-blue-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-linear-to-r from-amber-400/5 to-blue-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 md:px-8 py-16 md:py-24">
@@ -76,7 +76,7 @@ const SettingsPage = () => {
             {/* الصورة الرمزية */}
             <div className="flex justify-center mb-4">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400/20 to-amber-400/5 border border-amber-400/30 flex items-center justify-center">
+                <div className="w-24 h-24 rounded-full bg-linear-to-br from-amber-400/20 to-amber-400/5 border border-amber-400/30 flex items-center justify-center">
                   {avatarPreview || profile?.avatar ? (
                     <img
                       src={avatarPreview || profile?.avatar}

@@ -1,19 +1,14 @@
+/* eslint-disable react-hooks/purity */
+// src/modules/dashboard/views/StudentDashboard.tsx
 import { Link } from '@tanstack/react-router';
-import {
-  BookOpen,
-  ClipboardList,
-  Bell,
-  TrendingUp,
-} from 'lucide-react';
+import { BookOpen, ClipboardList, Bell, TrendingUp } from 'lucide-react';
 import { mockCourses, mockTasks, mockAnnouncements } from '../../../mock/data';
 
 const StudentDashboard = () => {
-  // بيانات وهمية للطالب
-  const enrolledCourses = mockCourses.slice(0, 3); // أول 3 كورسات
+  const enrolledCourses = mockCourses.slice(0, 3);
   const upcomingTasks = mockTasks.filter(t => t.status !== 'done').slice(0, 3);
   const recentAnnouncements = mockAnnouncements.slice(0, 2);
-
-  const progress = 62; // نسبة مئوية عامة
+  const progress = 62;
 
   return (
     <>
@@ -23,6 +18,7 @@ const StudentDashboard = () => {
 
       {/* إحصائيات سريعة */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        {/* بطاقات الإحصائيات */}
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 hover:border-amber-400/20 transition-all">
           <BookOpen size={28} className="text-amber-400 mb-3" />
           <div className="text-3xl font-bold text-white">{enrolledCourses.length}</div>
@@ -56,9 +52,10 @@ const StudentDashboard = () => {
             <div key={course.id} className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all">
               <h3 className="text-white font-semibold">{course.title}</h3>
               <div className="w-full h-1.5 bg-white/10 rounded-full mt-3">
+                // eslint-disable-next-line react-hooks/purity, react-hooks/purity
                 <div className="h-full bg-amber-400 rounded-full" style={{ width: `${Math.floor(Math.random() * 80 + 10)}%` }} />
               </div>
-              <Link to="/tsx/classroom/$classroomId/lectures" params={{ classroomId: course.id } as any} className="text-amber-400 text-sm mt-3 inline-block">
+              <Link to="/tsx/classroom/$classroomId/lectures" params={{ classroomId: course.id }} className="text-amber-400 text-sm mt-3 inline-block">
                 متابعة التعلم ←
               </Link>
             </div>
@@ -77,7 +74,7 @@ const StudentDashboard = () => {
             <div key={task.id} className="bg-white/5 border border-white/10 rounded-xl p-4 flex justify-between items-center">
               <div>
                 <h3 className="text-white font-medium">{task.title}</h3>
-                <p className="text-white/60 text-sm">{task.due_date}</p>
+                <p className="text-white/60 text-sm">{task.due_date || task.due_date}</p>
               </div>
               <span className="text-xs px-3 py-1 rounded-full bg-amber-400/10 text-amber-400">
                 {task.status === 'in_progress' ? 'قيد التنفيذ' : 'معلق'}

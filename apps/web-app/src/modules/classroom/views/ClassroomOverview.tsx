@@ -14,7 +14,7 @@ import { useLectures } from "../hooks/useLectures";
 import { useTasks } from "../hooks/useTasks";
 import { useAnnouncements } from "../hooks/useAnnouncements";
 import { useAuthStore } from "../../auth/store/authStore";
-import type { Task } from "../dtos/classroomDto";
+import type { Task } from "../../../shared/types/classroom";
 
 const ClassroomOverview = () => {
   const { classroomId } = useParams({

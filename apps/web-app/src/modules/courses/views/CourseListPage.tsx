@@ -1,17 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCourses } from '../hooks/useCourses';
 import { useCourseStore } from '../store/courseStore';
 import { Button } from '../../../shared/components/ui/Button';
 import { Loader } from '../../../shared/components/ui/Loader';
 import { Link } from '@tanstack/react-router';
 import { Search, Filter } from 'lucide-react';
+import type { CourseLevel } from '../../../shared/types/course';
 
 const CourseListPage = () => {
   const { courses, isLoadingCourses, coursesError } = useCourses();
   const { filters, setSearch, setLevel } = useCourseStore();
 
+  const handleLevelChange = (value: string) => {
+    setLevel(value === '' ? undefined : (value as CourseLevel));
+  };
+
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] px-4 py-8 md:py-16" dir="rtl">
+    <div
+      className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] px-4 py-8 md:py-16"
+      dir="rtl"
+    >
       {/* تأثير توهج خلفي خفيف */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-linear-to-r from-amber-400/5 to-blue-500/5 rounded-full blur-3xl" />
@@ -44,7 +51,7 @@ const CourseListPage = () => {
             <Filter size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40" />
             <select
               value={filters.level || ''}
-              onChange={(e) => setLevel(e.target.value as any)}
+              onChange={(e) => handleLevelChange(e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-white appearance-none focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/30 transition-all duration-300 text-right"
               dir="rtl"
             >
@@ -86,8 +93,7 @@ const CourseListPage = () => {
                   <span className="text-amber-400 font-bold text-lg">{course.price} $</span>
                   <Link
                     to="/tsx/courses/$courseId"
-                     
-                    params={{ courseId: course.id } as any}
+                    params={{ courseId: course.id }}
                     className="inline-block"
                   >
                     <Button className="bg-amber-400/10 text-amber-400 border border-amber-400/30 hover:bg-amber-400 hover:text-[#050530] font-medium py-2 px-4 rounded-xl transition-all duration-300">

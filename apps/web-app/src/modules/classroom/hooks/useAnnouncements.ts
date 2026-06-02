@@ -1,7 +1,8 @@
+// src/modules/classroom/hooks/useAnnouncements.ts
 import { useQuery } from '@tanstack/react-query';
 import { classroomApi } from '../api/classroomApi';
 import { adaptAnnouncement } from '../adapters/classroomAdapter';
-import type { Announcement } from '../dtos/classroomDto';
+import type { Announcement } from '../../../shared/types/classroom';
 
 interface UseAnnouncementsReturn {
   data: Announcement[] | undefined;
@@ -17,7 +18,7 @@ export const useAnnouncements = (courseId: string): UseAnnouncementsReturn => {
       return dtos.map(adaptAnnouncement);
     },
     enabled: !!courseId,
-    refetchInterval: 60 * 1000, // refetch every minute
+    refetchInterval: 60 * 1000,
   });
 
   return {

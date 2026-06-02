@@ -1,10 +1,11 @@
+// src/modules/courses/hooks/useCourses.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCourseStore } from '../store/courseStore';
 import { coursesApi } from '../api/coursesApi';
 import { adaptCourse } from '../adapters/courseAdapter';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { checkPermission } from '../../../shared/utils/permissions';
-import { useCourseDetail } from './useCourseDetail'; // استيراد الـ Hook المستقل
+import { useCourseDetail } from './useCourseDetail';
 import type {
   UseCourseReturn,
   CreateCoursePayload,
@@ -61,32 +62,51 @@ export const useCourses = (): UseCourseReturn => {
     },
   });
 
-  // ==================== Logic ====================
+  // ==================== Permissions ====================
   const canEnroll = user && checkPermission(user.role, 'enroll');
-  const canCreateCourse = user && checkPermission(user.role, 'create_course');
+  const canManageCourses = user && checkPermission(user.role, 'manage_courses'); // استخدام manage_courses
 
   return {
     courses: coursesQuery.data,
     isLoadingCourses: coursesQuery.isLoading,
     coursesError: coursesQuery.error as Error | null,
 
-    // استخدام الـ Hook المستقل
     useCourseDetail,
 
     enrollInCourse: (courseId: string) => {
       if (!canEnroll) throw new Error('غير مسموح بالتسجيل');
       enrollMutation.mutate(courseId);
     },
-    createCourse: (payload) => {
-      if (!canCreateCourse) throw new Error('غير مسموح بإنشاء دورات');
+    createCourse: (payload: CreateCoursePayload) => {
+      if (!canManageCourses) throw new Error('غير مسموح بإنشاء دورات');
       createMutation.mutate(payload);
     },
-    updateCourse: (id, updates) => updateMutation.mutate({ courseId: id, updates }),
-    deleteCourse: (id) => deleteMutation.mutate(id),
+    updateCourse: (id: string, updates: UpdateCoursePayload) =>
+      updateMutation.mutate({ courseId: id, updates }),
+    deleteCourse: (id: string) => {
+      if (!canManageCourses) throw new Error('غير مسموح بحذف الدورات');
+      deleteMutation.mutate(id);
+    },
 
-    enrollState: { isPending: enrollMutation.isPending, error: enrollMutation.error as Error | null, isSuccess: enrollMutation.isSuccess },
-    createState: { isPending: createMutation.isPending, error: createMutation.error as Error | null, isSuccess: createMutation.isSuccess },
-    updateState: { isPending: updateMutation.isPending, error: updateMutation.error as Error | null, isSuccess: updateMutation.isSuccess },
-    deleteState: { isPending: deleteMutation.isPending, error: deleteMutation.error as Error | null, isSuccess: deleteMutation.isSuccess },
+    enrollState: {
+      isPending: enrollMutation.isPending,
+      error: enrollMutation.error as Error | null,
+      isSuccess: enrollMutation.isSuccess,
+    },
+    createState: {
+      isPending: createMutation.isPending,
+      error: createMutation.error as Error | null,
+      isSuccess: createMutation.isSuccess,
+    },
+    updateState: {
+      isPending: updateMutation.isPending,
+      error: updateMutation.error as Error | null,
+      isSuccess: updateMutation.isSuccess,
+    },
+    deleteState: {
+      isPending: deleteMutation.isPending,
+      error: deleteMutation.error as Error | null,
+      isSuccess: deleteMutation.isSuccess,
+    },
   };
 };

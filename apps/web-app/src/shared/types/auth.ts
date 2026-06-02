@@ -1,18 +1,12 @@
-// src/shared/types/auth.ts
-export type UserRole = 'student' | 'teacher' | 'admin'; // أضف admin إذا لزم
+export type UserRole = 'student' | 'teacher' | 'admin';
 
 export interface User {
   id: string;
   name: string;
   email: string;
   role: UserRole;
-  avatar?: string;      // ← أضف هذا
-  createdAt: string;    // ← أضف هذا
-}
-
-export interface AuthResponse {
-  user: User;
-  accessToken: string;
+  avatar?: string;
+  createdAt: string;
 }
 
 export interface LoginRequest {
@@ -24,5 +18,10 @@ export interface RegisterRequest {
   name: string;
   email: string;
   password: string;
-  password_confirmation?: string; // ← أضف هذا
+  password_confirmation?: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  accessToken: string;
 }

@@ -1,4 +1,5 @@
-// features/auth/hooks/useAuth.ts
+// src/modules/auth/hooks/useAuth.ts
+import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useAuthStore } from '../store/authStore';
@@ -16,14 +17,15 @@ export const useAuth = () => {
     initSession,
   } = useAuthStore();
 
-  // تأكد من استدعاء initSession في مكان مركزي (مثلاً App.tsx) لمرة واحدة
-  // لكن نستدعيها هنا لضمان عدم تفويتها (مع فحص إذا لم تُستدع بعد)
-  if (!isAuthenticated && localStorage.getItem('accessToken')) {
-    initSession();
-  }
+  // استعادة الجلسة مرة واحدة عند التحميل
+  useEffect(() => {
+    if (!isAuthenticated && localStorage.getItem('accessToken')) {
+      initSession();
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // جلب بيانات المستخدم إذا كان لدينا token ولكن لا يوجد user كامل
-  const { data: fetchedUser, isLoading: isUserLoading } = useQuery({
+  // جلب المستخدم الحالي إذا كان لدينا token فقط
+  const { data: fetchedUser, isLoading: isUserLoading, error: userError } = useQuery({
     queryKey: ['currentUser'],
     queryFn: authService.fetchCurrentUser,
     enabled: !!accessToken && !user,
@@ -31,21 +33,21 @@ export const useAuth = () => {
   });
 
   // تحديث المتجر عند استلام المستخدم
-  if (fetchedUser && !user) {
-    setSession(fetchedUser, accessToken!);
-  }
+  useEffect(() => {
+    if (fetchedUser && !user) {
+      setSession(fetchedUser, accessToken!);
+    }
+  }, [fetchedUser, user, accessToken, setSession]);
 
-  // ------------------ تسجيل الدخول ------------------
   const loginMutation = useMutation({
     mutationFn: authService.signIn,
     onSuccess: (data) => {
       setSession(data.user, data.accessToken);
-      queryClient.invalidateQueries(); // تحديث أي استعلامات معلقة
-      navigate({ to: '/tsx/dashboard' }); // إعادة توجيه إلى لوحة التحكم
+      queryClient.invalidateQueries();
+      navigate({ to: '/tsx/dashboard' });
     },
   });
 
-  // ------------------ التسجيل ------------------
   const registerMutation = useMutation({
     mutationFn: authService.signUp,
     onSuccess: (data) => {
@@ -54,7 +56,6 @@ export const useAuth = () => {
     },
   });
 
-  // ------------------ تسجيل الخروج ------------------
   const logoutMutation = useMutation({
     mutationFn: authService.signOut,
     onSettled: () => {
@@ -68,6 +69,7 @@ export const useAuth = () => {
     user: user || fetchedUser || null,
     isAuthenticated: !!user || !!fetchedUser || isAuthenticated,
     isLoading: loginMutation.isPending || registerMutation.isPending || isUserLoading,
+    userError,
 
     login: loginMutation.mutate,
     register: registerMutation.mutate,

@@ -3,7 +3,7 @@ import { useParams } from '@tanstack/react-router';
 import { useAnnouncements } from '../hooks/useAnnouncements';
 import { Loader } from '../../../shared/components/ui/Loader';
 import { Megaphone, Plus } from 'lucide-react';
-import { useAuthStore } from '../../auth/store/authStore';
+import { useAuthStore } from '../../../modules/auth/store/authStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { classroomApi } from '../api/classroomApi';
 
@@ -23,13 +23,14 @@ const AnnouncementList = () => {
 
   const addMutation = useMutation({
     mutationFn: (data: { title: string; body: string }) =>
-      classroomApi.addAnnouncement(
-        classroomId,
-        data,
-        { id: user?.id ?? 'unknown', name: user?.name ?? 'مجهول' }
-      ),
+      classroomApi.addAnnouncement(classroomId, data, {
+        id: user?.id ?? 'unknown',
+        name: user?.name ?? 'مجهول',
+      }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['classroom', classroomId, 'announcements'] });
+      queryClient.invalidateQueries({
+        queryKey: ['classroom', classroomId, 'announcements'],
+      });
       setShowForm(false);
       setNewTitle('');
       setNewBody('');
@@ -51,6 +52,7 @@ const AnnouncementList = () => {
       className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] px-4 py-8 md:py-16 rounded-2xl relative"
       dir="rtl"
     >
+      {/* تأثيرات خلفية */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-1 h-1 bg-amber-400 rounded-full animate-pulse" />
         <div className="absolute top-40 left-20 w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-100" />

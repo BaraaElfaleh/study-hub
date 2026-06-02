@@ -4,9 +4,11 @@ import { Loader } from '../../../shared/components/ui/Loader';
 import { ArrowLeft, BookOpen, User, Calendar, BarChart } from 'lucide-react';
 
 const CourseDetailPage = () => {
-  // استخدم المعرّف الكامل كما هو في ملف المسار
-  const { courseId } = useParams({ from: '/_protected/tsx/courses/$courseId' }) as { courseId: string };
-  const { useCourseDetail, enrollInCourse, enrollState } = useCourses();
+  const { courseId } = useParams({
+    from: '/_protected/tsx/courses/$courseId',
+  }) as { courseId: string };
+
+  const { useCourseDetail } = useCourses();
   const { data: course, isLoading, error } = useCourseDetail(courseId);
 
   if (isLoading) {
@@ -44,7 +46,10 @@ const CourseDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] px-4 py-8 md:py-16" dir="rtl">
+    <div
+      className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] px-4 py-8 md:py-16"
+      dir="rtl"
+    >
       {/* تأثيرات خلفية */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-1 h-1 bg-amber-400 rounded-full animate-pulse" />
@@ -79,7 +84,13 @@ const CourseDetailPage = () => {
             )}
             <div className="flex items-center gap-3 text-white/70">
               <BarChart size={18} className="text-amber-400" />
-              <span>{course.level === 'beginner' ? 'مبتدئ' : course.level === 'intermediate' ? 'متوسط' : 'متقدم'}</span>
+              <span>
+                {course.level === 'beginner'
+                  ? 'مبتدئ'
+                  : course.level === 'intermediate'
+                    ? 'متوسط'
+                    : 'متقدم'}
+              </span>
             </div>
             <div className="flex items-center gap-3 text-white/70">
               <Calendar size={18} className="text-amber-400" />
@@ -90,18 +101,22 @@ const CourseDetailPage = () => {
           {/* السعر */}
           <div className="flex items-center gap-3 mb-8">
             <span className="text-amber-400 text-3xl font-bold">${course.price}</span>
-            <span className="text-white/40 text-sm line-through">${(course.price * 1.5).toFixed(0)}</span>
-            <span className="bg-amber-400/20 text-amber-400 text-sm px-3 py-1 rounded-full">خصم 33%</span>
+            <span className="text-white/40 text-sm line-through">
+              ${(course.price * 1.5).toFixed(0)}
+            </span>
+            <span className="bg-amber-400/20 text-amber-400 text-sm px-3 py-1 rounded-full">
+              خصم 33%
+            </span>
           </div>
 
           {/* زر التسجيل */}
-           <Link
-      to="/tsx/checkout/$courseId"
-      params={{ courseId: course.id }}
-      className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg shadow-amber-400/20 hover:shadow-xl hover:shadow-amber-400/30 flex items-center gap-2 text-lg w-fit"
-    >
-      سجّل الآن
-    </Link>
+          <Link
+            to="/tsx/checkout/$course"
+            params={{ course: course.id }}
+            className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg shadow-amber-400/20 hover:shadow-xl hover:shadow-amber-400/30 flex items-center gap-2 text-lg w-fit"
+          >
+            سجّل الآن
+          </Link>
 
           {/* رابط العودة */}
           <div className="mt-8 pt-6 border-t border-white/10">

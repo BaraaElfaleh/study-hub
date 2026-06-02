@@ -1,4 +1,11 @@
-// src/shared/types/classroom.ts
+export const TaskStatusEnum = {
+  PENDING: 'pending',
+  IN_PROGRESS: 'in_progress',
+  DONE: 'done',
+} as const;
+
+export type TaskStatus = typeof TaskStatusEnum[keyof typeof TaskStatusEnum];
+
 export interface Lecture {
   id: string;
   courseId: string;
@@ -17,9 +24,9 @@ export interface Task {
   title: string;
   description: string;
   dueDate: string;
-  status: 'pending' | 'in-progress' | 'done';
+  status: TaskStatus;
   assignedTo: string[];
-  createdAt: string; // ← أضف هذا
+  createdAt: string;
 }
 
 export interface Announcement {
@@ -28,7 +35,7 @@ export interface Announcement {
   title: string;
   body: string;
   createdAt: string;
-  author: { // ← أضف هذا
+  author: {
     id: string;
     name: string;
   };
@@ -41,4 +48,5 @@ export interface ChatMessage {
   senderName: string;
   text: string;
   timestamp: string;
+  status?: 'sending' | 'sent' | 'failed'; // للاستخدام المحلي
 }
