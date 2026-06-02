@@ -24,6 +24,7 @@ import { Route as ProtectedTsxProfileUserIdRouteImport } from './routes/_protect
 import { Route as ProtectedTsxCoursesCourseIdRouteImport } from './routes/_protected.tsx/courses/$courseId'
 import { Route as ProtectedTsxClassroomMyCoursesRouteImport } from './routes/_protected.tsx/classroom/my-courses'
 import { Route as ProtectedTsxClassroomLayoutRouteImport } from './routes/_protected.tsx/classroom/_layout'
+import { Route as ProtectedTsxCheckoutCourseRouteImport } from './routes/_protected.tsx/checkout/$course'
 import { Route as ProtectedTsxClassroomLayoutClassroomIdIndexRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/index'
 import { Route as ProtectedTsxClassroomLayoutClassroomIdTasksRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/tasks'
 import { Route as ProtectedTsxClassroomLayoutClassroomIdManageRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/manage'
@@ -113,6 +114,12 @@ const ProtectedTsxClassroomLayoutRoute =
     path: '/tsx/classroom',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ProtectedTsxCheckoutCourseRoute =
+  ProtectedTsxCheckoutCourseRouteImport.update({
+    id: '/_protected/tsx/checkout/$course',
+    path: '/tsx/checkout/$course',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProtectedTsxClassroomLayoutClassroomIdIndexRoute =
   ProtectedTsxClassroomLayoutClassroomIdIndexRouteImport.update({
     id: '/$classroomId/',
@@ -160,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/tsx': typeof ProtectedTsxProtectedRoute
   '/tsx/dashboard': typeof ProtectedTsxDashboardRoute
   '/tsx/notifications': typeof ProtectedTsxNotificationsRoute
+  '/tsx/checkout/$course': typeof ProtectedTsxCheckoutCourseRoute
   '/tsx/classroom': typeof ProtectedTsxClassroomLayoutRouteWithChildren
   '/tsx/classroom/my-courses': typeof ProtectedTsxClassroomMyCoursesRoute
   '/tsx/courses/$courseId': typeof ProtectedTsxCoursesCourseIdRoute
@@ -183,6 +191,7 @@ export interface FileRoutesByTo {
   '/tsx': typeof ProtectedTsxProtectedRoute
   '/tsx/dashboard': typeof ProtectedTsxDashboardRoute
   '/tsx/notifications': typeof ProtectedTsxNotificationsRoute
+  '/tsx/checkout/$course': typeof ProtectedTsxCheckoutCourseRoute
   '/tsx/classroom': typeof ProtectedTsxClassroomLayoutRouteWithChildren
   '/tsx/classroom/my-courses': typeof ProtectedTsxClassroomMyCoursesRoute
   '/tsx/courses/$courseId': typeof ProtectedTsxCoursesCourseIdRoute
@@ -207,6 +216,7 @@ export interface FileRoutesById {
   '/_protected/tsx/_protected': typeof ProtectedTsxProtectedRoute
   '/_protected/tsx/dashboard': typeof ProtectedTsxDashboardRoute
   '/_protected/tsx/notifications': typeof ProtectedTsxNotificationsRoute
+  '/_protected/tsx/checkout/$course': typeof ProtectedTsxCheckoutCourseRoute
   '/_protected/tsx/classroom/_layout': typeof ProtectedTsxClassroomLayoutRouteWithChildren
   '/_protected/tsx/classroom/my-courses': typeof ProtectedTsxClassroomMyCoursesRoute
   '/_protected/tsx/courses/$courseId': typeof ProtectedTsxCoursesCourseIdRoute
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
     | '/tsx'
     | '/tsx/dashboard'
     | '/tsx/notifications'
+    | '/tsx/checkout/$course'
     | '/tsx/classroom'
     | '/tsx/classroom/my-courses'
     | '/tsx/courses/$courseId'
@@ -255,6 +266,7 @@ export interface FileRouteTypes {
     | '/tsx'
     | '/tsx/dashboard'
     | '/tsx/notifications'
+    | '/tsx/checkout/$course'
     | '/tsx/classroom'
     | '/tsx/classroom/my-courses'
     | '/tsx/courses/$courseId'
@@ -278,6 +290,7 @@ export interface FileRouteTypes {
     | '/_protected/tsx/_protected'
     | '/_protected/tsx/dashboard'
     | '/_protected/tsx/notifications'
+    | '/_protected/tsx/checkout/$course'
     | '/_protected/tsx/classroom/_layout'
     | '/_protected/tsx/classroom/my-courses'
     | '/_protected/tsx/courses/$courseId'
@@ -302,6 +315,7 @@ export interface RootRouteChildren {
   ProtectedTsxProtectedRoute: typeof ProtectedTsxProtectedRoute
   ProtectedTsxDashboardRoute: typeof ProtectedTsxDashboardRoute
   ProtectedTsxNotificationsRoute: typeof ProtectedTsxNotificationsRoute
+  ProtectedTsxCheckoutCourseRoute: typeof ProtectedTsxCheckoutCourseRoute
   ProtectedTsxClassroomLayoutRoute: typeof ProtectedTsxClassroomLayoutRouteWithChildren
   ProtectedTsxClassroomMyCoursesRoute: typeof ProtectedTsxClassroomMyCoursesRoute
   ProtectedTsxCoursesCourseIdRoute: typeof ProtectedTsxCoursesCourseIdRoute
@@ -417,6 +431,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedTsxClassroomLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/tsx/checkout/$course': {
+      id: '/_protected/tsx/checkout/$course'
+      path: '/tsx/checkout/$course'
+      fullPath: '/tsx/checkout/$course'
+      preLoaderRoute: typeof ProtectedTsxCheckoutCourseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected/tsx/classroom/_layout/$classroomId/': {
       id: '/_protected/tsx/classroom/_layout/$classroomId/'
       path: '/$classroomId'
@@ -502,6 +523,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProtectedTsxProtectedRoute: ProtectedTsxProtectedRoute,
   ProtectedTsxDashboardRoute: ProtectedTsxDashboardRoute,
   ProtectedTsxNotificationsRoute: ProtectedTsxNotificationsRoute,
+  ProtectedTsxCheckoutCourseRoute: ProtectedTsxCheckoutCourseRoute,
   ProtectedTsxClassroomLayoutRoute:
     ProtectedTsxClassroomLayoutRouteWithChildren,
   ProtectedTsxClassroomMyCoursesRoute: ProtectedTsxClassroomMyCoursesRoute,

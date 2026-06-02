@@ -1,6 +1,5 @@
 import { useParams, Link } from '@tanstack/react-router';
 import { useCourses } from '../hooks/useCourses';
-import { Button } from '../../../shared/components/ui/Button';
 import { Loader } from '../../../shared/components/ui/Loader';
 import { ArrowLeft, BookOpen, User, Calendar, BarChart } from 'lucide-react';
 
@@ -96,16 +95,13 @@ const CourseDetailPage = () => {
           </div>
 
           {/* زر التسجيل */}
-          <Button
-            onClick={() => enrollInCourse(course.id)}
-            disabled={enrollState.isPending}
-            className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg shadow-amber-400/20 hover:shadow-xl hover:shadow-amber-400/30 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2 text-lg"
-          >
-            {enrollState.isPending ? 'جاري التسجيل...' : 'سجّل الآن'}
-          </Button>
-          {enrollState.error && (
-            <p className="text-red-400 mt-3 text-sm">فشل التسجيل، حاول مرة أخرى</p>
-          )}
+           <Link
+      to="/tsx/checkout/$courseId"
+      params={{ courseId: course.id }}
+      className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg shadow-amber-400/20 hover:shadow-xl hover:shadow-amber-400/30 flex items-center gap-2 text-lg w-fit"
+    >
+      سجّل الآن
+    </Link>
 
           {/* رابط العودة */}
           <div className="mt-8 pt-6 border-t border-white/10">
