@@ -1,6 +1,6 @@
-// src/routes/index.tsx
-    import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
+import { LoginPage } from '../modules/auth';
 
-    export const Route = createFileRoute('/')({
-      component: () => <h1>Hello admin</h1>,
-    });
+export const Route = createFileRoute('/')({
+  component: LoginPage,
+});

@@ -10,33 +10,155 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProtectedTsxUsersRouteImport } from './routes/_protected.tsx/users'
+import { Route as ProtectedTsxSupportRouteImport } from './routes/_protected.tsx/support'
+import { Route as ProtectedTsxSettingsRouteImport } from './routes/_protected.tsx/settings'
+import { Route as ProtectedTsxReportsRouteImport } from './routes/_protected.tsx/reports'
+import { Route as ProtectedTsxPaymentsRouteImport } from './routes/_protected.tsx/payments'
+import { Route as ProtectedTsxNotificationsRouteImport } from './routes/_protected.tsx/notifications'
+import { Route as ProtectedTsxDashboardRouteImport } from './routes/_protected.tsx/dashboard'
+import { Route as ProtectedTsxCoursesRouteImport } from './routes/_protected.tsx/courses'
+import { Route as ProtectedTsxProtectedRouteImport } from './routes/_protected.tsx/_protected'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedTsxUsersRoute = ProtectedTsxUsersRouteImport.update({
+  id: '/_protected/tsx/users',
+  path: '/tsx/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedTsxSupportRoute = ProtectedTsxSupportRouteImport.update({
+  id: '/_protected/tsx/support',
+  path: '/tsx/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedTsxSettingsRoute = ProtectedTsxSettingsRouteImport.update({
+  id: '/_protected/tsx/settings',
+  path: '/tsx/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedTsxReportsRoute = ProtectedTsxReportsRouteImport.update({
+  id: '/_protected/tsx/reports',
+  path: '/tsx/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedTsxPaymentsRoute = ProtectedTsxPaymentsRouteImport.update({
+  id: '/_protected/tsx/payments',
+  path: '/tsx/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedTsxNotificationsRoute =
+  ProtectedTsxNotificationsRouteImport.update({
+    id: '/_protected/tsx/notifications',
+    path: '/tsx/notifications',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxDashboardRoute = ProtectedTsxDashboardRouteImport.update({
+  id: '/_protected/tsx/dashboard',
+  path: '/tsx/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedTsxCoursesRoute = ProtectedTsxCoursesRouteImport.update({
+  id: '/_protected/tsx/courses',
+  path: '/tsx/courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedTsxProtectedRoute = ProtectedTsxProtectedRouteImport.update({
+  id: '/_protected/tsx/_protected',
+  path: '/tsx',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/tsx': typeof ProtectedTsxProtectedRoute
+  '/tsx/courses': typeof ProtectedTsxCoursesRoute
+  '/tsx/dashboard': typeof ProtectedTsxDashboardRoute
+  '/tsx/notifications': typeof ProtectedTsxNotificationsRoute
+  '/tsx/payments': typeof ProtectedTsxPaymentsRoute
+  '/tsx/reports': typeof ProtectedTsxReportsRoute
+  '/tsx/settings': typeof ProtectedTsxSettingsRoute
+  '/tsx/support': typeof ProtectedTsxSupportRoute
+  '/tsx/users': typeof ProtectedTsxUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/tsx': typeof ProtectedTsxProtectedRoute
+  '/tsx/courses': typeof ProtectedTsxCoursesRoute
+  '/tsx/dashboard': typeof ProtectedTsxDashboardRoute
+  '/tsx/notifications': typeof ProtectedTsxNotificationsRoute
+  '/tsx/payments': typeof ProtectedTsxPaymentsRoute
+  '/tsx/reports': typeof ProtectedTsxReportsRoute
+  '/tsx/settings': typeof ProtectedTsxSettingsRoute
+  '/tsx/support': typeof ProtectedTsxSupportRoute
+  '/tsx/users': typeof ProtectedTsxUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_protected/tsx/_protected': typeof ProtectedTsxProtectedRoute
+  '/_protected/tsx/courses': typeof ProtectedTsxCoursesRoute
+  '/_protected/tsx/dashboard': typeof ProtectedTsxDashboardRoute
+  '/_protected/tsx/notifications': typeof ProtectedTsxNotificationsRoute
+  '/_protected/tsx/payments': typeof ProtectedTsxPaymentsRoute
+  '/_protected/tsx/reports': typeof ProtectedTsxReportsRoute
+  '/_protected/tsx/settings': typeof ProtectedTsxSettingsRoute
+  '/_protected/tsx/support': typeof ProtectedTsxSupportRoute
+  '/_protected/tsx/users': typeof ProtectedTsxUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/tsx'
+    | '/tsx/courses'
+    | '/tsx/dashboard'
+    | '/tsx/notifications'
+    | '/tsx/payments'
+    | '/tsx/reports'
+    | '/tsx/settings'
+    | '/tsx/support'
+    | '/tsx/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/tsx'
+    | '/tsx/courses'
+    | '/tsx/dashboard'
+    | '/tsx/notifications'
+    | '/tsx/payments'
+    | '/tsx/reports'
+    | '/tsx/settings'
+    | '/tsx/support'
+    | '/tsx/users'
+  id:
+    | '__root__'
+    | '/'
+    | '/_protected/tsx/_protected'
+    | '/_protected/tsx/courses'
+    | '/_protected/tsx/dashboard'
+    | '/_protected/tsx/notifications'
+    | '/_protected/tsx/payments'
+    | '/_protected/tsx/reports'
+    | '/_protected/tsx/settings'
+    | '/_protected/tsx/support'
+    | '/_protected/tsx/users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProtectedTsxProtectedRoute: typeof ProtectedTsxProtectedRoute
+  ProtectedTsxCoursesRoute: typeof ProtectedTsxCoursesRoute
+  ProtectedTsxDashboardRoute: typeof ProtectedTsxDashboardRoute
+  ProtectedTsxNotificationsRoute: typeof ProtectedTsxNotificationsRoute
+  ProtectedTsxPaymentsRoute: typeof ProtectedTsxPaymentsRoute
+  ProtectedTsxReportsRoute: typeof ProtectedTsxReportsRoute
+  ProtectedTsxSettingsRoute: typeof ProtectedTsxSettingsRoute
+  ProtectedTsxSupportRoute: typeof ProtectedTsxSupportRoute
+  ProtectedTsxUsersRoute: typeof ProtectedTsxUsersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +170,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/tsx/users': {
+      id: '/_protected/tsx/users'
+      path: '/tsx/users'
+      fullPath: '/tsx/users'
+      preLoaderRoute: typeof ProtectedTsxUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/support': {
+      id: '/_protected/tsx/support'
+      path: '/tsx/support'
+      fullPath: '/tsx/support'
+      preLoaderRoute: typeof ProtectedTsxSupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/settings': {
+      id: '/_protected/tsx/settings'
+      path: '/tsx/settings'
+      fullPath: '/tsx/settings'
+      preLoaderRoute: typeof ProtectedTsxSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/reports': {
+      id: '/_protected/tsx/reports'
+      path: '/tsx/reports'
+      fullPath: '/tsx/reports'
+      preLoaderRoute: typeof ProtectedTsxReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/payments': {
+      id: '/_protected/tsx/payments'
+      path: '/tsx/payments'
+      fullPath: '/tsx/payments'
+      preLoaderRoute: typeof ProtectedTsxPaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/notifications': {
+      id: '/_protected/tsx/notifications'
+      path: '/tsx/notifications'
+      fullPath: '/tsx/notifications'
+      preLoaderRoute: typeof ProtectedTsxNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/dashboard': {
+      id: '/_protected/tsx/dashboard'
+      path: '/tsx/dashboard'
+      fullPath: '/tsx/dashboard'
+      preLoaderRoute: typeof ProtectedTsxDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/courses': {
+      id: '/_protected/tsx/courses'
+      path: '/tsx/courses'
+      fullPath: '/tsx/courses'
+      preLoaderRoute: typeof ProtectedTsxCoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/_protected': {
+      id: '/_protected/tsx/_protected'
+      path: '/tsx'
+      fullPath: '/tsx'
+      preLoaderRoute: typeof ProtectedTsxProtectedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProtectedTsxProtectedRoute: ProtectedTsxProtectedRoute,
+  ProtectedTsxCoursesRoute: ProtectedTsxCoursesRoute,
+  ProtectedTsxDashboardRoute: ProtectedTsxDashboardRoute,
+  ProtectedTsxNotificationsRoute: ProtectedTsxNotificationsRoute,
+  ProtectedTsxPaymentsRoute: ProtectedTsxPaymentsRoute,
+  ProtectedTsxReportsRoute: ProtectedTsxReportsRoute,
+  ProtectedTsxSettingsRoute: ProtectedTsxSettingsRoute,
+  ProtectedTsxSupportRoute: ProtectedTsxSupportRoute,
+  ProtectedTsxUsersRoute: ProtectedTsxUsersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

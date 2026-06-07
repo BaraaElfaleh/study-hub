@@ -200,12 +200,14 @@ const AboutPage = () => {
             اختر مسارك معنا — وسنقابلك حيث أنت.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/tsx/classroom/space"
+            <a
+              href="https://anoonsolutions.com/space.html"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold px-8 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-amber-400/20 hover:shadow-xl hover:shadow-amber-400/30"
             >
               أنا أريد مساحة عمل
-            </Link>
+            </a>
             <Link
               to="/tsx/courses"
               className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold px-8 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-amber-400/20 hover:shadow-xl hover:shadow-amber-400/30"

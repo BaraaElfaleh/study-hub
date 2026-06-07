@@ -1,9 +1,9 @@
-// src/modules/auth/hooks/useAuth.ts
+// apps/admin-app/src/modules/auth/hooks/useAuth.ts
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useAuthStore } from '../store/authStore';
-import { authService } from '../api/authService';
+import { authApi } from '../api/authApi';
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
@@ -17,22 +17,21 @@ export const useAuth = () => {
     initSession,
   } = useAuthStore();
 
-  // استعادة الجلسة مرة واحدة عند التحميل
+  // استعادة الجلسة مرة واحدة
   useEffect(() => {
-    if (!isAuthenticated && localStorage.getItem('accessToken')) {
+    if (!isAuthenticated && localStorage.getItem('adminAccessToken')) {
       initSession();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
-  // جلب المستخدم الحالي إذا كان لدينا token فقط
-  const { data: fetchedUser, isLoading: isUserLoading, error: userError } = useQuery({
-    queryKey: ['currentUser'],
-    queryFn: authService.fetchCurrentUser,
+  // جلب المشرف الحالي
+  const { data: fetchedUser, isLoading: isUserLoading } = useQuery({
+    queryKey: ['currentAdmin'],
+    queryFn: authApi.fetchCurrentAdmin,
     enabled: !!accessToken && !user,
     staleTime: 5 * 60 * 1000,
   });
 
-  // تحديث المتجر عند استلام المستخدم
   useEffect(() => {
     if (fetchedUser && !user) {
       setSession(fetchedUser, accessToken!);
@@ -40,7 +39,7 @@ export const useAuth = () => {
   }, [fetchedUser, user, accessToken, setSession]);
 
   const loginMutation = useMutation({
-    mutationFn: authService.signIn,
+    mutationFn: authApi.signIn,
     onSuccess: (data) => {
       setSession(data.user, data.accessToken);
       queryClient.invalidateQueries();
@@ -48,34 +47,24 @@ export const useAuth = () => {
     },
   });
 
-  const registerMutation = useMutation({
-    mutationFn: authService.signUp,
-    onSuccess: (data) => {
-      setSession(data.user, data.accessToken);
-      navigate({ to: '/tsx/dashboard' });
-    },
-  });
-
   const logoutMutation = useMutation({
-    mutationFn: authService.signOut,
+    mutationFn: authApi.signOut,
     onSettled: () => {
       clearSession();
       queryClient.clear();
-      navigate({ to: '/' });
+      navigate({ to: '/tsx/dashboard' });
     },
   });
 
   return {
     user: user || fetchedUser || null,
     isAuthenticated: !!user || !!fetchedUser || isAuthenticated,
-    isLoading: loginMutation.isPending || registerMutation.isPending || isUserLoading,
-    userError,
+    isLoading: isUserLoading,
 
     login: loginMutation.mutate,
-    register: registerMutation.mutate,
     logout: logoutMutation.mutate,
 
     loginError: loginMutation.error,
-    registerError: registerMutation.error,
+    isLoggingIn: loginMutation.isPending,
   };
 };

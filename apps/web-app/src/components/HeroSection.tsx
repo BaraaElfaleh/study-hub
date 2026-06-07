@@ -48,16 +48,19 @@ const HeroSection = () => {
 
         {/* أزرار الإجراء */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link
-            to="/tsx/classroom/space" // رابط وهمي حاليًا
+          <a
+            href="https://anoonsolutions.com/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold px-8 py-4 rounded-full text-lg transition-all duration-300 shadow-lg shadow-amber-400/30 hover:shadow-xl hover:shadow-amber-400/40 hover:-translate-y-1"
           >
             جرّب مساحتنا 3 ساعات مجاناً
+            </a>
             <ArrowLeft
               size={20}
               className="inline-block mr-2 group-hover:translate-x-1 transition-transform"
             />
-          </Link>
+          
           <Link
             to="/tsx/courses" // رابط الأكاديمية
             className="text-white/80 hover:text-amber-400 font-medium px-8 py-4 rounded-full text-lg transition-all duration-300 border border-white/20 hover:border-amber-400/50"
