@@ -1,4 +1,5 @@
-// src/routes/__root.tsx
+// apps/admin-app/src/routes/__root.tsx
+import { useState } from 'react';
 import { createRootRoute, Outlet, Link, useLocation } from '@tanstack/react-router';
 import {
   LayoutDashboard,
@@ -10,10 +11,10 @@ import {
   Bell,
   Headphones,
   LogOut,
+  Menu,
+  X,
 } from 'lucide-react';
-
 import { useAuthStore } from '../modules/auth/store/authStore';
-// import NotFoundPage from '../pages/NotFoundPage';
 
 const sidebarLinks = [
   { to: '/tsx/dashboard', label: 'لوحة التحكم', icon: LayoutDashboard },
@@ -31,31 +32,54 @@ const RootLayout = () => {
   const user = useAuthStore((s) => s.user);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const clearSession = useAuthStore((s) => s.clearSession);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // حالة غير مسجل الدخول: عرض شريط علوي عادي والمحتوى فقط
   if (!isAuthenticated) {
-    
-   return (
+    return (
       <div className="min-h-screen">
         <main>
           <Outlet />
         </main>
       </div>
     );
-
   }
 
-  // حالة مسجل الدخول (مدير): عرض الشريط الجانبي الكامل
-
-       return (
+  return (
     <div className="min-h-screen bg-slate-950 flex" dir="rtl">
-      <aside className="w-64 bg-slate-900 border-l border-slate-800 flex flex-col">
-        <div className="p-6 border-b border-slate-800">
+      {/* زر فتح الشريط على الجوال */}
+      <button
+        className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-slate-800 rounded-lg text-white"
+        onClick={() => setSidebarOpen(true)}
+      >
+        <Menu size={24} />
+      </button>
+
+      {/* طبقة الخلفية للشريط الجانبي على الجوال */}
+      {sidebarOpen && (
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-black/50"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* الشريط الجانبي */}
+      <aside
+        className={`fixed lg:static inset-y-0 right-0 z-50 w-64 bg-slate-900 border-l border-slate-800 flex flex-col transition-transform duration-300 ${
+          sidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'
+        }`}
+      >
+        <div className="p-6 border-b border-slate-800 flex items-center justify-between">
           <Link to="/tsx/dashboard" className="text-2xl font-bold text-amber-400">
             النون
           </Link>
-          <p className="text-slate-500 text-xs mt-1">لوحة التحكم</p>
+          <button
+            className="lg:hidden text-slate-400 hover:text-white"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <X size={20} />
+          </button>
         </div>
+        <p className="text-slate-500 text-xs px-6">لوحة التحكم</p>
 
         <nav className="flex-1 p-4 space-y-1">
           {sidebarLinks.map((link) => {
@@ -65,6 +89,7 @@ const RootLayout = () => {
               <Link
                 key={link.to}
                 to={link.to}
+                onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
                   isActive
                     ? 'bg-amber-500/10 text-amber-400'
@@ -101,7 +126,7 @@ const RootLayout = () => {
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto p-8">
+      <main className="flex-1 overflow-y-auto p-4 lg:p-8">
         <Outlet />
       </main>
     </div>
@@ -109,14 +134,11 @@ const RootLayout = () => {
 };
 
 export const Route = createRootRoute({
-  beforeLoad: () => {
-    return {
-      auth: {
-        isAuthenticated: useAuthStore.getState().isAuthenticated,
-        user: useAuthStore.getState().user,
-      },
-    };
-  },
+  beforeLoad: () => ({
+    auth: {
+      isAuthenticated: useAuthStore.getState().isAuthenticated,
+      user: useAuthStore.getState().user,
+    },
+  }),
   component: RootLayout,
-  // notFoundComponent: () => <NotFoundPage />,
 });
