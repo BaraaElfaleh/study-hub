@@ -1,55 +1,52 @@
-import { format, parseISO } from 'date-fns';
-import { ar } from 'date-fns/locale';
-import type {
-  LectureDTO,
-  TaskDTO,
-  AnnouncementDTO,
-  ChatMessageDTO,
-} from '../dtos/classroomDto';
 import type {
   Lecture,
-  Task,
+  Assignment,
   Announcement,
   ChatMessage,
+  Submission,
 } from '../../../shared/types/classroom';
 
-export const adaptLecture = (dto: LectureDTO): Lecture => ({
+export const adaptLecture = (dto: any): Lecture => ({
   id: dto.id,
-  courseId: dto.course_id,
   title: dto.title,
-  videoUrl: dto.video_url ?? undefined,
-  driveLink: dto.drive_link ?? undefined,
-  order: dto.order,
-  completedBy: dto.completed_by,
-  createdAt: format(parseISO(dto.created_at), 'PPpp', { locale: ar }),
-  updatedAt: format(parseISO(dto.updated_at), 'PPpp', { locale: ar }),
+  description: dto.description || '',
+  videoUrl: dto.videoUrl,
+  documentUrl: dto.documentUrl,
+  courseId: dto.courseId,
+  createdAt: dto.createdAt,
+  updatedAt: dto.updatedAt,
 });
 
-export const adaptTask = (dto: TaskDTO): Task => ({
+export const adaptAssignment = (dto: any): Assignment => ({
   id: dto.id,
-  courseId: dto.course_id,
   title: dto.title,
   description: dto.description,
-  dueDate: format(parseISO(dto.due_date), 'PPP', { locale: ar }),
-  status: dto.status,
-  assignedTo: dto.assigned_to ?? [],
-  createdAt: format(parseISO(dto.created_at), 'PPpp', { locale: ar }),
+  courseId: dto.courseId,
+  createdAt: dto.createdAt,
 });
 
-export const adaptAnnouncement = (dto: AnnouncementDTO): Announcement => ({
+export const adaptAnnouncement = (dto: any): Announcement => ({
   id: dto.id,
-  courseId: dto.course_id,
   title: dto.title,
-  body: dto.body,
-  createdAt: format(parseISO(dto.created_at), 'PPpp', { locale: ar }),
+  content: dto.content || dto.body,
+  courseId: dto.courseId,
   author: dto.author,
+  createdAt: dto.createdAt,
 });
 
-export const adaptChatMessage = (dto: ChatMessageDTO): ChatMessage => ({
+export const adaptChatMessage = (dto: any): ChatMessage => ({
   id: dto.id,
-  courseId: dto.course_id,
-  senderId: dto.sender_id,
-  senderName: dto.sender_name,
-  text: dto.text,
-  timestamp: format(parseISO(dto.timestamp), 'p', { locale: ar }),
+  content: dto.content || dto.text,
+  senderId: dto.senderId,
+  sender: dto.sender,
+  courseId: dto.courseId,
+  createdAt: dto.createdAt,
+});
+
+export const adaptSubmission = (dto: any): Submission => ({
+  id: dto.id,
+  fileUrl: dto.fileUrl,
+  submittedAt: dto.submittedAt,
+  studentId: dto.studentId,
+  assignmentId: dto.assignmentId,
 });

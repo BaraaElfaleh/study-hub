@@ -1,112 +1,29 @@
-// src/modules/courses/hooks/useCourses.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCourseStore } from '../store/courseStore';
 import { coursesApi } from '../api/coursesApi';
 import { adaptCourse } from '../adapters/courseAdapter';
-import { useAuth } from '../../auth/hooks/useAuth';
-import { checkPermission } from '../../../shared/utils/permissions';
-import { useCourseDetail } from './useCourseDetail';
-import type {
-  UseCourseReturn,
-  CreateCoursePayload,
-  UpdateCoursePayload,
-} from '../dtos/courseDto';
+import type { CreateCourseRequest, UpdateCourseRequest, CourseQueryParams } from '../../../shared/types/course';
 
-export const useCourses = (): UseCourseReturn => {
+export const useCourses = () => {
   const queryClient = useQueryClient();
-  const { user } = useAuth();
   const filters = useCourseStore((state) => state.filters);
 
-  // ==================== Queries ====================
-  const coursesQuery = useQuery({
+  const { data: courses, isLoading: isLoadingCourses, error: coursesError } = useQuery({
     queryKey: ['courses', filters],
     queryFn: async () => {
-      const dtos = await coursesApi.fetchCourses({
-        search: filters.search,
-        level: filters.level || undefined,
-      });
+      const params: CourseQueryParams = { search: filters.search || undefined };
+      const dtos = await coursesApi.fetchCourses(params);
       return dtos.map(adaptCourse);
     },
     staleTime: 2 * 60 * 1000,
   });
 
-  // ==================== Mutations ====================
-  const enrollMutation = useMutation({
-    mutationFn: (courseId: string) => coursesApi.enrollInCourse(courseId),
-    onSuccess: (_, courseId) => {
-      queryClient.invalidateQueries({ queryKey: ['course', courseId] });
-      queryClient.invalidateQueries({ queryKey: ['enrollments'] });
-    },
-  });
+  const useCourseDetail = (courseId: string) => useQuery({ queryKey: ['course', courseId], queryFn: async () => { const dto = await coursesApi.fetchCourseById(courseId); return adaptCourse(dto); }, enabled: !!courseId });
 
-  const createMutation = useMutation({
-    mutationFn: (payload: CreateCoursePayload) => coursesApi.createCourse(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['courses'] });
-    },
-  });
+  const enrollMutation = useMutation({ mutationFn: (courseId: string) => coursesApi.enrollInCourse(courseId, 'current-user-id'), onSuccess: (_, courseId) => { queryClient.invalidateQueries({ queryKey: ['course', courseId] }); } });
+  const createMutation = useMutation({ mutationFn: (payload: CreateCourseRequest) => coursesApi.createCourse(payload), onSuccess: () => queryClient.invalidateQueries({ queryKey: ['courses'] }) });
+  const updateMutation = useMutation({ mutationFn: ({ id, data }: { id: string; data: UpdateCourseRequest }) => coursesApi.updateCourse(id, data), onSuccess: () => queryClient.invalidateQueries({ queryKey: ['courses'] }) });
+  const deleteMutation = useMutation({ mutationFn: (id: string) => coursesApi.deleteCourse(id), onSuccess: () => queryClient.invalidateQueries({ queryKey: ['courses'] }) });
 
-  const updateMutation = useMutation({
-    mutationFn: ({ courseId, updates }: { courseId: string; updates: UpdateCoursePayload }) =>
-      coursesApi.updateCourse(courseId, updates),
-    onSuccess: (_, { courseId }) => {
-      queryClient.invalidateQueries({ queryKey: ['course', courseId] });
-      queryClient.invalidateQueries({ queryKey: ['courses'] });
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: (courseId: string) => coursesApi.deleteCourse(courseId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['courses'] });
-    },
-  });
-
-  // ==================== Permissions ====================
-  const canEnroll = user && checkPermission(user.role, 'enroll');
-  const canManageCourses = user && checkPermission(user.role, 'manage_courses'); // استخدام manage_courses
-
-  return {
-    courses: coursesQuery.data,
-    isLoadingCourses: coursesQuery.isLoading,
-    coursesError: coursesQuery.error as Error | null,
-
-    useCourseDetail,
-
-    enrollInCourse: (courseId: string) => {
-      if (!canEnroll) throw new Error('غير مسموح بالتسجيل');
-      enrollMutation.mutate(courseId);
-    },
-    createCourse: (payload: CreateCoursePayload) => {
-      if (!canManageCourses) throw new Error('غير مسموح بإنشاء دورات');
-      createMutation.mutate(payload);
-    },
-    updateCourse: (id: string, updates: UpdateCoursePayload) =>
-      updateMutation.mutate({ courseId: id, updates }),
-    deleteCourse: (id: string) => {
-      if (!canManageCourses) throw new Error('غير مسموح بحذف الدورات');
-      deleteMutation.mutate(id);
-    },
-
-    enrollState: {
-      isPending: enrollMutation.isPending,
-      error: enrollMutation.error as Error | null,
-      isSuccess: enrollMutation.isSuccess,
-    },
-    createState: {
-      isPending: createMutation.isPending,
-      error: createMutation.error as Error | null,
-      isSuccess: createMutation.isSuccess,
-    },
-    updateState: {
-      isPending: updateMutation.isPending,
-      error: updateMutation.error as Error | null,
-      isSuccess: updateMutation.isSuccess,
-    },
-    deleteState: {
-      isPending: deleteMutation.isPending,
-      error: deleteMutation.error as Error | null,
-      isSuccess: deleteMutation.isSuccess,
-    },
-  };
+  return { courses, isLoadingCourses, coursesError, useCourseDetail, enrollInCourse: enrollMutation.mutate, createCourse: createMutation.mutate, updateCourse: updateMutation.mutate, deleteCourse: deleteMutation.mutate };
 };

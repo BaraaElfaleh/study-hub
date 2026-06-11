@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {  Bell, Globe, User, LogIn, Menu, X } from "lucide-react";
+import { Bell, Globe, User, LogIn, Menu, X } from "lucide-react";
 import { cn } from "../../../../../../packages/ui"; // تأكد من المسار الصحيح لدالة cn
 import { Link, useLocation } from "@tanstack/react-router";
 import { useAuthStore } from "../../../modules/auth/store/authStore";
@@ -7,7 +7,7 @@ import { useNotificationStore } from "../../../modules/notifications/store/notif
 
 export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  
+
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -15,12 +15,11 @@ export const Navbar = () => {
   const { unreadCount } = useNotificationStore();
 
   const navLinks = [
-   
     { label: "الرئيسية", to: "/" },
     { label: "الكورسات", to: "/tsx/courses" },
     { label: "كورساتي", to: "/tsx/classroom/my-courses" },
     { label: "تواصل معنا", to: "/contact" },
-    { label: "من نحن", to: "/about" }, 
+    { label: "من نحن", to: "/about" },
     { label: "لوحة التحكم", to: "/tsx/dashboard" },
   ];
 
@@ -59,7 +58,7 @@ export const Navbar = () => {
                   "relative group text-lg font-medium transition-all duration-300",
                   isActive(link.to)
                     ? "text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.7)]"
-                    : "text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.4)] hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]"
+                    : "text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.4)] hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]",
                 )}
               >
                 {link.label}
@@ -68,7 +67,7 @@ export const Navbar = () => {
                     "absolute -bottom-3 left-1/2 -translate-x-1/2 h-0.5 bg-linear-to-r from-amber-400 to-blue-500 transition-all duration-300 ease-in-out rounded-full",
                     isActive(link.to)
                       ? "w-full opacity-100"
-                      : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+                      : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100",
                   )}
                 />
               </Link>
@@ -78,7 +77,6 @@ export const Navbar = () => {
           {/* اليسار: السيرشبار + الأيقونات */}
           <div className="flex items-center gap-1 md:gap-2">
             {/* السيرشبار */}
-           
 
             {/* الجرس مع شارة الإشعارات */}
             <Link to="/tsx/notifications" className={iconButtonClass}>
@@ -102,10 +100,10 @@ export const Navbar = () => {
                 className={iconButtonClass}
                 params={{ userId: user.id }}
               >
-                {user.avatar ? (
+                {user.avatarUrl ? (
                   <img
-                    src={user.avatar}
-                    alt={user.name}
+                    src={user.avatarUrl}
+                    alt={user.firstName}
                     className="w-8 h-8 rounded-full object-cover border-2 border-amber-400/50"
                   />
                 ) : (
@@ -117,7 +115,7 @@ export const Navbar = () => {
                 to="/login"
                 className={cn(
                   iconButtonClass,
-                  "bg-amber-400/10 text-amber-400 hover:bg-amber-400 hover:text-white"
+                  "bg-amber-400/10 text-amber-400 hover:bg-amber-400 hover:text-white",
                 )}
               >
                 <LogIn size={20} strokeWidth={2} />
@@ -147,7 +145,7 @@ export const Navbar = () => {
                   "block text-xl font-bold text-right transition-colors",
                   isActive(item.to)
                     ? "text-amber-400"
-                    : "text-white hover:text-amber-400"
+                    : "text-white hover:text-amber-400",
                 )}
                 onClick={() => setMobileOpen(false)}
               >
@@ -158,7 +156,6 @@ export const Navbar = () => {
           <div className="pt-8 border-t border-white/10 grid grid-cols-1 gap-3">
             <div className="flex items-center justify-end gap-4 p-4 bg-white/5 rounded-2xl text-white/90 text-sm">
               <span>بحث</span>
-             
             </div>
             <Link
               to="/tsx/notifications"
@@ -180,7 +177,7 @@ export const Navbar = () => {
                 to="/tsx/profile/$userId"
                 className="flex items-center justify-end gap-4 p-4 bg-white/5 rounded-2xl font-semibold text-white/90 text-sm hover:bg-white/10"
                 onClick={() => setMobileOpen(false)}
-                params={{ userId: user?.id  ?? "" }}
+                params={{ userId: user?.id ?? "" }}
               >
                 <span>الملف الشخصي</span>
                 <User size={18} />

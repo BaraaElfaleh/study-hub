@@ -1,4 +1,3 @@
-// src/modules/classroom/hooks/useChat.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { classroomApi } from '../api/classroomApi';
 import { adaptChatMessage } from '../adapters/classroomAdapter';
@@ -21,58 +20,29 @@ export const useChat = (courseId: string) => {
   });
 
   const sendMessageMutation = useMutation({
-    mutationFn: (text: string) => classroomApi.sendChatMessage(courseId, text),
-    onMutate: async (text) => {
+    mutationFn: (content: string) => classroomApi.sendChatMessage(courseId, { content }),
+    onMutate: async (content) => {
       await queryClient.cancelQueries({ queryKey });
       const previousMessages = queryClient.getQueryData<ChatMessage[]>(queryKey);
-
       if (!user) return { previousMessages };
-
-      const tempId = `temp-${crypto.randomUUID ? crypto.randomUUID() : Date.now()}`;
+      const tempId = `temp-${Date.now()}`;
       const optimisticMessage: ChatMessage = {
         id: tempId,
-        courseId: courseId,
+        courseId,
         senderId: user.id,
-        senderName: user.name,
-        text,
-        timestamp: new Date().toISOString(),
-        status: 'sending',
+        sender: { id: user.id, firstName: user.firstName || '', lastName: user.lastName || '' },
+        content,
+        createdAt: new Date().toISOString(),
       };
-
       queryClient.setQueryData<ChatMessage[]>(queryKey, (old = []) => [...old, optimisticMessage]);
       return { previousMessages };
     },
-    onSuccess: (data, variables) => {
-      const newMessage = adaptChatMessage(data);
-      queryClient.setQueryData<ChatMessage[]>(queryKey, (old = []) =>
-        old.map((msg) =>
-          msg.id.startsWith('temp-') && msg.text === variables
-            ? { ...newMessage, status: 'sent' }
-            : msg
-        )
-      );
-    },
-    onError: (_err, _variables, context) => {
+    onError: (_err, _content, context) => {
       if (context?.previousMessages) {
         queryClient.setQueryData(queryKey, context.previousMessages);
-      } else {
-        queryClient.setQueryData<ChatMessage[]>(queryKey, (old = []) =>
-          old.map((msg) =>
-            msg.id.startsWith('temp-') && msg.status === 'sending'
-              ? { ...msg, status: 'failed' }
-              : msg
-          )
-        );
       }
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey });
-    },
-  });
-
-  const deleteMessageMutation = useMutation({
-    mutationFn: (messageId: string) => classroomApi.deleteMessage(messageId),
-    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey });
     },
   });
@@ -83,7 +53,5 @@ export const useChat = (courseId: string) => {
     error: messagesQuery.error,
     sendMessage: sendMessageMutation.mutate,
     isSending: sendMessageMutation.isPending,
-    deleteMessage: deleteMessageMutation.mutate,
-    isDeleting: deleteMessageMutation.isPending,
   };
 };

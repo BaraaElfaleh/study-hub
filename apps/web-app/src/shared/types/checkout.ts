@@ -1,21 +1,16 @@
 export interface CheckoutRequest {
   courseId: string;
-  cardholderName: string;
-  cardNumber: string;
-  expiry: string;
-  cvc: string;
   couponCode?: string;
 }
 
-export interface CheckoutResponse {
-  success: boolean;
-  transactionId: string;
-  message: string;
-}
-
-export interface CouponValidationResponse {
-  valid: boolean;
-  code: string;
-  discountPercent: number;
-  message: string;
+export interface Payment {
+  id: string;
+  amount: number;
+  status: 'pending' | 'completed' | 'failed' | 'refunded';
+  courseId: string;
+  course?: {
+    title: string;
+  };
+  userId: string;
+  createdAt: string;
 }

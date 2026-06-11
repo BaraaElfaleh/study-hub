@@ -1,4 +1,4 @@
-// src/modules/classroom/hooks/useAnnouncements.ts
+// apps/web-app/src/modules/classroom/hooks/useAnnouncements.ts
 import { useQuery } from '@tanstack/react-query';
 import { classroomApi } from '../api/classroomApi';
 import { adaptAnnouncement } from '../adapters/classroomAdapter';

@@ -76,12 +76,12 @@ const CourseDetailPage = () => {
 
           {/* معلومات إضافية */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-            {course.instructorName && (
-              <div className="flex items-center gap-3 text-white/70">
-                <User size={18} className="text-amber-400" />
-                <span>{course.instructorName}</span>
-              </div>
-            )}
+           {course.teacher && (
+  <div className="flex items-center gap-3 text-white/70">
+    <User size={18} className="text-amber-400" />
+    <span>{`${course.teacher.firstName || ''} ${course.teacher.lastName || ''}`}</span>
+  </div>
+)}
             <div className="flex items-center gap-3 text-white/70">
               <BarChart size={18} className="text-amber-400" />
               <span>

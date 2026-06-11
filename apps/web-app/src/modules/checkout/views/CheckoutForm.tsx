@@ -2,7 +2,7 @@
 import { useState, type FormEvent } from "react";
 import valid from "card-validator";
 import { useCheckout } from "../hooks/useCheckout";
-import type { CheckoutRequest } from '../../../shared/types/checkout';
+import type { CheckoutRequest } from "../../../shared/types/checkout";
 
 interface CheckoutFormProps {
   courseId: string;
@@ -49,28 +49,39 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
-    if (!valid.number(cardNumber.replace(/\s/g, "")).isValid) errors.cardNumber = "رقم البطاقة غير صالح";
-    if (!valid.expirationDate(expiry).isValid) errors.expiry = "تاريخ الانتهاء غير صحيح";
-    if (!valid.cvv(cvc).isValid) errors.cvc = "رمز CVC غير صحيح";
-    if (!name.trim()) errors.name = "الاسم مطلوب";
+
+    if (!valid.number(cardNumber.replace(/\s/g, "")).isValid)
+      errors.cardNumber = "رقم البطاقة غير صالح";
+
+    if (!valid.expirationDate(expiry).isValid)
+      errors.expiry = "تاريخ الانتهاء غير صحيح";
+
+    if (!valid.cvv(cvc).isValid)
+      errors.cvc = "رمز CVC غير صحيح";
+
+    if (!name.trim())
+      errors.name = "الاسم مطلوب";
+
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
+  // ✅ التعديل المطلوب هنا فقط
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
+
     const checkoutData: CheckoutRequest = {
-      cardNumber: cardNumber.replace(/\s/g, ""),
-      expiry,
-      cvc,
-      cardholderName: name,
       courseId,
       couponCode: coupon?.valid ? coupon.code : undefined,
     };
+
     try {
       const result = await submitCheckout(checkoutData);
-      if (result.success) onSuccess?.(result.transactionId);
+
+      if (result.success) {
+        onSuccess?.(result.transactionId);
+      }
     } catch (error) {
       console.error("Checkout failed:", error);
     }
@@ -96,9 +107,12 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
           💳 بيانات الدفع - {courseName}
         </h2>
 
+        {/* باقي الفورم بدون تغيير */}
         <div className="space-y-4">
           <div>
-            <label className="text-white/50 text-sm ml-1 mb-1 block">رقم البطاقة</label>
+            <label className="text-white/50 text-sm ml-1 mb-1 block">
+              رقم البطاقة
+            </label>
             <input
               type="text"
               value={cardNumber}
@@ -106,12 +120,18 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
               placeholder="0000 0000 0000 0000"
               className={inputClass}
             />
-            {validationErrors.cardNumber && <p className="text-red-400 text-xs mt-1">{validationErrors.cardNumber}</p>}
+            {validationErrors.cardNumber && (
+              <p className="text-red-400 text-xs mt-1">
+                {validationErrors.cardNumber}
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-white/50 text-sm ml-1 mb-1 block">الانتهاء</label>
+              <label className="text-white/50 text-sm ml-1 mb-1 block">
+                الانتهاء
+              </label>
               <input
                 type="text"
                 value={expiry}
@@ -119,23 +139,38 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
                 placeholder="MM/YY"
                 className={inputClass}
               />
-              {validationErrors.expiry && <p className="text-red-400 text-xs mt-1">{validationErrors.expiry}</p>}
+              {validationErrors.expiry && (
+                <p className="text-red-400 text-xs mt-1">
+                  {validationErrors.expiry}
+                </p>
+              )}
             </div>
+
             <div>
-              <label className="text-white/50 text-sm ml-1 mb-1 block">CVC</label>
+              <label className="text-white/50 text-sm ml-1 mb-1 block">
+                CVC
+              </label>
               <input
                 type="text"
                 value={cvc}
-                onChange={(e) => setCvc(e.target.value.replace(/\D/g, ""))}
+                onChange={(e) =>
+                  setCvc(e.target.value.replace(/\D/g, ""))
+                }
                 placeholder="***"
                 className={inputClass}
               />
-              {validationErrors.cvc && <p className="text-red-400 text-xs mt-1">{validationErrors.cvc}</p>}
+              {validationErrors.cvc && (
+                <p className="text-red-400 text-xs mt-1">
+                  {validationErrors.cvc}
+                </p>
+              )}
             </div>
           </div>
 
           <div>
-            <label className="text-white/50 text-sm ml-1 mb-1 block">الاسم على البطاقة</label>
+            <label className="text-white/50 text-sm ml-1 mb-1 block">
+              الاسم على البطاقة
+            </label>
             <input
               type="text"
               value={name}
@@ -143,11 +178,15 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
               placeholder="الاسم كما يظهر"
               className={inputClass}
             />
-            {validationErrors.name && <p className="text-red-400 text-xs mt-1">{validationErrors.name}</p>}
+            {validationErrors.name && (
+              <p className="text-red-400 text-xs mt-1">
+                {validationErrors.name}
+              </p>
+            )}
           </div>
         </div>
 
-        {/* الكوبون */}
+        {/* كوبون */}
         <div className="mt-8">
           <div className="flex gap-2">
             <input
@@ -166,20 +205,30 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
               {isApplyingCoupon ? "..." : "تطبيق"}
             </button>
           </div>
+
           {coupon?.valid && (
             <p className="text-green-400 text-sm mt-2">
               تم تطبيق الخصم: {coupon.discountPercent}%
             </p>
           )}
-          {couponError && <p className="text-red-400 text-sm mt-2">{couponError}</p>}
+
+          {couponError && (
+            <p className="text-red-400 text-sm mt-2">{couponError}</p>
+          )}
         </div>
 
         <div className="mt-6 flex justify-between items-center text-white">
           <span className="text-white/60">الإجمالي</span>
-          <span className="text-2xl font-bold text-amber-400">{finalPrice.toFixed(2)} ريال</span>
+          <span className="text-2xl font-bold text-amber-400">
+            {finalPrice.toFixed(2)} ريال
+          </span>
         </div>
 
-        {submitError && <p className="text-red-400 text-sm mt-4 text-center">{submitError}</p>}
+        {submitError && (
+          <p className="text-red-400 text-sm mt-4 text-center">
+            {submitError}
+          </p>
+        )}
 
         <button
           type="submit"

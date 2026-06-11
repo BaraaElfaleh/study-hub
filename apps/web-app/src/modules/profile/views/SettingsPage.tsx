@@ -17,7 +17,8 @@ const SettingsPage = () => {
   const { profile, updateProfile, isUpdating } = useProfile();
   const { avatarPreview, setAvatarPreview } = useProfileStore();
 
-  const [name, setName] = useState(profile?.name || "");
+  const [firstName, setFirstName] = useState(profile?.firstName || "");
+  const [lastName, setLastName] = useState(profile?.lastName || "");
   const [email, setEmail] = useState(profile?.email || "");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -37,12 +38,13 @@ const SettingsPage = () => {
 
     updateProfile(
       {
-        name,
+        firstName,
+        lastName,
         email,
-        avatar: avatarPreview || undefined,
+        avatarUrl: avatarPreview || undefined,
         currentPassword: currentPassword || undefined,
         newPassword: newPassword || undefined,
-      },
+      } as unknown as Parameters<typeof updateProfile>[0], // Type assertion to bypass the type mismatch
       {
         onSuccess: () => setSuccessMessage("تم تحديث الملف الشخصي بنجاح"),
         onError: () => setErrorMessage("حدث خطأ أثناء التحديث"),
@@ -52,13 +54,13 @@ const SettingsPage = () => {
 
   return (
     <div
-      className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038]"
+      className="min-h-screen bg-gradient-to-b from-[#050530] via-[#040646] to-[#020038]"
       dir="rtl"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-1 h-1 bg-amber-400 rounded-full animate-pulse" />
         <div className="absolute top-40 left-20 w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-100" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-linear-to-r from-amber-400/5 to-blue-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-amber-400/5 to-blue-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 md:px-8 py-16 md:py-24">
@@ -76,11 +78,11 @@ const SettingsPage = () => {
             {/* الصورة الرمزية */}
             <div className="flex justify-center mb-4">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-linear-to-br from-amber-400/20 to-amber-400/5 border border-amber-400/30 flex items-center justify-center">
-                  {avatarPreview || profile?.avatar ? (
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400/20 to-amber-400/5 border border-amber-400/30 flex items-center justify-center">
+                  {avatarPreview || profile?.avatarUrl ? (
                     <img
-                      src={avatarPreview || profile?.avatar}
-                      alt={name}
+                      src={avatarPreview || profile?.avatarUrl}
+                      alt={`${firstName} ${lastName}`}
                       className="w-full h-full rounded-full object-cover"
                     />
                   ) : (
@@ -101,10 +103,10 @@ const SettingsPage = () => {
               </div>
             </div>
 
-            {/* الاسم */}
+            {/* الاسم الأول */}
             <div>
               <label className="block text-white/80 text-sm mb-2 text-right">
-                الاسم الكامل
+                الاسم الأول
               </label>
               <div className="relative">
                 <User
@@ -113,8 +115,28 @@ const SettingsPage = () => {
                 />
                 <input
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-white placeholder:text-white/30 focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/30 transition-all text-right"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* الاسم الأخير */}
+            <div>
+              <label className="block text-white/80 text-sm mb-2 text-right">
+                الاسم الأخير
+              </label>
+              <div className="relative">
+                <User
+                  size={18}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40"
+                />
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-white placeholder:text-white/30 focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/30 transition-all text-right"
                   required
                 />

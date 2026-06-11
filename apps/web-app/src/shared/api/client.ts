@@ -4,7 +4,7 @@ import { useAuthStore } from '../../modules/auth/store/authStore';
 
 // إنشاء instance واحد للـ HTTP Client
 const client: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: 'http://localhost:3001',  // تم التغيير إلى الخادم الحقيقي
   headers: {
     'Content-Type': 'application/json',
   },
@@ -125,12 +125,11 @@ client.interceptors.response.use(
     showErrorNotification(title, message);
 
     // معالجة حالات خاصة
-    if (status === 401) {
-      // مسح الجلسة وإعادة التوجيه للـ login
-      const authStore = useAuthStore.getState();
-      authStore.clearSession();
-      window.location.href = '/login';
-    }
+   if (status === 401) {
+  const authStore = useAuthStore.getState();
+  authStore.clearSession();
+  window.location.href = '/';  // توجيه إلى صفحة تسجيل الدخول (المسار الجذر)
+}
 
     // رفع الخطأ ليتمكن المستدعي من معالجته إذا لزم الأمر
     return Promise.reject(error);

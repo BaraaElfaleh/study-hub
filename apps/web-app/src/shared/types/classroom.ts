@@ -1,52 +1,117 @@
-export const TaskStatusEnum = {
-  PENDING: 'pending',
-  IN_PROGRESS: 'in_progress',
-  DONE: 'done',
-} as const;
-
-export type TaskStatus = typeof TaskStatusEnum[keyof typeof TaskStatusEnum];
-
+// ─── Lectures ────────────────────────────────────
 export interface Lecture {
   id: string;
-  courseId: string;
   title: string;
-  videoUrl?: string | null;
-  driveLink?: string | null;
-  order: number;
-  completedBy: string[];
+  description: string;
+  videoUrl?: string;
+  documentUrl?: string;
+  courseId: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface Task {
+export interface CreateLectureRequest {
+  title: string;
+  description?: string;
+  videoUrl?: string;
+  documentUrl?: string;
+}
+
+export interface UpdateLectureRequest {
+  title?: string;
+  description?: string;
+  videoUrl?: string;
+  documentUrl?: string;
+}
+
+// ─── Assignments ─────────────────────────────────
+export interface Assignment {
   id: string;
-  courseId: string;
   title: string;
   description: string;
-  dueDate: string;
-  status: TaskStatus;
-  assignedTo: string[];
+  courseId: string;
   createdAt: string;
 }
 
+export interface CreateAssignmentRequest {
+  title: string;
+  description: string;
+}
+
+export interface UpdateAssignmentRequest {
+  title?: string;
+  description?: string;
+}
+
+// ─── Submissions ─────────────────────────────────
+export interface Submission {
+  id: string;
+  fileUrl: string;
+  submittedAt: string;
+  studentId: string;
+  assignmentId: string;
+}
+
+export interface SubmitAssignmentRequest {
+  fileUrl: string;
+}
+
+// ─── Quizzes ─────────────────────────────────────
+export interface Quiz {
+  id: string;
+  title: string;
+  formUrl: string;
+  courseId: string;
+  createdAt: string;
+}
+
+export interface CreateQuizRequest {
+  title: string;
+  formUrl: string;
+}
+
+export interface UpdateQuizRequest {
+  title?: string;
+}
+
+// ─── Announcements ───────────────────────────────
 export interface Announcement {
   id: string;
-  courseId: string;
   title: string;
-  body: string;
-  createdAt: string;
-  author: {
+  content: string;
+  courseId: string;
+  author?: {
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
   };
+  createdAt: string;
 }
 
+export interface CreateAnnouncementRequest {
+  title: string;
+  content: string;
+}
+
+export interface UpdateAnnouncementRequest {
+  title?: string;
+  content?: string;
+}
+
+// ─── Chat ────────────────────────────────────────
 export interface ChatMessage {
   id: string;
-  courseId: string;
+  content: string;
   senderId: string;
-  senderName: string;
-  text: string;
-  timestamp: string;
-  status?: 'sending' | 'sent' | 'failed'; // للاستخدام المحلي
+  sender?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  };
+  courseId: string;
+  createdAt: string;
+}
+
+export interface SendMessageRequest {
+  content: string;
 }

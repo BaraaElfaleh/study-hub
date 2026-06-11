@@ -1,12 +1,14 @@
-export type UserRole = 'student' | 'teacher' | 'admin';
+export type UserRole = 'STUDENT' | 'TEACHER' | 'ADMIN';
 
 export interface User {
   id: string;
-  name: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
   role: UserRole;
-  avatar?: string;
-  createdAt: string;
+  avatarUrl?: string;
+  isActive?: boolean;
+  createdAt?: string;
 }
 
 export interface LoginRequest {
@@ -15,13 +17,17 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
-  name: string;
   email: string;
   password: string;
-  password_confirmation?: string;
+  firstName?: string;
+  lastName?: string;
 }
 
-export interface AuthResponse {
-  user: User;
+export interface LoginResponse {
   accessToken: string;
+  refreshToken: string;
+}
+
+export interface RefreshRequest {
+  refreshToken: string;
 }

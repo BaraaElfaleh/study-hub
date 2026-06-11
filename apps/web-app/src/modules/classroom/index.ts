@@ -1,5 +1,4 @@
 export { default as LectureView } from './views/LectureView';
-export { default as TaskBoard } from './views/TaskBoard';
 export { default as AnnouncementList } from './views/AnnouncementList';
 export { default as ChatPanel } from './views/ChatPanel';
 
