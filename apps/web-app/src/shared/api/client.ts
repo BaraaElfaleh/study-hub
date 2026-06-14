@@ -1,22 +1,22 @@
 // src/shared/api/client.ts
-import axios, { type AxiosError, type AxiosInstance } from 'axios';
+import axios, { type AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from 'axios';
 import { useAuthStore } from '../../modules/auth/store/authStore';
 
 // إنشاء instance واحد للـ HTTP Client
 const client: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:3001',  // تم التغيير إلى الخادم الحقيقي
+  // baseURL: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
 // ==================== Helper: Error Message Generator ====================
 const getErrorMessage = (
   status: number,
   data: unknown
 ): { title: string; message: string } => {
   const errorData = data as Record<string, unknown> | undefined;
-  
-  // تحويل الرسالة القادمة من السيرفر إلى string بشكل آمن
+
   const getSafeMessage = (val: unknown): string => {
     if (typeof val === 'string') return val;
     if (val && typeof val === 'object') return JSON.stringify(val);
@@ -76,20 +76,16 @@ const getErrorMessage = (
       };
   }
 };
+
 // ==================== Helper: Show Notification ====================
 const showErrorNotification = (title: string, message: string): void => {
-  const errorLogMessage = `[API Error] ${title}: ${message}`;
-  console.error(errorLogMessage);
-
-  // محاولة استدعاء دالة Notification إذا كانت متاحة من خلال window أو أي آلية أخرى
-  // هذا يسمح بتكامل مستقبلي مع نظام Toast/Notification
+  console.error(`[API Error] ${title}: ${message}`);
   if (window.__apiErrorNotification && typeof window.__apiErrorNotification === 'function') {
     window.__apiErrorNotification(title, message, 'error');
   }
 };
 
 // ==================== Request Interceptor ====================
-// إضافة Token إلى كل طلب تلقائياً
 client.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
@@ -98,45 +94,64 @@ client.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// ==================== Response Interceptor ====================
-// معالجة الأخطاء العامة والـ 401 و 403 و 5xx
+// ==================== Response Interceptor (مع تجديد التوكن التلقائي) ====================
 client.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+
+    // إذا كان الخطأ 401 ولم نحاول إعادة المحاولة بعد
+    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (refreshToken) {
+        try {
+          const { data } = await axios.post(`${client.defaults.baseURL}/auth/refresh`, {
+            refreshToken,
+          });
+          const newAccessToken = data.accessToken || data.access_token; // دعم كلا الحالتين
+
+          if (!newAccessToken) throw new Error('لم يتم استلام access token جديد');
+
+          localStorage.setItem('accessToken', newAccessToken);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+          // إعادة إرسال الطلب الأصلي
+          return client(originalRequest);
+        } catch (refreshError) {
+          // فشل التجديد -> مسح الجلسة وتحويل المستخدم
+          useAuthStore.getState().clearSession();
+          // localStorage.removeItem('refreshToken'); // clearSession تمسحه تلقائيًا
+          window.location.href = '/login';
+          return Promise.reject(refreshError);
+        }
+      } else {
+        // لا يوجد refreshToken على الإطلاق
+        useAuthStore.getState().clearSession();
+        window.location.href = '/login';
+        return Promise.reject(error);
+      }
+    }
+
+    // معالجة الأخطاء الأخرى (غير 401)
     const status = error.response?.status;
     const data = error.response?.data;
 
-    if (!status) {
-      // خطأ في الشبكة أو لم يتم الرد من السيرفر
-      showErrorNotification(
-        'خطأ في الاتصال',
-        'فشل الاتصال بالخادم. يرجى التحقق من الإنترنت.'
-      );
-      return Promise.reject(error);
+    if (status) {
+      const { title, message } = getErrorMessage(status, data);
+      showErrorNotification(title, message);
+    } else {
+      showErrorNotification('خطأ في الاتصال', 'فشل الاتصال بالخادم.');
     }
 
-    // الحصول على رسالة الخطأ
-    const { title, message } = getErrorMessage(status, data);
-    showErrorNotification(title, message);
-
-    // معالجة حالات خاصة
-   if (status === 401) {
-  const authStore = useAuthStore.getState();
-  authStore.clearSession();
-  window.location.href = '/';  // توجيه إلى صفحة تسجيل الدخول (المسار الجذر)
-}
-
-    // رفع الخطأ ليتمكن المستدعي من معالجته إذا لزم الأمر
     return Promise.reject(error);
   }
 );
 
-// Allow external code to set a notification callback
 declare global {
   interface Window {
     __apiErrorNotification?: (

@@ -1,6 +1,7 @@
+// src/modules/classroom/store/classroomStore.ts
 import { create } from 'zustand';
 
-export type ActiveFeature = 'lectures' | 'tasks' | 'announcements' | 'chat';
+export type ActiveFeature = 'lectures' | 'assignments' | 'announcements' | 'chat' | 'quizzes';
 
 interface ClassroomState {
   activeFeature: ActiveFeature;

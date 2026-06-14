@@ -4,11 +4,11 @@ import { Link } from "@tanstack/react-router";
 import {
   User,
   Mail,
-  Lock,
   Camera,
   ArrowLeft,
   Check,
   AlertCircle,
+  X,
 } from "lucide-react";
 import { useProfile } from "../hooks/useProfile";
 import { useProfileStore } from "../store/profileStore";
@@ -20,36 +20,40 @@ const SettingsPage = () => {
   const [firstName, setFirstName] = useState(profile?.firstName || "");
   const [lastName, setLastName] = useState(profile?.lastName || "");
   const [email, setEmail] = useState(profile?.email || "");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  // حالة النافذة الحوارية لرابط الصورة
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const [avatarUrlInput, setAvatarUrlInput] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
 
-    if (newPassword && newPassword !== confirmPassword) {
-      setErrorMessage("كلمة المرور الجديدة غير متطابقة");
-      return;
+    // إرسال الحقول المدعومة فقط
+    const payload: Record<string, any> = {
+      firstName,
+      lastName,
+      email,
+    };
+    if (avatarPreview) {
+      payload.avatarUrl = avatarPreview;
     }
 
-    updateProfile(
-      {
-        firstName,
-        lastName,
-        email,
-        avatarUrl: avatarPreview || undefined,
-        currentPassword: currentPassword || undefined,
-        newPassword: newPassword || undefined,
-      } as unknown as Parameters<typeof updateProfile>[0], // Type assertion to bypass the type mismatch
-      {
-        onSuccess: () => setSuccessMessage("تم تحديث الملف الشخصي بنجاح"),
-        onError: () => setErrorMessage("حدث خطأ أثناء التحديث"),
-      },
-    );
+    updateProfile(payload, {
+      onSuccess: () => setSuccessMessage("تم تحديث الملف الشخصي بنجاح"),
+      onError: () => setErrorMessage("حدث خطأ أثناء التحديث"),
+    });
+  };
+
+  const handleSaveAvatarUrl = () => {
+    if (avatarUrlInput.trim()) {
+      setAvatarPreview(avatarUrlInput.trim());
+    }
+    setShowAvatarModal(false);
+    setAvatarUrlInput("");
   };
 
   return (
@@ -57,6 +61,7 @@ const SettingsPage = () => {
       className="min-h-screen bg-gradient-to-b from-[#050530] via-[#040646] to-[#020038]"
       dir="rtl"
     >
+      {/* تأثيرات الخلفية */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 right-10 w-1 h-1 bg-amber-400 rounded-full animate-pulse" />
         <div className="absolute top-40 left-20 w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-100" />
@@ -69,7 +74,7 @@ const SettingsPage = () => {
             تعديل الملف الشخصي
           </h1>
           <p className="text-white/60 mt-2">
-            يمكنك تغيير بياناتك الشخصية وكلمة المرور
+            يمكنك تغيير بياناتك الشخصية (تغيير كلمة المرور غير متاح حالياً)
           </p>
         </div>
 
@@ -78,12 +83,12 @@ const SettingsPage = () => {
             {/* الصورة الرمزية */}
             <div className="flex justify-center mb-4">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400/20 to-amber-400/5 border border-amber-400/30 flex items-center justify-center">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400/20 to-amber-400/5 border border-amber-400/30 flex items-center justify-center overflow-hidden">
                   {avatarPreview || profile?.avatarUrl ? (
                     <img
                       src={avatarPreview || profile?.avatarUrl}
                       alt={`${firstName} ${lastName}`}
-                      className="w-full h-full rounded-full object-cover"
+                      className="w-full h-full object-cover"
                     />
                   ) : (
                     <User size={40} className="text-amber-400" />
@@ -92,10 +97,7 @@ const SettingsPage = () => {
                 <button
                   type="button"
                   className="absolute bottom-0 right-0 w-8 h-8 bg-amber-400 rounded-full flex items-center justify-center shadow-lg hover:bg-amber-500 transition-colors"
-                  onClick={() => {
-                    const url = prompt("أدخل رابط الصورة الجديدة:");
-                    if (url) setAvatarPreview(url);
-                  }}
+                  onClick={() => setShowAvatarModal(true)}
                   title="تغيير الصورة"
                 >
                   <Camera size={14} className="text-[#050530]" />
@@ -164,54 +166,6 @@ const SettingsPage = () => {
               </div>
             </div>
 
-            {/* كلمة المرور */}
-            <div className="pt-4 border-t border-white/10">
-              <p className="text-white/80 text-sm mb-4">
-                تغيير كلمة المرور (اختياري)
-              </p>
-              <div className="space-y-4">
-                <div className="relative">
-                  <Lock
-                    size={18}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40"
-                  />
-                  <input
-                    type="password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    placeholder="كلمة المرور الحالية"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-white placeholder:text-white/30 focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/30 transition-all text-right"
-                  />
-                </div>
-                <div className="relative">
-                  <Lock
-                    size={18}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40"
-                  />
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="كلمة المرور الجديدة"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-white placeholder:text-white/30 focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/30 transition-all text-right"
-                  />
-                </div>
-                <div className="relative">
-                  <Lock
-                    size={18}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40"
-                  />
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="تأكيد كلمة المرور الجديدة"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-white placeholder:text-white/30 focus:outline-none focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/30 transition-all text-right"
-                  />
-                </div>
-              </div>
-            </div>
-
             {/* رسائل الخطأ والنجاح */}
             {errorMessage && (
               <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm">
@@ -248,6 +202,45 @@ const SettingsPage = () => {
           </Link>
         </div>
       </div>
+
+      {/* نافذة إدخال رابط الصورة */}
+      {showAvatarModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#0a0a3c] border border-white/10 rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-bold text-lg">تغيير الصورة</h3>
+              <button
+                onClick={() => setShowAvatarModal(false)}
+                className="text-white/50 hover:text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <input
+              type="url"
+              value={avatarUrlInput}
+              onChange={(e) => setAvatarUrlInput(e.target.value)}
+              placeholder="أدخل رابط الصورة الجديدة"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white placeholder:text-white/30 focus:outline-none focus:border-amber-400/50 transition-all text-left"
+              dir="ltr"
+            />
+            <div className="flex gap-3 mt-4">
+              <button
+                onClick={handleSaveAvatarUrl}
+                className="flex-1 bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold py-2 px-4 rounded-xl transition-colors"
+              >
+                حفظ
+              </button>
+              <button
+                onClick={() => setShowAvatarModal(false)}
+                className="flex-1 bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-xl transition-colors"
+              >
+                إلغاء
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

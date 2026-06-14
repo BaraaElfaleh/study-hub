@@ -1,13 +1,14 @@
-// ─── Lectures ────────────────────────────────────
+// src/shared/types/classroom.ts
+
 export interface Lecture {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   videoUrl?: string;
   documentUrl?: string;
   courseId: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
 }
 
 export interface CreateLectureRequest {
@@ -24,7 +25,46 @@ export interface UpdateLectureRequest {
   documentUrl?: string;
 }
 
-// ─── Assignments ─────────────────────────────────
+export interface Announcement {
+  id: string;
+  title: string;
+  content: string;
+  courseId: string;
+  author?: {
+    id: string;
+    firstName?: string;
+    lastName?: string;
+  };
+  createdAt: string;
+}
+
+export interface CreateAnnouncementRequest {
+  title: string;
+  content: string;
+}
+
+export interface UpdateAnnouncementRequest {
+  title?: string;
+  content?: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  content: string;
+  senderId: string;
+  sender?: {
+    id: string;
+    firstName?: string;
+    lastName?: string;
+  };
+  courseId: string;
+  createdAt: string;
+}
+
+export interface SendMessageRequest {
+  content: string;
+}
+
 export interface Assignment {
   id: string;
   title: string;
@@ -43,7 +83,6 @@ export interface UpdateAssignmentRequest {
   description?: string;
 }
 
-// ─── Submissions ─────────────────────────────────
 export interface Submission {
   id: string;
   fileUrl: string;
@@ -56,62 +95,26 @@ export interface SubmitAssignmentRequest {
   fileUrl: string;
 }
 
-// ─── Quizzes ─────────────────────────────────────
 export interface Quiz {
   id: string;
   title: string;
-  formUrl: string;
+  questions: QuizQuestion[];
   courseId: string;
   createdAt: string;
+}
+
+export interface QuizQuestion {
+  question: string;
+  options: string[];
+  correctAnswer: number;
 }
 
 export interface CreateQuizRequest {
   title: string;
-  formUrl: string;
+  questions: QuizQuestion[];
 }
 
 export interface UpdateQuizRequest {
   title?: string;
-}
-
-// ─── Announcements ───────────────────────────────
-export interface Announcement {
-  id: string;
-  title: string;
-  content: string;
-  courseId: string;
-  author?: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-  createdAt: string;
-}
-
-export interface CreateAnnouncementRequest {
-  title: string;
-  content: string;
-}
-
-export interface UpdateAnnouncementRequest {
-  title?: string;
-  content?: string;
-}
-
-// ─── Chat ────────────────────────────────────────
-export interface ChatMessage {
-  id: string;
-  content: string;
-  senderId: string;
-  sender?: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-  courseId: string;
-  createdAt: string;
-}
-
-export interface SendMessageRequest {
-  content: string;
+  questions?: QuizQuestion[];
 }

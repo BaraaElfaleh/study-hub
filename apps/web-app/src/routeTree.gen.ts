@@ -11,23 +11,32 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProtectedTsxNotificationsRouteImport } from './routes/_protected.tsx/notifications'
 import { Route as ProtectedTsxDashboardRouteImport } from './routes/_protected.tsx/dashboard'
 import { Route as ProtectedTsxProtectedRouteImport } from './routes/_protected.tsx/_protected'
+import { Route as ProtectedTsxMyCoursesIndexRouteImport } from './routes/_protected.tsx/my-courses/index'
 import { Route as ProtectedTsxCoursesIndexRouteImport } from './routes/_protected.tsx/courses/index'
 import { Route as ProtectedTsxProfileSettingsRouteImport } from './routes/_protected.tsx/profile/settings'
 import { Route as ProtectedTsxProfileUserIdRouteImport } from './routes/_protected.tsx/profile/$userId'
 import { Route as ProtectedTsxCoursesCourseIdRouteImport } from './routes/_protected.tsx/courses/$courseId'
-import { Route as ProtectedTsxClassroomLayoutRouteImport } from './routes/_protected.tsx/classroom/_layout'
 import { Route as ProtectedTsxCheckoutCourseRouteImport } from './routes/_protected.tsx/checkout/$course'
+import { Route as ProtectedTsxTeacherCoursesIndexRouteImport } from './routes/_protected.tsx/teacher/courses/index'
+import { Route as ProtectedTsxTeacherCoursesCreateRouteImport } from './routes/_protected.tsx/teacher/courses/create'
+import { Route as ProtectedTsxClassroomLayoutLayoutRouteImport } from './routes/_protected.tsx/classroom/_layout/_layout'
 import { Route as ProtectedTsxClassroomLayoutClassroomIdIndexRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/index'
-import { Route as ProtectedTsxClassroomLayoutClassroomIdLecturesRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/lectures'
-import { Route as ProtectedTsxClassroomLayoutClassroomIdChatRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/chat'
-import { Route as ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/announcements'
+import { Route as ProtectedTsxTeacherCoursesCourseIdStudentsRouteImport } from './routes/_protected.tsx/teacher/courses/$courseId/students'
+import { Route as ProtectedTsxTeacherCoursesCourseIdEditRouteImport } from './routes/_protected.tsx/teacher/courses/$courseId/edit'
+import { Route as ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/quizzes/index'
+import { Route as ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/lectures/index'
+import { Route as ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/enrollments/index'
+import { Route as ProtectedTsxClassroomLayoutClassroomIdChatIndexRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/chat/index'
+import { Route as ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/assignments/index'
+import { Route as ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/announcements/index'
+import { Route as ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/lectures/$lectureId'
+import { Route as ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRouteImport } from './routes/_protected.tsx/classroom/_layout/$classroomId/quizzes/$quizId/edit'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -37,11 +46,6 @@ const RegisterRoute = RegisterRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -75,6 +79,12 @@ const ProtectedTsxProtectedRoute = ProtectedTsxProtectedRouteImport.update({
   path: '/tsx',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedTsxMyCoursesIndexRoute =
+  ProtectedTsxMyCoursesIndexRouteImport.update({
+    id: '/_protected/tsx/my-courses/',
+    path: '/tsx/my-courses/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProtectedTsxCoursesIndexRoute =
   ProtectedTsxCoursesIndexRouteImport.update({
     id: '/_protected/tsx/courses/',
@@ -99,106 +109,187 @@ const ProtectedTsxCoursesCourseIdRoute =
     path: '/tsx/courses/$courseId',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ProtectedTsxClassroomLayoutRoute =
-  ProtectedTsxClassroomLayoutRouteImport.update({
-    id: '/_protected/tsx/classroom/_layout',
-    path: '/tsx/classroom',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const ProtectedTsxCheckoutCourseRoute =
   ProtectedTsxCheckoutCourseRouteImport.update({
     id: '/_protected/tsx/checkout/$course',
     path: '/tsx/checkout/$course',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ProtectedTsxTeacherCoursesIndexRoute =
+  ProtectedTsxTeacherCoursesIndexRouteImport.update({
+    id: '/_protected/tsx/teacher/courses/',
+    path: '/tsx/teacher/courses/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxTeacherCoursesCreateRoute =
+  ProtectedTsxTeacherCoursesCreateRouteImport.update({
+    id: '/_protected/tsx/teacher/courses/create',
+    path: '/tsx/teacher/courses/create',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxClassroomLayoutLayoutRoute =
+  ProtectedTsxClassroomLayoutLayoutRouteImport.update({
+    id: '/_protected/tsx/classroom/_layout/_layout',
+    path: '/tsx/classroom',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProtectedTsxClassroomLayoutClassroomIdIndexRoute =
   ProtectedTsxClassroomLayoutClassroomIdIndexRouteImport.update({
-    id: '/$classroomId/',
-    path: '/$classroomId/',
-    getParentRoute: () => ProtectedTsxClassroomLayoutRoute,
+    id: '/_protected/tsx/classroom/_layout/$classroomId/',
+    path: '/tsx/classroom/$classroomId/',
+    getParentRoute: () => rootRouteImport,
   } as any)
-const ProtectedTsxClassroomLayoutClassroomIdLecturesRoute =
-  ProtectedTsxClassroomLayoutClassroomIdLecturesRouteImport.update({
-    id: '/$classroomId/lectures',
-    path: '/$classroomId/lectures',
-    getParentRoute: () => ProtectedTsxClassroomLayoutRoute,
+const ProtectedTsxTeacherCoursesCourseIdStudentsRoute =
+  ProtectedTsxTeacherCoursesCourseIdStudentsRouteImport.update({
+    id: '/_protected/tsx/teacher/courses/$courseId/students',
+    path: '/tsx/teacher/courses/$courseId/students',
+    getParentRoute: () => rootRouteImport,
   } as any)
-const ProtectedTsxClassroomLayoutClassroomIdChatRoute =
-  ProtectedTsxClassroomLayoutClassroomIdChatRouteImport.update({
-    id: '/$classroomId/chat',
-    path: '/$classroomId/chat',
-    getParentRoute: () => ProtectedTsxClassroomLayoutRoute,
+const ProtectedTsxTeacherCoursesCourseIdEditRoute =
+  ProtectedTsxTeacherCoursesCourseIdEditRouteImport.update({
+    id: '/_protected/tsx/teacher/courses/$courseId/edit',
+    path: '/tsx/teacher/courses/$courseId/edit',
+    getParentRoute: () => rootRouteImport,
   } as any)
-const ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRoute =
-  ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRouteImport.update({
-    id: '/$classroomId/announcements',
-    path: '/$classroomId/announcements',
-    getParentRoute: () => ProtectedTsxClassroomLayoutRoute,
+const ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRoute =
+  ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRouteImport.update({
+    id: '/_protected/tsx/classroom/_layout/$classroomId/quizzes/',
+    path: '/tsx/classroom/$classroomId/quizzes/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRoute =
+  ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRouteImport.update({
+    id: '/_protected/tsx/classroom/_layout/$classroomId/lectures/',
+    path: '/tsx/classroom/$classroomId/lectures/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRoute =
+  ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRouteImport.update({
+    id: '/_protected/tsx/classroom/_layout/$classroomId/enrollments/',
+    path: '/tsx/classroom/$classroomId/enrollments/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxClassroomLayoutClassroomIdChatIndexRoute =
+  ProtectedTsxClassroomLayoutClassroomIdChatIndexRouteImport.update({
+    id: '/_protected/tsx/classroom/_layout/$classroomId/chat/',
+    path: '/tsx/classroom/$classroomId/chat/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRoute =
+  ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRouteImport.update({
+    id: '/_protected/tsx/classroom/_layout/$classroomId/assignments/',
+    path: '/tsx/classroom/$classroomId/assignments/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRoute =
+  ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRouteImport.update({
+    id: '/_protected/tsx/classroom/_layout/$classroomId/announcements/',
+    path: '/tsx/classroom/$classroomId/announcements/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRoute =
+  ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRouteImport.update({
+    id: '/_protected/tsx/classroom/_layout/$classroomId/lectures/$lectureId',
+    path: '/tsx/classroom/$classroomId/lectures/$lectureId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRoute =
+  ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRouteImport.update({
+    id: '/_protected/tsx/classroom/_layout/$classroomId/quizzes/$quizId/edit',
+    path: '/tsx/classroom/$classroomId/quizzes/$quizId/edit',
+    getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/tsx': typeof ProtectedTsxProtectedRoute
   '/tsx/dashboard': typeof ProtectedTsxDashboardRoute
   '/tsx/notifications': typeof ProtectedTsxNotificationsRoute
   '/tsx/checkout/$course': typeof ProtectedTsxCheckoutCourseRoute
-  '/tsx/classroom': typeof ProtectedTsxClassroomLayoutRouteWithChildren
   '/tsx/courses/$courseId': typeof ProtectedTsxCoursesCourseIdRoute
   '/tsx/profile/$userId': typeof ProtectedTsxProfileUserIdRoute
   '/tsx/profile/settings': typeof ProtectedTsxProfileSettingsRoute
   '/tsx/courses/': typeof ProtectedTsxCoursesIndexRoute
-  '/tsx/classroom/$classroomId/announcements': typeof ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRoute
-  '/tsx/classroom/$classroomId/chat': typeof ProtectedTsxClassroomLayoutClassroomIdChatRoute
-  '/tsx/classroom/$classroomId/lectures': typeof ProtectedTsxClassroomLayoutClassroomIdLecturesRoute
+  '/tsx/my-courses/': typeof ProtectedTsxMyCoursesIndexRoute
+  '/tsx/classroom': typeof ProtectedTsxClassroomLayoutLayoutRoute
+  '/tsx/teacher/courses/create': typeof ProtectedTsxTeacherCoursesCreateRoute
+  '/tsx/teacher/courses/': typeof ProtectedTsxTeacherCoursesIndexRoute
+  '/tsx/teacher/courses/$courseId/edit': typeof ProtectedTsxTeacherCoursesCourseIdEditRoute
+  '/tsx/teacher/courses/$courseId/students': typeof ProtectedTsxTeacherCoursesCourseIdStudentsRoute
   '/tsx/classroom/$classroomId/': typeof ProtectedTsxClassroomLayoutClassroomIdIndexRoute
+  '/tsx/classroom/$classroomId/lectures/$lectureId': typeof ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRoute
+  '/tsx/classroom/$classroomId/announcements/': typeof ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRoute
+  '/tsx/classroom/$classroomId/assignments/': typeof ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRoute
+  '/tsx/classroom/$classroomId/chat/': typeof ProtectedTsxClassroomLayoutClassroomIdChatIndexRoute
+  '/tsx/classroom/$classroomId/enrollments/': typeof ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRoute
+  '/tsx/classroom/$classroomId/lectures/': typeof ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRoute
+  '/tsx/classroom/$classroomId/quizzes/': typeof ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRoute
+  '/tsx/classroom/$classroomId/quizzes/$quizId/edit': typeof ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/tsx': typeof ProtectedTsxProtectedRoute
   '/tsx/dashboard': typeof ProtectedTsxDashboardRoute
   '/tsx/notifications': typeof ProtectedTsxNotificationsRoute
   '/tsx/checkout/$course': typeof ProtectedTsxCheckoutCourseRoute
-  '/tsx/classroom': typeof ProtectedTsxClassroomLayoutRouteWithChildren
   '/tsx/courses/$courseId': typeof ProtectedTsxCoursesCourseIdRoute
   '/tsx/profile/$userId': typeof ProtectedTsxProfileUserIdRoute
   '/tsx/profile/settings': typeof ProtectedTsxProfileSettingsRoute
   '/tsx/courses': typeof ProtectedTsxCoursesIndexRoute
-  '/tsx/classroom/$classroomId/announcements': typeof ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRoute
-  '/tsx/classroom/$classroomId/chat': typeof ProtectedTsxClassroomLayoutClassroomIdChatRoute
-  '/tsx/classroom/$classroomId/lectures': typeof ProtectedTsxClassroomLayoutClassroomIdLecturesRoute
+  '/tsx/my-courses': typeof ProtectedTsxMyCoursesIndexRoute
+  '/tsx/classroom': typeof ProtectedTsxClassroomLayoutLayoutRoute
+  '/tsx/teacher/courses/create': typeof ProtectedTsxTeacherCoursesCreateRoute
+  '/tsx/teacher/courses': typeof ProtectedTsxTeacherCoursesIndexRoute
+  '/tsx/teacher/courses/$courseId/edit': typeof ProtectedTsxTeacherCoursesCourseIdEditRoute
+  '/tsx/teacher/courses/$courseId/students': typeof ProtectedTsxTeacherCoursesCourseIdStudentsRoute
   '/tsx/classroom/$classroomId': typeof ProtectedTsxClassroomLayoutClassroomIdIndexRoute
+  '/tsx/classroom/$classroomId/lectures/$lectureId': typeof ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRoute
+  '/tsx/classroom/$classroomId/announcements': typeof ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRoute
+  '/tsx/classroom/$classroomId/assignments': typeof ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRoute
+  '/tsx/classroom/$classroomId/chat': typeof ProtectedTsxClassroomLayoutClassroomIdChatIndexRoute
+  '/tsx/classroom/$classroomId/enrollments': typeof ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRoute
+  '/tsx/classroom/$classroomId/lectures': typeof ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRoute
+  '/tsx/classroom/$classroomId/quizzes': typeof ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRoute
+  '/tsx/classroom/$classroomId/quizzes/$quizId/edit': typeof ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/_protected/tsx/_protected': typeof ProtectedTsxProtectedRoute
   '/_protected/tsx/dashboard': typeof ProtectedTsxDashboardRoute
   '/_protected/tsx/notifications': typeof ProtectedTsxNotificationsRoute
   '/_protected/tsx/checkout/$course': typeof ProtectedTsxCheckoutCourseRoute
-  '/_protected/tsx/classroom/_layout': typeof ProtectedTsxClassroomLayoutRouteWithChildren
   '/_protected/tsx/courses/$courseId': typeof ProtectedTsxCoursesCourseIdRoute
   '/_protected/tsx/profile/$userId': typeof ProtectedTsxProfileUserIdRoute
   '/_protected/tsx/profile/settings': typeof ProtectedTsxProfileSettingsRoute
   '/_protected/tsx/courses/': typeof ProtectedTsxCoursesIndexRoute
-  '/_protected/tsx/classroom/_layout/$classroomId/announcements': typeof ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRoute
-  '/_protected/tsx/classroom/_layout/$classroomId/chat': typeof ProtectedTsxClassroomLayoutClassroomIdChatRoute
-  '/_protected/tsx/classroom/_layout/$classroomId/lectures': typeof ProtectedTsxClassroomLayoutClassroomIdLecturesRoute
+  '/_protected/tsx/my-courses/': typeof ProtectedTsxMyCoursesIndexRoute
+  '/_protected/tsx/classroom/_layout/_layout': typeof ProtectedTsxClassroomLayoutLayoutRoute
+  '/_protected/tsx/teacher/courses/create': typeof ProtectedTsxTeacherCoursesCreateRoute
+  '/_protected/tsx/teacher/courses/': typeof ProtectedTsxTeacherCoursesIndexRoute
+  '/_protected/tsx/teacher/courses/$courseId/edit': typeof ProtectedTsxTeacherCoursesCourseIdEditRoute
+  '/_protected/tsx/teacher/courses/$courseId/students': typeof ProtectedTsxTeacherCoursesCourseIdStudentsRoute
   '/_protected/tsx/classroom/_layout/$classroomId/': typeof ProtectedTsxClassroomLayoutClassroomIdIndexRoute
+  '/_protected/tsx/classroom/_layout/$classroomId/lectures/$lectureId': typeof ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRoute
+  '/_protected/tsx/classroom/_layout/$classroomId/announcements/': typeof ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRoute
+  '/_protected/tsx/classroom/_layout/$classroomId/assignments/': typeof ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRoute
+  '/_protected/tsx/classroom/_layout/$classroomId/chat/': typeof ProtectedTsxClassroomLayoutClassroomIdChatIndexRoute
+  '/_protected/tsx/classroom/_layout/$classroomId/enrollments/': typeof ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRoute
+  '/_protected/tsx/classroom/_layout/$classroomId/lectures/': typeof ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRoute
+  '/_protected/tsx/classroom/_layout/$classroomId/quizzes/': typeof ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRoute
+  '/_protected/tsx/classroom/_layout/$classroomId/quizzes/$quizId/edit': typeof ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -206,82 +297,122 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
-    | '/forgot-password'
     | '/login'
     | '/register'
     | '/tsx'
     | '/tsx/dashboard'
     | '/tsx/notifications'
     | '/tsx/checkout/$course'
-    | '/tsx/classroom'
     | '/tsx/courses/$courseId'
     | '/tsx/profile/$userId'
     | '/tsx/profile/settings'
     | '/tsx/courses/'
-    | '/tsx/classroom/$classroomId/announcements'
-    | '/tsx/classroom/$classroomId/chat'
-    | '/tsx/classroom/$classroomId/lectures'
+    | '/tsx/my-courses/'
+    | '/tsx/classroom'
+    | '/tsx/teacher/courses/create'
+    | '/tsx/teacher/courses/'
+    | '/tsx/teacher/courses/$courseId/edit'
+    | '/tsx/teacher/courses/$courseId/students'
     | '/tsx/classroom/$classroomId/'
+    | '/tsx/classroom/$classroomId/lectures/$lectureId'
+    | '/tsx/classroom/$classroomId/announcements/'
+    | '/tsx/classroom/$classroomId/assignments/'
+    | '/tsx/classroom/$classroomId/chat/'
+    | '/tsx/classroom/$classroomId/enrollments/'
+    | '/tsx/classroom/$classroomId/lectures/'
+    | '/tsx/classroom/$classroomId/quizzes/'
+    | '/tsx/classroom/$classroomId/quizzes/$quizId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/contact'
-    | '/forgot-password'
     | '/login'
     | '/register'
     | '/tsx'
     | '/tsx/dashboard'
     | '/tsx/notifications'
     | '/tsx/checkout/$course'
-    | '/tsx/classroom'
     | '/tsx/courses/$courseId'
     | '/tsx/profile/$userId'
     | '/tsx/profile/settings'
     | '/tsx/courses'
-    | '/tsx/classroom/$classroomId/announcements'
-    | '/tsx/classroom/$classroomId/chat'
-    | '/tsx/classroom/$classroomId/lectures'
+    | '/tsx/my-courses'
+    | '/tsx/classroom'
+    | '/tsx/teacher/courses/create'
+    | '/tsx/teacher/courses'
+    | '/tsx/teacher/courses/$courseId/edit'
+    | '/tsx/teacher/courses/$courseId/students'
     | '/tsx/classroom/$classroomId'
+    | '/tsx/classroom/$classroomId/lectures/$lectureId'
+    | '/tsx/classroom/$classroomId/announcements'
+    | '/tsx/classroom/$classroomId/assignments'
+    | '/tsx/classroom/$classroomId/chat'
+    | '/tsx/classroom/$classroomId/enrollments'
+    | '/tsx/classroom/$classroomId/lectures'
+    | '/tsx/classroom/$classroomId/quizzes'
+    | '/tsx/classroom/$classroomId/quizzes/$quizId/edit'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/contact'
-    | '/forgot-password'
     | '/login'
     | '/register'
     | '/_protected/tsx/_protected'
     | '/_protected/tsx/dashboard'
     | '/_protected/tsx/notifications'
     | '/_protected/tsx/checkout/$course'
-    | '/_protected/tsx/classroom/_layout'
     | '/_protected/tsx/courses/$courseId'
     | '/_protected/tsx/profile/$userId'
     | '/_protected/tsx/profile/settings'
     | '/_protected/tsx/courses/'
-    | '/_protected/tsx/classroom/_layout/$classroomId/announcements'
-    | '/_protected/tsx/classroom/_layout/$classroomId/chat'
-    | '/_protected/tsx/classroom/_layout/$classroomId/lectures'
+    | '/_protected/tsx/my-courses/'
+    | '/_protected/tsx/classroom/_layout/_layout'
+    | '/_protected/tsx/teacher/courses/create'
+    | '/_protected/tsx/teacher/courses/'
+    | '/_protected/tsx/teacher/courses/$courseId/edit'
+    | '/_protected/tsx/teacher/courses/$courseId/students'
     | '/_protected/tsx/classroom/_layout/$classroomId/'
+    | '/_protected/tsx/classroom/_layout/$classroomId/lectures/$lectureId'
+    | '/_protected/tsx/classroom/_layout/$classroomId/announcements/'
+    | '/_protected/tsx/classroom/_layout/$classroomId/assignments/'
+    | '/_protected/tsx/classroom/_layout/$classroomId/chat/'
+    | '/_protected/tsx/classroom/_layout/$classroomId/enrollments/'
+    | '/_protected/tsx/classroom/_layout/$classroomId/lectures/'
+    | '/_protected/tsx/classroom/_layout/$classroomId/quizzes/'
+    | '/_protected/tsx/classroom/_layout/$classroomId/quizzes/$quizId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
-  ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   ProtectedTsxProtectedRoute: typeof ProtectedTsxProtectedRoute
   ProtectedTsxDashboardRoute: typeof ProtectedTsxDashboardRoute
   ProtectedTsxNotificationsRoute: typeof ProtectedTsxNotificationsRoute
   ProtectedTsxCheckoutCourseRoute: typeof ProtectedTsxCheckoutCourseRoute
-  ProtectedTsxClassroomLayoutRoute: typeof ProtectedTsxClassroomLayoutRouteWithChildren
   ProtectedTsxCoursesCourseIdRoute: typeof ProtectedTsxCoursesCourseIdRoute
   ProtectedTsxProfileUserIdRoute: typeof ProtectedTsxProfileUserIdRoute
   ProtectedTsxProfileSettingsRoute: typeof ProtectedTsxProfileSettingsRoute
   ProtectedTsxCoursesIndexRoute: typeof ProtectedTsxCoursesIndexRoute
+  ProtectedTsxMyCoursesIndexRoute: typeof ProtectedTsxMyCoursesIndexRoute
+  ProtectedTsxClassroomLayoutLayoutRoute: typeof ProtectedTsxClassroomLayoutLayoutRoute
+  ProtectedTsxTeacherCoursesCreateRoute: typeof ProtectedTsxTeacherCoursesCreateRoute
+  ProtectedTsxTeacherCoursesIndexRoute: typeof ProtectedTsxTeacherCoursesIndexRoute
+  ProtectedTsxTeacherCoursesCourseIdEditRoute: typeof ProtectedTsxTeacherCoursesCourseIdEditRoute
+  ProtectedTsxTeacherCoursesCourseIdStudentsRoute: typeof ProtectedTsxTeacherCoursesCourseIdStudentsRoute
+  ProtectedTsxClassroomLayoutClassroomIdIndexRoute: typeof ProtectedTsxClassroomLayoutClassroomIdIndexRoute
+  ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRoute: typeof ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRoute
+  ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRoute: typeof ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRoute
+  ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRoute: typeof ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRoute
+  ProtectedTsxClassroomLayoutClassroomIdChatIndexRoute: typeof ProtectedTsxClassroomLayoutClassroomIdChatIndexRoute
+  ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRoute: typeof ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRoute
+  ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRoute: typeof ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRoute
+  ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRoute: typeof ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRoute
+  ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRoute: typeof ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -298,13 +429,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -349,6 +473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedTsxProtectedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/tsx/my-courses/': {
+      id: '/_protected/tsx/my-courses/'
+      path: '/tsx/my-courses'
+      fullPath: '/tsx/my-courses/'
+      preLoaderRoute: typeof ProtectedTsxMyCoursesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected/tsx/courses/': {
       id: '/_protected/tsx/courses/'
       path: '/tsx/courses'
@@ -377,13 +508,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedTsxCoursesCourseIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_protected/tsx/classroom/_layout': {
-      id: '/_protected/tsx/classroom/_layout'
-      path: '/tsx/classroom'
-      fullPath: '/tsx/classroom'
-      preLoaderRoute: typeof ProtectedTsxClassroomLayoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_protected/tsx/checkout/$course': {
       id: '/_protected/tsx/checkout/$course'
       path: '/tsx/checkout/$course'
@@ -391,78 +515,148 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedTsxCheckoutCourseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_protected/tsx/teacher/courses/': {
+      id: '/_protected/tsx/teacher/courses/'
+      path: '/tsx/teacher/courses'
+      fullPath: '/tsx/teacher/courses/'
+      preLoaderRoute: typeof ProtectedTsxTeacherCoursesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/teacher/courses/create': {
+      id: '/_protected/tsx/teacher/courses/create'
+      path: '/tsx/teacher/courses/create'
+      fullPath: '/tsx/teacher/courses/create'
+      preLoaderRoute: typeof ProtectedTsxTeacherCoursesCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/classroom/_layout/_layout': {
+      id: '/_protected/tsx/classroom/_layout/_layout'
+      path: '/tsx/classroom'
+      fullPath: '/tsx/classroom'
+      preLoaderRoute: typeof ProtectedTsxClassroomLayoutLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected/tsx/classroom/_layout/$classroomId/': {
       id: '/_protected/tsx/classroom/_layout/$classroomId/'
-      path: '/$classroomId'
+      path: '/tsx/classroom/$classroomId'
       fullPath: '/tsx/classroom/$classroomId/'
       preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdIndexRouteImport
-      parentRoute: typeof ProtectedTsxClassroomLayoutRoute
+      parentRoute: typeof rootRouteImport
     }
-    '/_protected/tsx/classroom/_layout/$classroomId/lectures': {
-      id: '/_protected/tsx/classroom/_layout/$classroomId/lectures'
-      path: '/$classroomId/lectures'
-      fullPath: '/tsx/classroom/$classroomId/lectures'
-      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdLecturesRouteImport
-      parentRoute: typeof ProtectedTsxClassroomLayoutRoute
+    '/_protected/tsx/teacher/courses/$courseId/students': {
+      id: '/_protected/tsx/teacher/courses/$courseId/students'
+      path: '/tsx/teacher/courses/$courseId/students'
+      fullPath: '/tsx/teacher/courses/$courseId/students'
+      preLoaderRoute: typeof ProtectedTsxTeacherCoursesCourseIdStudentsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_protected/tsx/classroom/_layout/$classroomId/chat': {
-      id: '/_protected/tsx/classroom/_layout/$classroomId/chat'
-      path: '/$classroomId/chat'
-      fullPath: '/tsx/classroom/$classroomId/chat'
-      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdChatRouteImport
-      parentRoute: typeof ProtectedTsxClassroomLayoutRoute
+    '/_protected/tsx/teacher/courses/$courseId/edit': {
+      id: '/_protected/tsx/teacher/courses/$courseId/edit'
+      path: '/tsx/teacher/courses/$courseId/edit'
+      fullPath: '/tsx/teacher/courses/$courseId/edit'
+      preLoaderRoute: typeof ProtectedTsxTeacherCoursesCourseIdEditRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_protected/tsx/classroom/_layout/$classroomId/announcements': {
-      id: '/_protected/tsx/classroom/_layout/$classroomId/announcements'
-      path: '/$classroomId/announcements'
-      fullPath: '/tsx/classroom/$classroomId/announcements'
-      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRouteImport
-      parentRoute: typeof ProtectedTsxClassroomLayoutRoute
+    '/_protected/tsx/classroom/_layout/$classroomId/quizzes/': {
+      id: '/_protected/tsx/classroom/_layout/$classroomId/quizzes/'
+      path: '/tsx/classroom/$classroomId/quizzes'
+      fullPath: '/tsx/classroom/$classroomId/quizzes/'
+      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/classroom/_layout/$classroomId/lectures/': {
+      id: '/_protected/tsx/classroom/_layout/$classroomId/lectures/'
+      path: '/tsx/classroom/$classroomId/lectures'
+      fullPath: '/tsx/classroom/$classroomId/lectures/'
+      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/classroom/_layout/$classroomId/enrollments/': {
+      id: '/_protected/tsx/classroom/_layout/$classroomId/enrollments/'
+      path: '/tsx/classroom/$classroomId/enrollments'
+      fullPath: '/tsx/classroom/$classroomId/enrollments/'
+      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/classroom/_layout/$classroomId/chat/': {
+      id: '/_protected/tsx/classroom/_layout/$classroomId/chat/'
+      path: '/tsx/classroom/$classroomId/chat'
+      fullPath: '/tsx/classroom/$classroomId/chat/'
+      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdChatIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/classroom/_layout/$classroomId/assignments/': {
+      id: '/_protected/tsx/classroom/_layout/$classroomId/assignments/'
+      path: '/tsx/classroom/$classroomId/assignments'
+      fullPath: '/tsx/classroom/$classroomId/assignments/'
+      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/classroom/_layout/$classroomId/announcements/': {
+      id: '/_protected/tsx/classroom/_layout/$classroomId/announcements/'
+      path: '/tsx/classroom/$classroomId/announcements'
+      fullPath: '/tsx/classroom/$classroomId/announcements/'
+      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/classroom/_layout/$classroomId/lectures/$lectureId': {
+      id: '/_protected/tsx/classroom/_layout/$classroomId/lectures/$lectureId'
+      path: '/tsx/classroom/$classroomId/lectures/$lectureId'
+      fullPath: '/tsx/classroom/$classroomId/lectures/$lectureId'
+      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected/tsx/classroom/_layout/$classroomId/quizzes/$quizId/edit': {
+      id: '/_protected/tsx/classroom/_layout/$classroomId/quizzes/$quizId/edit'
+      path: '/tsx/classroom/$classroomId/quizzes/$quizId/edit'
+      fullPath: '/tsx/classroom/$classroomId/quizzes/$quizId/edit'
+      preLoaderRoute: typeof ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
-
-interface ProtectedTsxClassroomLayoutRouteChildren {
-  ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRoute: typeof ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRoute
-  ProtectedTsxClassroomLayoutClassroomIdChatRoute: typeof ProtectedTsxClassroomLayoutClassroomIdChatRoute
-  ProtectedTsxClassroomLayoutClassroomIdLecturesRoute: typeof ProtectedTsxClassroomLayoutClassroomIdLecturesRoute
-  ProtectedTsxClassroomLayoutClassroomIdIndexRoute: typeof ProtectedTsxClassroomLayoutClassroomIdIndexRoute
-}
-
-const ProtectedTsxClassroomLayoutRouteChildren: ProtectedTsxClassroomLayoutRouteChildren =
-  {
-    ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRoute:
-      ProtectedTsxClassroomLayoutClassroomIdAnnouncementsRoute,
-    ProtectedTsxClassroomLayoutClassroomIdChatRoute:
-      ProtectedTsxClassroomLayoutClassroomIdChatRoute,
-    ProtectedTsxClassroomLayoutClassroomIdLecturesRoute:
-      ProtectedTsxClassroomLayoutClassroomIdLecturesRoute,
-    ProtectedTsxClassroomLayoutClassroomIdIndexRoute:
-      ProtectedTsxClassroomLayoutClassroomIdIndexRoute,
-  }
-
-const ProtectedTsxClassroomLayoutRouteWithChildren =
-  ProtectedTsxClassroomLayoutRoute._addFileChildren(
-    ProtectedTsxClassroomLayoutRouteChildren,
-  )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
-  ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   ProtectedTsxProtectedRoute: ProtectedTsxProtectedRoute,
   ProtectedTsxDashboardRoute: ProtectedTsxDashboardRoute,
   ProtectedTsxNotificationsRoute: ProtectedTsxNotificationsRoute,
   ProtectedTsxCheckoutCourseRoute: ProtectedTsxCheckoutCourseRoute,
-  ProtectedTsxClassroomLayoutRoute:
-    ProtectedTsxClassroomLayoutRouteWithChildren,
   ProtectedTsxCoursesCourseIdRoute: ProtectedTsxCoursesCourseIdRoute,
   ProtectedTsxProfileUserIdRoute: ProtectedTsxProfileUserIdRoute,
   ProtectedTsxProfileSettingsRoute: ProtectedTsxProfileSettingsRoute,
   ProtectedTsxCoursesIndexRoute: ProtectedTsxCoursesIndexRoute,
+  ProtectedTsxMyCoursesIndexRoute: ProtectedTsxMyCoursesIndexRoute,
+  ProtectedTsxClassroomLayoutLayoutRoute:
+    ProtectedTsxClassroomLayoutLayoutRoute,
+  ProtectedTsxTeacherCoursesCreateRoute: ProtectedTsxTeacherCoursesCreateRoute,
+  ProtectedTsxTeacherCoursesIndexRoute: ProtectedTsxTeacherCoursesIndexRoute,
+  ProtectedTsxTeacherCoursesCourseIdEditRoute:
+    ProtectedTsxTeacherCoursesCourseIdEditRoute,
+  ProtectedTsxTeacherCoursesCourseIdStudentsRoute:
+    ProtectedTsxTeacherCoursesCourseIdStudentsRoute,
+  ProtectedTsxClassroomLayoutClassroomIdIndexRoute:
+    ProtectedTsxClassroomLayoutClassroomIdIndexRoute,
+  ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRoute:
+    ProtectedTsxClassroomLayoutClassroomIdLecturesLectureIdRoute,
+  ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRoute:
+    ProtectedTsxClassroomLayoutClassroomIdAnnouncementsIndexRoute,
+  ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRoute:
+    ProtectedTsxClassroomLayoutClassroomIdAssignmentsIndexRoute,
+  ProtectedTsxClassroomLayoutClassroomIdChatIndexRoute:
+    ProtectedTsxClassroomLayoutClassroomIdChatIndexRoute,
+  ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRoute:
+    ProtectedTsxClassroomLayoutClassroomIdEnrollmentsIndexRoute,
+  ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRoute:
+    ProtectedTsxClassroomLayoutClassroomIdLecturesIndexRoute,
+  ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRoute:
+    ProtectedTsxClassroomLayoutClassroomIdQuizzesIndexRoute,
+  ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRoute:
+    ProtectedTsxClassroomLayoutClassroomIdQuizzesQuizIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

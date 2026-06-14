@@ -10,9 +10,23 @@ export default defineConfig({
     tailwindcss(),
     tanstackRouter(),
   ],
+    server: {
+    port: 5173,
+    proxy: {
+      '/users': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+      '/auth': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+    
   },
 })

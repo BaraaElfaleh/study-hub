@@ -1,3 +1,4 @@
+// src/modules/auth/api/authService.ts
 import client from '../../../shared/api/client';
 import type { LoginRequest, RegisterRequest, LoginResponse, User } from '../../../shared/types/auth';
 
