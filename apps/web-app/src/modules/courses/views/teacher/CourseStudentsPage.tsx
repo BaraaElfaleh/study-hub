@@ -4,8 +4,8 @@ import { useParams } from '@tanstack/react-router';
 import { useTeacherCourses } from '../../hooks/useTeacherCourses';
 
 const CourseStudentsPage = () => {
-  const { courseId } = useParams({ from: '/_protected/tsx/teacher/courses/$courseId/students' }) as { courseId: string };
-  const { enrollStudent, unenrollStudent } = useTeacherCourses();
+  const { courseId } = useParams({ from: '/_protected/_tsx/teacher/courses/$courseId/students' }) as { courseId: string };
+  const { enrollStudent} = useTeacherCourses();
   const [studentId, setStudentId] = useState('');
 
   const handleEnroll = (e: React.FormEvent) => {
@@ -15,7 +15,7 @@ const CourseStudentsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#050530] via-[#040646] to-[#020038] px-4 py-8 md:py-16" dir="rtl">
+    <div className="min-h-screen bg-linear-to-b from-[#050530] via-[#040646] to-[#020038] px-4 py-8 md:py-16" dir="rtl">
       <div className="max-w-xl mx-auto">
         <h1 className="text-3xl font-bold text-white mb-8 text-center">إدارة طلاب الكورس</h1>
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">

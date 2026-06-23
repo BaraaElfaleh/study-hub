@@ -8,7 +8,7 @@ import type { QuizQuestion } from '../../../../shared/types/classroom';
 
 const QuizEditorPage = () => {
   const { classroomId, quizId } = useParams({
-    from: '/_protected/tsx/classroom/_layout/$classroomId/quizzes/$quizId/edit',
+    from: '/_protected/_tsx/classroom/$classroomId/quizzes/$quizId/edit',
   }) as { classroomId: string; quizId: string };
 
   const { quiz, isLoading, error, updateQuiz, isUpdating } = useQuizEditor(classroomId, quizId);
@@ -84,7 +84,7 @@ const QuizEditorPage = () => {
   return (
     <div className="p-4 md:p-8 text-right" dir="rtl">
       <Link
-        to="/tsx/classroom/$classroomId/quizzes"
+        to="/_protected/_tsx/classroom/$classroomId/quizzes/"
         params={{ classroomId }}
         className="inline-flex items-center gap-2 text-white/50 hover:text-amber-400 mb-6"
       >

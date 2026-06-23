@@ -4,11 +4,10 @@ import { useParams } from '@tanstack/react-router';
 import { useChat } from '../hooks/useChat';
 import { useAuthStore } from '../../../auth/store/authStore';
 import { MessageCircle, Send, Loader } from 'lucide-react';
-import type { ChatMessage } from '../../../../shared/types/classroom';
 
 const ChatRoom = () => {
   const { classroomId } = useParams({
-    from: '/_protected/tsx/classroom/_layout/$classroomId/chat',
+    from: '/_protected/_tsx/classroom/$classroomId/chat/',
   }) as { classroomId: string };
 
   const { messages, isLoading, error, sendMessage, isSending } = useChat(classroomId);
@@ -71,7 +70,7 @@ const ChatRoom = () => {
                 {!isMine && (
                   <p className="text-xs text-amber-400 mb-1">{senderName}</p>
                 )}
-                <p className="text-sm whitespace-pre-wrap break-words">{msg.content}</p>
+                <p className="text-sm whitespace-pre-wrap wrap-break-word">{msg.content}</p>
                 <p className="text-xs opacity-60 mt-1">{time}</p>
               </div>
             </div>

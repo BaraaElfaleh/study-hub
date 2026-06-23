@@ -1,14 +1,13 @@
 import { useParams, Link } from '@tanstack/react-router';
-import { useCourses } from '../../hooks/useCourses';
-import { Loader } from '../../../../shared/components/ui/Loader';
+import  Loader  from '../../../../shared/components/ui/Loader';
+import { useCourseDetail } from '../../hooks/useCourseDetail';
 import { ArrowLeft, BookOpen, User, Calendar, BarChart } from 'lucide-react';
 
 const CourseDetailPage = () => {
   const { courseId } = useParams({
-    from: '/_protected/tsx/courses/$courseId',
+    from: '/_protected/_tsx/courses/$courseId',
   }) as { courseId: string };
 
-  const { useCourseDetail } = useCourses();
   const { data: course, isLoading, error } = useCourseDetail(courseId);
 
   if (isLoading) {
@@ -24,7 +23,7 @@ const CourseDetailPage = () => {
       <div className="min-h-screen bg-[#050530] flex items-center justify-center">
         <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-8 text-center">
           <p className="text-red-400 text-lg">فشل تحميل تفاصيل الدورة</p>
-          <Link to="/tsx/courses" className="text-amber-400 mt-4 inline-block">
+          <Link to="/courses" className="text-amber-400 mt-4 inline-block">
             العودة للدورات
           </Link>
         </div>
@@ -37,7 +36,7 @@ const CourseDetailPage = () => {
       <div className="min-h-screen bg-[#050530] flex items-center justify-center">
         <div className="text-center">
           <p className="text-white text-xl">الدورة غير موجودة</p>
-          <Link to="/tsx/courses" className="text-amber-400 mt-4 inline-block">
+          <Link to="/courses" className="text-amber-400 mt-4 inline-block">
             تصفح الدورات
           </Link>
         </div>
@@ -111,7 +110,7 @@ const CourseDetailPage = () => {
 
           {/* زر التسجيل */}
           <Link
-            to="/tsx/checkout/$course"
+            to="/payments/history"
             params={{ course: course.id }}
             className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg shadow-amber-400/20 hover:shadow-xl hover:shadow-amber-400/30 flex items-center gap-2 text-lg w-fit"
           >
@@ -121,7 +120,7 @@ const CourseDetailPage = () => {
           {/* رابط العودة */}
           <div className="mt-8 pt-6 border-t border-white/10">
             <Link
-              to="/tsx/courses"
+              to="/courses"
               className="inline-flex items-center gap-2 text-white/60 hover:text-amber-400 transition-colors duration-300 text-sm"
             >
               <ArrowLeft size={16} />

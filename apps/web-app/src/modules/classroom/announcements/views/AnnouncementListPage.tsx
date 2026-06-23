@@ -7,7 +7,7 @@ import { Megaphone, Plus, Trash2, Edit3, Loader } from 'lucide-react';
 
 const AnnouncementListPage = () => {
   const { classroomId } = useParams({
-    from: '/_protected/tsx/classroom/_layout/$classroomId/announcements',
+    from: '/_protected/_tsx/classroom/$classroomId/announcements/',
   }) as { classroomId: string };
 
   const {
