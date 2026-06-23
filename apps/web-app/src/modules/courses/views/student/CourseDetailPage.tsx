@@ -1,11 +1,11 @@
 import { useParams, Link } from '@tanstack/react-router';
-import  Loader  from '../../../../shared/components/ui/Loader';
+import  {Loader}  from '../../../../shared/components/ui/Loader';
 import { useCourseDetail } from '../../hooks/useCourseDetail';
 import { ArrowLeft, BookOpen, User, Calendar, BarChart } from 'lucide-react';
 
 const CourseDetailPage = () => {
   const { courseId } = useParams({
-    from: '/_protected/_tsx/courses/$courseId',
+    from: '/_protected/courses/$courseId',
   }) as { courseId: string };
 
   const { data: course, isLoading, error } = useCourseDetail(courseId);

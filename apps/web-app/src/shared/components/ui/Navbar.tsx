@@ -16,11 +16,11 @@ export const Navbar = () => {
 
   const navLinks = [
     { label: "الرئيسية", to: "/" },
-    { label: "الكورسات", to: "/tsx/courses" },
-    { label: "كورساتي", to: "/tsx/classroom/my-courses" },
+    { label: "الكورسات", to: "/courses" },
+    { label: "كورساتي", to: "/classroom/my-courses" },
     { label: "تواصل معنا", to: "/contact" },
     { label: "من نحن", to: "/about" },
-    { label: "لوحة التحكم", to: "/tsx/dashboard" },
+
   ];
 
   // دالة دقيقة لتحديد الرابط النشط
@@ -79,7 +79,7 @@ export const Navbar = () => {
             {/* السيرشبار */}
 
             {/* الجرس مع شارة الإشعارات */}
-            <Link to="/tsx/notifications" className={iconButtonClass}>
+            <Link to="/notifications" className={iconButtonClass}>
               <Bell size={22} strokeWidth={1.5} />
               {unreadCount > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-[#050252]">
@@ -96,7 +96,7 @@ export const Navbar = () => {
             {/* تسجيل الدخول / الملف الشخصي */}
             {isAuthenticated && user ? (
               <Link
-                to="/tsx/profile/$userId"
+                to="/profile/$userId"
                 className={iconButtonClass}
                 params={{ userId: user.id }}
               >
@@ -158,7 +158,7 @@ export const Navbar = () => {
               <span>بحث</span>
             </div>
             <Link
-              to="/tsx/notifications"
+              to="/notifications"
               className="flex items-center justify-end gap-4 p-4 bg-white/5 rounded-2xl font-semibold text-white/90 text-sm hover:bg-white/10"
               onClick={() => setMobileOpen(false)}
             >
@@ -174,7 +174,7 @@ export const Navbar = () => {
             </button>
             {isAuthenticated ? (
               <Link
-                to="/tsx/profile/$userId"
+                to="/profile/$userId"
                 className="flex items-center justify-end gap-4 p-4 bg-white/5 rounded-2xl font-semibold text-white/90 text-sm hover:bg-white/10"
                 onClick={() => setMobileOpen(false)}
                 params={{ userId: user?.id ?? "" }}

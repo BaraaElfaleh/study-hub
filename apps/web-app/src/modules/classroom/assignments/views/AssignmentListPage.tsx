@@ -17,7 +17,7 @@ import {
 
 const AssignmentListPage = () => {
   const { classroomId } = useParams({
-    from: '/_protected/_tsx/classroom/$classroomId/assignments/',
+    from: '/_protected/classroom/$classroomId/assignments/',
   }) as { classroomId: string };
 
   const {

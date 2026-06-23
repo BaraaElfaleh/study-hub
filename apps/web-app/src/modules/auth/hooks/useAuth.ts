@@ -14,7 +14,7 @@ export const useAuth = () => {
     isAuthenticated,
     setSession,
     clearSession,
-    accessToken,
+    // accessToken,
   } = useAuthStore();
 
   // جلب بيانات المستخدم من الخادم عند وجود accessToken وعدم وجود user محلي
@@ -43,7 +43,7 @@ export const useAuth = () => {
         localStorage.setItem('refreshToken', data.refreshToken);
       }
       queryClient.invalidateQueries({ queryKey: ['currentUser'] });
-      navigate({ to: '/tsx/dashboard' });
+      navigate({ to: '/courses' });
     },
   });
 

@@ -12,7 +12,7 @@ import {
 
 const QuizListPage = () => {
   const { classroomId } = useParams({
-    from: '/_protected/_tsx/classroom/$classroomId/quizzes/',
+    from: '/_protected/classroom/$classroomId/quizzes/',
   }) as { classroomId: string };
 
   const {

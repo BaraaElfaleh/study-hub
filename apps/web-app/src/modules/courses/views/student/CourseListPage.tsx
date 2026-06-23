@@ -91,7 +91,7 @@ const CourseListPage = () => {
                 <div className="flex items-center justify-between mt-auto">
                   <span className="text-amber-400 font-bold text-lg">{course.price} $</span>
                   <Link
-                    to="/tsx/courses/$courseId"
+                    to="/courses/$courseId"
                     params={{ courseId: course.id }}
                     className="inline-block"
                   >

@@ -209,7 +209,7 @@ const AboutPage = () => {
               أنا أريد مساحة عمل
             </a>
             <Link
-              to="/tsx/courses"
+              to="/courses"
               className="bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold px-8 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-amber-400/20 hover:shadow-xl hover:shadow-amber-400/30"
             >
               أنا أريد مهارة

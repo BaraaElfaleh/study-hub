@@ -75,7 +75,7 @@ const ProfilePage = () => {
             </div>
 
             <Link
-              to="/tsx/profile/settings"
+              to="/profile/settings"
               className="inline-flex items-center justify-center gap-2 mt-8 w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300"
             >
               <Settings size={18} />

@@ -193,7 +193,7 @@ const SettingsPage = () => {
 
         <div className="text-center mt-8">
           <Link
-            to="/tsx/profile/$userId"
+            to="/profile/$userId"
             params={{ userId: profile?.id ?? "" }}
             className="inline-flex items-center gap-2 text-white/50 hover:text-amber-400 transition-colors duration-300 text-sm"
           >

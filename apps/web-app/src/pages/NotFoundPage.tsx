@@ -38,7 +38,7 @@ const NotFoundPage = () => {
             العودة للرئيسية
           </Link>
           <Link
-            to="/tsx/courses"
+            to="/courses"
             className="inline-flex items-center gap-2 text-white/80 hover:text-amber-400 font-medium px-6 py-3 rounded-xl border border-white/20 hover:border-amber-400/50 transition-all duration-300"
           >
             <Compass size={18} />

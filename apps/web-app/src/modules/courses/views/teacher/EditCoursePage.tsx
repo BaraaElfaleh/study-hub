@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from '@tanstack/react-router';
 import { useCourseDetail } from '../../hooks/useCourseDetail';
 import { useTeacherCourses } from '../../hooks/useTeacherCourses';
-import  Loader  from '../../../../shared/components/ui/Loader';
+import  {Loader}  from '../../../../shared/components/ui/Loader';
 
 const EditCoursePage = () => {
-  const { courseId } = useParams({ from: '/_protected/_tsx/teacher/courses/$courseId/edit' }) as { courseId: string };
+  const { courseId } = useParams({ from: '/_protected/teacher/courses/$courseId/edit' }) as { courseId: string };
   const navigate = useNavigate();
   const { data: course, isLoading } = useCourseDetail(courseId);
   const { updateCourse, isUpdating } = useTeacherCourses();

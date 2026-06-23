@@ -14,7 +14,7 @@ const CreateCoursePage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createCourse({ title, description });
-    navigate({ to: '/tsx/teacher/courses' });
+    navigate({ to: '/teacher/courses' });
   };
 
   return (

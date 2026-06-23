@@ -23,7 +23,7 @@ const MyCoursesPage = () => {
           <div className="text-center text-white/70">
             <BookOpen size={48} className="mx-auto text-amber-400 mb-4" />
             <p>لم تسجل في أي كورس بعد.</p>
-            <Link to="/tsx/courses" className="text-amber-400 mt-2 inline-block">تصفح الكورسات</Link>
+            <Link to="/courses" className="text-amber-400 mt-2 inline-block">تصفح الكورسات</Link>
           </div>
         )}
 
@@ -34,7 +34,7 @@ const MyCoursesPage = () => {
                 <h2 className="text-xl font-bold text-white">{course.title}</h2>
                 <p className="text-white/60 text-sm mt-2 line-clamp-2">{course.description}</p>
                 <Link
-                  to="/tsx/courses/$courseId"
+                  to="/courses/$courseId"
                   params={{ courseId: course.id }}
                   className="text-amber-400 mt-4 inline-block"
                 >

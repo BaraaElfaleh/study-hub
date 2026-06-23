@@ -13,7 +13,7 @@ const TeacherCoursesPage = () => {
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-3xl font-bold text-white">كورساتي (كمعلم)</h1>
           <Link
-            to="/tsx/teacher/courses/create"
+            to="/teacher/courses/create"
             className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-[#050530] font-bold py-2 px-4 rounded-xl"
           >
             <Plus size={18} /> كورس جديد
@@ -33,7 +33,7 @@ const TeacherCoursesPage = () => {
               <p className="text-white/60 text-sm mt-2 line-clamp-3">{course.description}</p>
               <div className="flex gap-3 mt-4">
                 <Link
-                  to="/tsx/teacher/courses/$courseId/edit"
+                  to="/teacher/courses/$courseId/edit"
                   params={{ courseId: course.id }}
                   className="flex items-center gap-1 text-amber-400 hover:text-amber-300"
                 >
@@ -46,7 +46,7 @@ const TeacherCoursesPage = () => {
                   <Trash2 size={16} /> حذف
                 </button>
                 <Link
-                  to="/tsx/teacher/courses/$courseId/students"
+                  to="/teacher/courses/$courseId/students"
                   params={{ courseId: course.id }}
                   className="flex items-center gap-1 text-blue-400 hover:text-blue-300"
                 >

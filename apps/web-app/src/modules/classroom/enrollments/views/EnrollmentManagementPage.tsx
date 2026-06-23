@@ -7,7 +7,7 @@ import { Users, UserPlus, UserMinus, Loader } from 'lucide-react';
 
 const EnrollmentManagementPage = () => {
   const { classroomId } = useParams({
-    from: '/_protected/_tsx/classroom/$classroomId/enrollments/',
+    from: '/_protected/classroom/$classroomId/enrollments/',
   }) as { classroomId: string };
 
   const { students, isLoading, error, enrollStudent, unenrollStudent, isEnrolling, isUnenrolling } =

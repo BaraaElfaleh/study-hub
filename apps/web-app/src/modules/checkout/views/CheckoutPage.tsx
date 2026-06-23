@@ -2,11 +2,11 @@
 import { useParams, useNavigate, Link } from '@tanstack/react-router';
 import CheckoutForm from './CheckoutForm';
 import { useCourseDetail } from '../../courses/hooks/useCourseDetail';
-import  Loader  from '../../../shared/components/ui/Loader';
+import  {Loader } from '../../../shared/components/ui/Loader';
 
 const CheckoutPage = () => {
   const { courseId } = useParams({
-    from: '/_protected/_tsx/payments/history',
+    from: '/_protected/checkout/$courseId',
   }) as { courseId: string };
 
   const navigate = useNavigate();

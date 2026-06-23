@@ -7,7 +7,7 @@ import { MessageCircle, Send, Loader } from 'lucide-react';
 
 const ChatRoom = () => {
   const { classroomId } = useParams({
-    from: '/_protected/_tsx/classroom/$classroomId/chat/',
+    from: '/_protected/classroom/$classroomId/chat/',
   }) as { classroomId: string };
 
   const { messages, isLoading, error, sendMessage, isSending } = useChat(classroomId);

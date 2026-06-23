@@ -1,21 +1,23 @@
 // src/modules/auth/pages/AuthCallback.tsx
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useAuthStore } from '../store/authStore';
 import { authService } from '../api/authService';
 
 const AuthCallback = () => {
-  const [searchParams] = useSearchParams();
+  // استخدام useSearch لجلب البرامات بشكل آمن
+  const search = useSearch({ from: '/' }); // تأكد من مطابقة هذا المسار لما هو في routeTree.gen.ts
   const navigate = useNavigate();
   const setSession = useAuthStore((s) => s.setSession);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const accessToken = searchParams.get('access_token');
-    const refreshToken = searchParams.get('refresh_token');
+    // استخراج القيم من search
+    const accessToken = (search as any).access_token;
+    const refreshToken = (search as any).refresh_token;
 
     if (accessToken && refreshToken) {
-      // حفظ التوكنز في localStorage أولاً
+      // حفظ التوكنز في localStorage
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
 
@@ -24,7 +26,7 @@ const AuthCallback = () => {
         .fetchCurrentUser()
         .then((user) => {
           setSession(user, { accessToken, refreshToken });
-          navigate({ to: '/tsx/dashboard', replace: true });
+          navigate({ to: '/courses', replace: true });
         })
         .catch(() => {
           setError('فشل جلب بيانات المستخدم.');
@@ -34,7 +36,7 @@ const AuthCallback = () => {
     } else {
       setError('فشل تسجيل الدخول: لم يتم استلام التوكنز من Google.');
     }
-  }, []);
+  }, [search, setSession, navigate]);
 
   if (error) {
     return (

@@ -4,7 +4,7 @@ import { useParams } from '@tanstack/react-router';
 import { useTeacherCourses } from '../../hooks/useTeacherCourses';
 
 const CourseStudentsPage = () => {
-  const { courseId } = useParams({ from: '/_protected/_tsx/teacher/courses/$courseId/students' }) as { courseId: string };
+  const { courseId } = useParams({ from: '/_protected/teacher/courses/$courseId/students' }) as { courseId: string };
   const { enrollStudent} = useTeacherCourses();
   const [studentId, setStudentId] = useState('');
 
