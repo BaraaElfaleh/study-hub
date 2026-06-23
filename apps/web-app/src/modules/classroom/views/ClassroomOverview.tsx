@@ -7,7 +7,7 @@ import { useQuizzes } from '../quizzes/hooks/useQuizzes';
 import { BookOpen, CheckSquare, Bell, Users } from 'lucide-react';
 
 export default function ClassroomOverview() {
-  const { classroomId } = useParams({ from: '/_protected/tsx/classroom/_layout/$classroomId/' }) as { classroomId: string };
+  const { classroomId } = useParams({ from: '/_protected/_tsx/classroom/$classroomId/' }) as { classroomId: string };
   const { lectures } = useLectures(classroomId);
   const { assignments } = useAssignments(classroomId);
   const { data: announcements } = useAnnouncements(classroomId);

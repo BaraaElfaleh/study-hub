@@ -1,12 +1,12 @@
 // src/modules/classroom/lectures/views/LectureDetailPage.tsx
 import { useParams, Link } from '@tanstack/react-router';
 import { useLectureDetail } from '../hooks/useLectureDetail';
-import { Loader } from '../../../../shared/components/ui/Loader';
-import { ArrowRight, Video, FileText, BookOpen } from 'lucide-react';
+import  Loader  from '../../../../shared/components/ui/Loader';
+import { ArrowRight, Video, FileText } from 'lucide-react';
 
 const LectureDetailPage = () => {
   const { classroomId, lectureId } = useParams({
-    from: '/_protected/tsx/classroom/_layout/$classroomId/lectures/$lectureId',
+    from: '/_protected/_tsx/classroom/$classroomId/lectures/$lectureId',
   }) as { classroomId: string; lectureId: string };
 
   const { data: lecture, isLoading, error } = useLectureDetail(classroomId, lectureId);
@@ -34,7 +34,7 @@ const LectureDetailPage = () => {
   return (
     <div className="p-4 md:p-8 text-right" dir="rtl">
       <Link
-        to="/tsx/classroom/$classroomId/lectures"
+        to="/_protected/_tsx/classroom/$classroomId/lectures/"
         params={{ classroomId }}
         className="inline-flex items-center gap-2 text-white/50 hover:text-amber-400 mb-6"
       >
