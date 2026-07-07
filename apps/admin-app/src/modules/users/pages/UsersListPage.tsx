@@ -1,10 +1,16 @@
-import { useState } from 'react';
-import { useAdminUsers } from '../hooks/useAdminUsers';
-import { useUsersStore } from '../store/usersStore';
-import DataTable from '../../../shared/components/ui/DataTable';
-import FilterBar from '../../../shared/components/ui/FilterBar';
-import Badge from '../../../shared/components/ui/Badge';
-import ConfirmDialog from '../../../shared/components/ui/ConfirmDialog';
+import { useState } from "react";
+import { useAdminUsers } from "../hooks/useAdminUsers";
+import { useUsersStore } from "../store/usersStore";
+import DataTable from "../../../shared/components/ui/DataTable";
+import FilterBar from "../../../shared/components/ui/FilterBar";
+import Badge from "../../../shared/components/ui/Badge";
+import ConfirmDialog from "../../../shared/components/ui/ConfirmDialog";
+
+const ROLE_LABELS: Record<string, string> = {
+  STUDENT: "طالب",
+  TEACHER: "معلم",
+  ADMIN: "مشرف",
+};
 
 export default function UsersListPage() {
   const { users, meta, isLoading, toggleActivation } = useAdminUsers();
@@ -12,29 +18,31 @@ export default function UsersListPage() {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   const columns = [
-    { header: 'الاسم', accessor: (row: any) => `${row.firstName} ${row.lastName}` },
-    { header: 'البريد الإلكتروني', accessor: 'email' as const },
     {
-      header: 'الدور',
-      accessor: (row: any) =>
-        ({ STUDENT: 'طالب', TEACHER: 'معلم', ADMIN: 'مشرف' }[row.role] ?? row.role),
+      header: "الاسم",
+      accessor: (row: any) => `${row.firstName} ${row.lastName}`,
+    },
+    { header: "البريد الإلكتروني", accessor: "email" as const },
+    {
+      header: "الدور",
+      accessor: (row: any) => ROLE_LABELS[row.role] ?? row.role,
     },
     {
-      header: 'الحالة',
+      header: "الحالة",
       accessor: (row: any) => (
-        <Badge variant={row.isActive ? 'success' : 'danger'}>
-          {row.isActive ? 'نشط' : 'غير نشط'}
+        <Badge variant={row.isActive ? "success" : "danger"}>
+          {row.isActive ? "نشط" : "غير نشط"}
         </Badge>
       ),
     },
     {
-      header: 'إجراءات',
+      header: "إجراءات",
       accessor: (row: any) => (
         <button
           onClick={() => setSelectedUserId(row.id)}
           className="text-amber-400 hover:text-amber-300 text-sm"
         >
-          {row.isActive ? 'تعطيل' : 'تفعيل'}
+          {row.isActive ? "تعطيل" : "تفعيل"}
         </button>
       ),
     },
@@ -55,9 +63,11 @@ export default function UsersListPage() {
           <option value="ADMIN">مشرف</option>
         </select>
         <select
-          value={filters.isActive === undefined ? '' : String(filters.isActive)}
+          value={filters.isActive === undefined ? "" : String(filters.isActive)}
           onChange={(e) =>
-            setIsActive(e.target.value === '' ? undefined : e.target.value === 'true')
+            setIsActive(
+              e.target.value === "" ? undefined : e.target.value === "true",
+            )
           }
           className="bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white"
         >

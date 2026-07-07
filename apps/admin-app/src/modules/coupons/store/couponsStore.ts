@@ -1,3 +1,14 @@
-import { create } from 'zustand'; import type { Coupon } from '@/shared/types/coupon';
-interface CouponsStore { isFormOpen: boolean; editingCoupon: Coupon|undefined; openForm:(c?:Coupon)=>void; closeForm:()=>void; }
-export const useCouponsStore = create<CouponsStore>(set=>({ isFormOpen:false,editingCoupon:undefined, openForm:c=>set({isFormOpen:true,editingCoupon:c}), closeForm:()=>set({isFormOpen:false,editingCoupon:undefined}) }));
+import { create } from "zustand";
+import type { Coupon } from "../../../shared/types/coupon";
+interface CouponsStore {
+  isFormOpen: boolean;
+  editingCoupon: Coupon | undefined;
+  openForm: (c?: Coupon) => void;
+  closeForm: () => void;
+}
+export const useCouponsStore = create<CouponsStore>((set) => ({
+  isFormOpen: false,
+  editingCoupon: undefined,
+  openForm: (c) => set({ isFormOpen: true, editingCoupon: c }),
+  closeForm: () => set({ isFormOpen: false, editingCoupon: undefined }),
+}));

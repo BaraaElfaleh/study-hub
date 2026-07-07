@@ -6,9 +6,12 @@ export const Route = createFileRoute('/_admin')({
   beforeLoad: ({ location }) => {
     const token = localStorage.getItem('adminAccessToken');
     const user = useAuthStore.getState().user;
-    if (!token || !user || user.role !== 'ADMIN') {
+    console.log('🔍 beforeLoad _admin | token:', token, 'user:', user);
+    if (!token || !user || user.role?.toUpperCase() !== 'ADMIN') {
+      console.warn('⛔ ممنوع الدخول – يتم التوجيه إلى /login');
       throw redirect({ to: '/login', search: { redirect: location.href } });
     }
+    console.log('✅ مسموح بالدخول');
   },
   component: () => (
     <AdminLayout>
