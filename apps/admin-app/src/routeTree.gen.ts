@@ -9,160 +9,161 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AdminRouteImport } from './routes/_admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProtectedTsxUsersRouteImport } from './routes/_protected.tsx/users'
-import { Route as ProtectedTsxSupportRouteImport } from './routes/_protected.tsx/support'
-import { Route as ProtectedTsxSettingsRouteImport } from './routes/_protected.tsx/settings'
-import { Route as ProtectedTsxReportsRouteImport } from './routes/_protected.tsx/reports'
-import { Route as ProtectedTsxPaymentsRouteImport } from './routes/_protected.tsx/payments'
-import { Route as ProtectedTsxNotificationsRouteImport } from './routes/_protected.tsx/notifications'
-import { Route as ProtectedTsxDashboardRouteImport } from './routes/_protected.tsx/dashboard'
-import { Route as ProtectedTsxCoursesRouteImport } from './routes/_protected.tsx/courses'
-import { Route as ProtectedTsxProtectedRouteImport } from './routes/_protected.tsx/_protected'
+import { Route as AdminUsersRouteImport } from './routes/_admin/users'
+import { Route as AdminPaymentsRouteImport } from './routes/_admin/payments'
+import { Route as AdminEnrollmentsRouteImport } from './routes/_admin/enrollments'
+import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
+import { Route as AdminCoursesRouteImport } from './routes/_admin/courses'
+import { Route as AdminCouponsRouteImport } from './routes/_admin/coupons'
+import { Route as AdminAnalyticsRouteImport } from './routes/_admin/analytics'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProtectedTsxUsersRoute = ProtectedTsxUsersRouteImport.update({
-  id: '/_protected/tsx/users',
-  path: '/tsx/users',
-  getParentRoute: () => rootRouteImport,
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
 } as any)
-const ProtectedTsxSupportRoute = ProtectedTsxSupportRouteImport.update({
-  id: '/_protected/tsx/support',
-  path: '/tsx/support',
-  getParentRoute: () => rootRouteImport,
+const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => AdminRoute,
 } as any)
-const ProtectedTsxSettingsRoute = ProtectedTsxSettingsRouteImport.update({
-  id: '/_protected/tsx/settings',
-  path: '/tsx/settings',
-  getParentRoute: () => rootRouteImport,
+const AdminEnrollmentsRoute = AdminEnrollmentsRouteImport.update({
+  id: '/enrollments',
+  path: '/enrollments',
+  getParentRoute: () => AdminRoute,
 } as any)
-const ProtectedTsxReportsRoute = ProtectedTsxReportsRouteImport.update({
-  id: '/_protected/tsx/reports',
-  path: '/tsx/reports',
-  getParentRoute: () => rootRouteImport,
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRoute,
 } as any)
-const ProtectedTsxPaymentsRoute = ProtectedTsxPaymentsRouteImport.update({
-  id: '/_protected/tsx/payments',
-  path: '/tsx/payments',
-  getParentRoute: () => rootRouteImport,
+const AdminCoursesRoute = AdminCoursesRouteImport.update({
+  id: '/courses',
+  path: '/courses',
+  getParentRoute: () => AdminRoute,
 } as any)
-const ProtectedTsxNotificationsRoute =
-  ProtectedTsxNotificationsRouteImport.update({
-    id: '/_protected/tsx/notifications',
-    path: '/tsx/notifications',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ProtectedTsxDashboardRoute = ProtectedTsxDashboardRouteImport.update({
-  id: '/_protected/tsx/dashboard',
-  path: '/tsx/dashboard',
-  getParentRoute: () => rootRouteImport,
+const AdminCouponsRoute = AdminCouponsRouteImport.update({
+  id: '/coupons',
+  path: '/coupons',
+  getParentRoute: () => AdminRoute,
 } as any)
-const ProtectedTsxCoursesRoute = ProtectedTsxCoursesRouteImport.update({
-  id: '/_protected/tsx/courses',
-  path: '/tsx/courses',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProtectedTsxProtectedRoute = ProtectedTsxProtectedRouteImport.update({
-  id: '/_protected/tsx/_protected',
-  path: '/tsx',
-  getParentRoute: () => rootRouteImport,
+const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/tsx': typeof ProtectedTsxProtectedRoute
-  '/tsx/courses': typeof ProtectedTsxCoursesRoute
-  '/tsx/dashboard': typeof ProtectedTsxDashboardRoute
-  '/tsx/notifications': typeof ProtectedTsxNotificationsRoute
-  '/tsx/payments': typeof ProtectedTsxPaymentsRoute
-  '/tsx/reports': typeof ProtectedTsxReportsRoute
-  '/tsx/settings': typeof ProtectedTsxSettingsRoute
-  '/tsx/support': typeof ProtectedTsxSupportRoute
-  '/tsx/users': typeof ProtectedTsxUsersRoute
+  '/login': typeof LoginRoute
+  '/analytics': typeof AdminAnalyticsRoute
+  '/coupons': typeof AdminCouponsRoute
+  '/courses': typeof AdminCoursesRoute
+  '/dashboard': typeof AdminDashboardRoute
+  '/enrollments': typeof AdminEnrollmentsRoute
+  '/payments': typeof AdminPaymentsRoute
+  '/users': typeof AdminUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/tsx': typeof ProtectedTsxProtectedRoute
-  '/tsx/courses': typeof ProtectedTsxCoursesRoute
-  '/tsx/dashboard': typeof ProtectedTsxDashboardRoute
-  '/tsx/notifications': typeof ProtectedTsxNotificationsRoute
-  '/tsx/payments': typeof ProtectedTsxPaymentsRoute
-  '/tsx/reports': typeof ProtectedTsxReportsRoute
-  '/tsx/settings': typeof ProtectedTsxSettingsRoute
-  '/tsx/support': typeof ProtectedTsxSupportRoute
-  '/tsx/users': typeof ProtectedTsxUsersRoute
+  '/login': typeof LoginRoute
+  '/analytics': typeof AdminAnalyticsRoute
+  '/coupons': typeof AdminCouponsRoute
+  '/courses': typeof AdminCoursesRoute
+  '/dashboard': typeof AdminDashboardRoute
+  '/enrollments': typeof AdminEnrollmentsRoute
+  '/payments': typeof AdminPaymentsRoute
+  '/users': typeof AdminUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_protected/tsx/_protected': typeof ProtectedTsxProtectedRoute
-  '/_protected/tsx/courses': typeof ProtectedTsxCoursesRoute
-  '/_protected/tsx/dashboard': typeof ProtectedTsxDashboardRoute
-  '/_protected/tsx/notifications': typeof ProtectedTsxNotificationsRoute
-  '/_protected/tsx/payments': typeof ProtectedTsxPaymentsRoute
-  '/_protected/tsx/reports': typeof ProtectedTsxReportsRoute
-  '/_protected/tsx/settings': typeof ProtectedTsxSettingsRoute
-  '/_protected/tsx/support': typeof ProtectedTsxSupportRoute
-  '/_protected/tsx/users': typeof ProtectedTsxUsersRoute
+  '/_admin': typeof AdminRouteWithChildren
+  '/login': typeof LoginRoute
+  '/_admin/analytics': typeof AdminAnalyticsRoute
+  '/_admin/coupons': typeof AdminCouponsRoute
+  '/_admin/courses': typeof AdminCoursesRoute
+  '/_admin/dashboard': typeof AdminDashboardRoute
+  '/_admin/enrollments': typeof AdminEnrollmentsRoute
+  '/_admin/payments': typeof AdminPaymentsRoute
+  '/_admin/users': typeof AdminUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/tsx'
-    | '/tsx/courses'
-    | '/tsx/dashboard'
-    | '/tsx/notifications'
-    | '/tsx/payments'
-    | '/tsx/reports'
-    | '/tsx/settings'
-    | '/tsx/support'
-    | '/tsx/users'
+    | '/login'
+    | '/analytics'
+    | '/coupons'
+    | '/courses'
+    | '/dashboard'
+    | '/enrollments'
+    | '/payments'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/tsx'
-    | '/tsx/courses'
-    | '/tsx/dashboard'
-    | '/tsx/notifications'
-    | '/tsx/payments'
-    | '/tsx/reports'
-    | '/tsx/settings'
-    | '/tsx/support'
-    | '/tsx/users'
+    | '/login'
+    | '/analytics'
+    | '/coupons'
+    | '/courses'
+    | '/dashboard'
+    | '/enrollments'
+    | '/payments'
+    | '/users'
   id:
     | '__root__'
     | '/'
-    | '/_protected/tsx/_protected'
-    | '/_protected/tsx/courses'
-    | '/_protected/tsx/dashboard'
-    | '/_protected/tsx/notifications'
-    | '/_protected/tsx/payments'
-    | '/_protected/tsx/reports'
-    | '/_protected/tsx/settings'
-    | '/_protected/tsx/support'
-    | '/_protected/tsx/users'
+    | '/_admin'
+    | '/login'
+    | '/_admin/analytics'
+    | '/_admin/coupons'
+    | '/_admin/courses'
+    | '/_admin/dashboard'
+    | '/_admin/enrollments'
+    | '/_admin/payments'
+    | '/_admin/users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProtectedTsxProtectedRoute: typeof ProtectedTsxProtectedRoute
-  ProtectedTsxCoursesRoute: typeof ProtectedTsxCoursesRoute
-  ProtectedTsxDashboardRoute: typeof ProtectedTsxDashboardRoute
-  ProtectedTsxNotificationsRoute: typeof ProtectedTsxNotificationsRoute
-  ProtectedTsxPaymentsRoute: typeof ProtectedTsxPaymentsRoute
-  ProtectedTsxReportsRoute: typeof ProtectedTsxReportsRoute
-  ProtectedTsxSettingsRoute: typeof ProtectedTsxSettingsRoute
-  ProtectedTsxSupportRoute: typeof ProtectedTsxSupportRoute
-  ProtectedTsxUsersRoute: typeof ProtectedTsxUsersRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -170,83 +171,84 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_protected/tsx/users': {
-      id: '/_protected/tsx/users'
-      path: '/tsx/users'
-      fullPath: '/tsx/users'
-      preLoaderRoute: typeof ProtectedTsxUsersRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_admin/users': {
+      id: '/_admin/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/_protected/tsx/support': {
-      id: '/_protected/tsx/support'
-      path: '/tsx/support'
-      fullPath: '/tsx/support'
-      preLoaderRoute: typeof ProtectedTsxSupportRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_admin/payments': {
+      id: '/_admin/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof AdminPaymentsRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/_protected/tsx/settings': {
-      id: '/_protected/tsx/settings'
-      path: '/tsx/settings'
-      fullPath: '/tsx/settings'
-      preLoaderRoute: typeof ProtectedTsxSettingsRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_admin/enrollments': {
+      id: '/_admin/enrollments'
+      path: '/enrollments'
+      fullPath: '/enrollments'
+      preLoaderRoute: typeof AdminEnrollmentsRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/_protected/tsx/reports': {
-      id: '/_protected/tsx/reports'
-      path: '/tsx/reports'
-      fullPath: '/tsx/reports'
-      preLoaderRoute: typeof ProtectedTsxReportsRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_admin/dashboard': {
+      id: '/_admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/_protected/tsx/payments': {
-      id: '/_protected/tsx/payments'
-      path: '/tsx/payments'
-      fullPath: '/tsx/payments'
-      preLoaderRoute: typeof ProtectedTsxPaymentsRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_admin/courses': {
+      id: '/_admin/courses'
+      path: '/courses'
+      fullPath: '/courses'
+      preLoaderRoute: typeof AdminCoursesRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/_protected/tsx/notifications': {
-      id: '/_protected/tsx/notifications'
-      path: '/tsx/notifications'
-      fullPath: '/tsx/notifications'
-      preLoaderRoute: typeof ProtectedTsxNotificationsRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_admin/coupons': {
+      id: '/_admin/coupons'
+      path: '/coupons'
+      fullPath: '/coupons'
+      preLoaderRoute: typeof AdminCouponsRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/_protected/tsx/dashboard': {
-      id: '/_protected/tsx/dashboard'
-      path: '/tsx/dashboard'
-      fullPath: '/tsx/dashboard'
-      preLoaderRoute: typeof ProtectedTsxDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_protected/tsx/courses': {
-      id: '/_protected/tsx/courses'
-      path: '/tsx/courses'
-      fullPath: '/tsx/courses'
-      preLoaderRoute: typeof ProtectedTsxCoursesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_protected/tsx/_protected': {
-      id: '/_protected/tsx/_protected'
-      path: '/tsx'
-      fullPath: '/tsx'
-      preLoaderRoute: typeof ProtectedTsxProtectedRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_admin/analytics': {
+      id: '/_admin/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AdminAnalyticsRouteImport
+      parentRoute: typeof AdminRoute
     }
   }
 }
 
+interface AdminRouteChildren {
+  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
+  AdminCouponsRoute: typeof AdminCouponsRoute
+  AdminCoursesRoute: typeof AdminCoursesRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminEnrollmentsRoute: typeof AdminEnrollmentsRoute
+  AdminPaymentsRoute: typeof AdminPaymentsRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAnalyticsRoute: AdminAnalyticsRoute,
+  AdminCouponsRoute: AdminCouponsRoute,
+  AdminCoursesRoute: AdminCoursesRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
+  AdminEnrollmentsRoute: AdminEnrollmentsRoute,
+  AdminPaymentsRoute: AdminPaymentsRoute,
+  AdminUsersRoute: AdminUsersRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProtectedTsxProtectedRoute: ProtectedTsxProtectedRoute,
-  ProtectedTsxCoursesRoute: ProtectedTsxCoursesRoute,
-  ProtectedTsxDashboardRoute: ProtectedTsxDashboardRoute,
-  ProtectedTsxNotificationsRoute: ProtectedTsxNotificationsRoute,
-  ProtectedTsxPaymentsRoute: ProtectedTsxPaymentsRoute,
-  ProtectedTsxReportsRoute: ProtectedTsxReportsRoute,
-  ProtectedTsxSettingsRoute: ProtectedTsxSettingsRoute,
-  ProtectedTsxSupportRoute: ProtectedTsxSupportRoute,
-  ProtectedTsxUsersRoute: ProtectedTsxUsersRoute,
+  AdminRoute: AdminRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

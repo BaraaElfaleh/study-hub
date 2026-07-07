@@ -1,0 +1,1 @@
+export interface Payment { id: string; courseId: string; userId: string; amount: number; status: 'pending' | 'completed' | 'failed'; createdAt: string; }

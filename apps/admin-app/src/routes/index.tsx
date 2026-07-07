@@ -1,6 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { LoginPage } from '../modules/auth';
-
+import { createFileRoute, redirect } from '@tanstack/react-router';
 export const Route = createFileRoute('/')({
-  component: LoginPage,
+  beforeLoad: () => { throw redirect({ to: '/login' }); },
 });

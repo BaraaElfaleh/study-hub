@@ -1,32 +1,5 @@
-// apps/admin-app/src/shared/api/client.ts
 import axios from 'axios';
-
-const client = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1/admin',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Request interceptor – إرفاق التوكن
-client.interceptors.request.use((config) => {
-  const token = localStorage.getItem('adminAccessToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Response interceptor – معالجة 401
-client.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('adminAccessToken');
-      window.location.href = '/admin/login';
-    }
-    return Promise.reject(error);
-  }
-);
-
+const client = axios.create({ baseURL: 'http://localhost:3001', headers: { 'Content-Type': 'application/json' } });
+client.interceptors.request.use(c => { const t = localStorage.getItem('adminAccessToken'); if (t) c.headers.Authorization = `Bearer ${t}`; return c; });
+client.interceptors.response.use(r => r, e => { if (e.response?.status === 401) { localStorage.removeItem('adminAccessToken'); window.location.href = '/login'; } return Promise.reject(e); });
 export default client;

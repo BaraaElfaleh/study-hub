@@ -1,0 +1,8 @@
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+interface Column<T> { header: string; accessor: keyof T | ((row: T) => React.ReactNode); }
+interface DataTableProps<T extends { id: string }> { columns: Column<T>[]; data: T[]; page: number; totalPages: number; onPageChange: (page: number) => void; isLoading?: boolean; emptyMessage?: string; }
+export default function DataTable<T extends { id: string }>({ columns, data, page, totalPages, onPageChange, isLoading, emptyMessage = 'لا توجد بيانات' }: DataTableProps<T>) {
+  if (isLoading) return <div className="text-center py-10 text-white/60">جاري التحميل...</div>;
+  if (!data.length) return <div className="text-center py-10 text-white/60">{emptyMessage}</div>;
+  return <div className="overflow-x-auto"><table className="w-full text-right"><thead><tr className="border-b border-white/10 text-white/60 text-sm">{columns.map((c,i)=><th key={i} className="py-3 px-4">{c.header}</th>)}</tr></thead><tbody>{data.map(row=><tr key={row.id} className="border-b border-white/5 hover:bg-white/5">{columns.map((c,i)=><td key={i} className="py-3 px-4 text-white">{typeof c.accessor==='function' ? c.accessor(row) : String(row[c.accessor] ?? '')}</td>)}</tr>)}</tbody></table>{totalPages>1&&<div className="flex justify-center gap-2 mt-6"><button onClick={()=>onPageChange(page-1)} disabled={page<=1} className="p-2 text-white/60 hover:bg-white/10 disabled:opacity-30"><ChevronRight size={18}/></button><span className="text-white/60 text-sm">{page} من {totalPages}</span><button onClick={()=>onPageChange(page+1)} disabled={page>=totalPages} className="p-2 text-white/60 hover:bg-white/10 disabled:opacity-30"><ChevronLeft size={18}/></button></div>}</div>;
+}

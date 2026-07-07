@@ -1,0 +1,1 @@
+export interface AnalyticsSummary { totalUsers: number; totalCourses: number; totalEnrollments: number; totalRevenue: number; usersByRole: { role: string; count: number }[]; enrollmentsByMonth: { month: string; count: number }[]; }

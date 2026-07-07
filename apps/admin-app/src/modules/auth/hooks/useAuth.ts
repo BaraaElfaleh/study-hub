@@ -1,70 +1,47 @@
-// apps/admin-app/src/modules/auth/hooks/useAuth.ts
-import { useEffect } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
-import { useAuthStore } from '../store/authStore';
-import { authApi } from '../api/authApi';
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { authApi } from "../api/authApi";
+import { useAuthStore } from "../store/authStore";
+import client from "../../../shared/api/client"; // عميل axios
+import type { AdminUser } from "../../../shared/types/auth";
+import type { LoginRequest } from "../../../shared/types/auth";
 
 export const useAuth = () => {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  const {
-    user,
-    isAuthenticated,
-    accessToken,
-    setSession,
-    clearSession,
-    initSession,
-  } = useAuthStore();
+  const nav = useNavigate();
+  const setS = useAuthStore((s) => s.setSession);
+  const clearS = useAuthStore((s) => s.clearSession);
 
-  // استعادة الجلسة مرة واحدة
-  useEffect(() => {
-    if (!isAuthenticated && localStorage.getItem('adminAccessToken')) {
-      initSession();
-    }
-  }, []);
-
-  // جلب المشرف الحالي
-  const { data: fetchedUser, isLoading: isUserLoading } = useQuery({
-    queryKey: ['currentAdmin'],
-    queryFn: authApi.fetchCurrentAdmin,
-    enabled: !!accessToken && !user,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  useEffect(() => {
-    if (fetchedUser && !user) {
-      setSession(fetchedUser, accessToken!);
-    }
-  }, [fetchedUser, user, accessToken, setSession]);
-
-  const loginMutation = useMutation({
-    mutationFn: authApi.signIn,
-    onSuccess: (data) => {
-      setSession(data.user, data.accessToken);
-      queryClient.invalidateQueries();
-      navigate({ to: '/tsx/dashboard' });
+  const loginMut = useMutation({
+    mutationFn: async (p: LoginRequest) => {
+      // 1. تسجيل الدخول واستلام التوكنز
+      const { accessToken, refreshToken } = await authApi.login(p);
+      // 2. جلب بيانات المستخدم من /users/me
+      const { data: user } = await client.get<AdminUser>("/users/me", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      return { user, accessToken, refreshToken };
+    },
+    onSuccess: ({ user, accessToken }) => {
+      console.log("✅ المستخدم:", user);
+      if (user.role.toUpperCase() !== "ADMIN") {
+        console.error("❌ الدور ليس ADMIN:", user.role);
+        throw new Error("غير مصرح");
+      }
+      setS(user, accessToken);
+      console.log("🔐 تم تخزين الجلسة، التوجيه إلى /_admin/dashboard");
+      nav({ to: "/_admin/dashboard" });
     },
   });
 
-  const logoutMutation = useMutation({
-    mutationFn: authApi.signOut,
-    onSettled: () => {
-      clearSession();
-      queryClient.clear();
-      navigate({ to: '/tsx/dashboard' });
-    },
-  });
+  const logout = () => {
+    clearS();
+    nav({ to: "/login" });
+  };
 
   return {
-    user: user || fetchedUser || null,
-    isAuthenticated: !!user || !!fetchedUser || isAuthenticated,
-    isLoading: isUserLoading,
-
-    login: loginMutation.mutate,
-    logout: logoutMutation.mutate,
-
-    loginError: loginMutation.error,
-    isLoggingIn: loginMutation.isPending,
+    login: loginMut.mutate,
+    isLoading: loginMut.isPending,
+    error: loginMut.error,
+    logout,
   };
 };

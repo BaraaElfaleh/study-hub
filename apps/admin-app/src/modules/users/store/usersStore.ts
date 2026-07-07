@@ -1,16 +1,3 @@
-// apps/admin-app/src/modules/users/store/usersStore.ts
 import { create } from 'zustand';
-
-interface UsersStore {
-  search: string;
-  roleFilter: string;
-  setSearch: (val: string) => void;
-  setRoleFilter: (role: string) => void;
-}
-
-export const useUsersStore = create<UsersStore>((set) => ({
-  search: '',
-  roleFilter: 'all',
-  setSearch: (search) => set({ search }),
-  setRoleFilter: (role) => set({ roleFilter: role }),
-}));
+interface UsersStore { filters: { page:number;limit:number;search:string;role:string;isActive:boolean|undefined }; setPage:(p:number)=>void; setSearch:(s:string)=>void; setRole:(r:string)=>void; setIsActive:(a:boolean|undefined)=>void; }
+export const useUsersStore = create<UsersStore>(set=>({ filters:{page:1,limit:10,search:'',role:'',isActive:undefined}, setPage:p=>set(s=>({filters:{...s.filters,page:p}})), setSearch:search=>set(s=>({filters:{...s.filters,search,page:1}})), setRole:role=>set(s=>({filters:{...s.filters,role,page:1}})), setIsActive:isActive=>set(s=>({filters:{...s.filters,isActive,page:1}})) }));
